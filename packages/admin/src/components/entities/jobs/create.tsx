@@ -1,0 +1,49 @@
+import { Checkbox, Create, Form, Input, Select, useForm, useSelect } from '@pankod/refine-antd';
+import type { IResourceComponentsProps } from '@pankod/refine-core';
+import ReactMarkdown from 'react-markdown';
+import ReactMde from 'react-mde';
+import { useState } from 'react';
+
+import 'react-mde/lib/styles/css/react-mde-all.css';
+
+import type { CompanyEntity } from '~/interfaces';
+import { Rules } from '~/components/form/rules';
+
+export const JobCreate: FC<IResourceComponentsProps> = () => {
+    const [selectedTab, setSelectedTab] = useState<'write' | 'preview'>('write');
+    const { formProps, saveButtonProps } = useForm<CompanyEntity>();
+
+    const { selectProps: companySelectProps } = useSelect<CompanyEntity>({
+        resource: 'companies',
+        optionLabel: 'name'
+    });
+
+    return (
+        <Create saveButtonProps={saveButtonProps}>
+            <Form {...formProps} layout='vertical'>
+                <Form.Item label='Job Title' name='title' rules={Rules.required}>
+                    <Input />
+                </Form.Item>
+                <Form.Item label='Company' name={['company', 'id']} rules={Rules.required}>
+                    <Select {...companySelectProps} />
+                </Form.Item>
+                <Form.Item label='Location' name='location'>
+                    <Input />
+                </Form.Item>
+                <Form.Item label='Content' name='content'>
+                    <ReactMde
+                        selectedTab={selectedTab}
+                        onTabChange={setSelectedTab}
+                        generateMarkdownPreview={(markdown) =>
+                            Promise.resolve(<ReactMarkdown>{markdown}</ReactMarkdown>)
+                        }
+                    />
+                </Form.Item>
+
+                <Form.Item label='Is Active' name='isActive' valuePropName='checked'>
+                    <Checkbox>Active</Checkbox>
+                </Form.Item>
+            </Form>
+        </Create>
+    );
+};
