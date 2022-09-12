@@ -15,4 +15,21 @@ export class UserEntity extends BaseEntity {
 
     @Column({ type: 'simple-array', default: '' })
     roles?: string[];
+
+    // sync with notion
+    @Column({
+        type: 'datetime',
+        nullable: true,
+    })
+    lastSync?: Date;
+
+    @Column()
+    appPin: string;
+
+    // feed limit reset
+    @Column({
+        type: 'datetime',
+        nullable: true,
+    })
+    lastReset?: Date;
 }

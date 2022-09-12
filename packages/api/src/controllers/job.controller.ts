@@ -14,10 +14,10 @@ import { JwtAuthGuard } from '~/guards/jwt-auth.guard';
 import { JobEntity } from '~/entities/job.entity';
 import { JobService } from '~/services/job.service';
 
-import { JobCreateDto } from './dto/job-create.dto';
-import { JobGetManyDto } from './dto/job-getMany.dto';
-import { JobUpdateDto } from './dto/job-update.dto';
-import { JobDto } from './dto/job.dto';
+import { JobCreateDto } from './dto/job/job-create.dto';
+import { JobGetManyDto } from './dto/job/job-getMany.dto';
+import { JobUpdateDto } from './dto/job/job-update.dto';
+import { JobDto } from './dto/job/job.dto';
 
 @ApiTags('jobs')
 @ApiBearerAuth()

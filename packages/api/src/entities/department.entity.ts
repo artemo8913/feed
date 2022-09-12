@@ -1,6 +1,5 @@
 import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
 
-import { CompanyEntity } from './company.entity';
 import { VolEntity } from './vol.entity';
 
 @Entity({ name: 'department' })
@@ -17,5 +16,5 @@ export class DepartmentEntity {
     @ManyToMany(() => VolEntity, (v) => v.department, {
         onDelete: 'CASCADE',
     })
-    lead: CompanyEntity;
+    lead: VolEntity;
 }

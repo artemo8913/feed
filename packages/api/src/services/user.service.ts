@@ -2,8 +2,8 @@ import { Injectable, NotAcceptableException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
 
-import { UserRepository } from '../repositories/user.repository';
-import { UserEntity } from '../entities/user.entity';
+import { UserRepository } from '~/repositories/user.repository';
+import { UserEntity } from '~/entities/user.entity';
 import { Repository } from 'typeorm';
 import { AuthService } from './auth.service';
 

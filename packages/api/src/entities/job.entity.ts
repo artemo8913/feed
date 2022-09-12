@@ -2,8 +2,8 @@ import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 import { CompanyEntity } from './company.entity';
 
-@Entity({ name: 'job' })
-export class JobEntity {
+@Entity({ name: 'department' })
+export class DepartmentEntity {
     @PrimaryGeneratedColumn('uuid')
     id: number;
 

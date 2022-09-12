@@ -14,17 +14,10 @@ export class FeedTypeEntity {
     name: string;
 
     @Column({
-        type: 'varchar',
-        length: 3,
-        unique: true,
-    })
-    code: string;
-
-    @Column({
         type: 'boolean',
         default: true,
     })
-    paid: boolean;
+    paid?: boolean;
 
     @Column({
         type: 'tinyint',

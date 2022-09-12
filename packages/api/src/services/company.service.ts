@@ -3,8 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import { Repository } from 'typeorm';
 
-import { CompanyEntity } from '../entities/company.entity';
-import { CompanyRepository } from '../repositories/company.repository';
+import { CompanyEntity } from '~/entities/company.entity';
+import { CompanyRepository } from '~/repositories/company.repository';
 
 @Injectable()
 export class CompanyService extends TypeOrmCrudService<CompanyEntity> {
