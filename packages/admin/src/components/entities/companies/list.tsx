@@ -17,11 +17,13 @@ import {
 } from '@pankod/refine-antd';
 import type { IResourceComponentsProps } from '@pankod/refine-core';
 import { useShow } from '@pankod/refine-core';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import type { CompanyEntity } from '~/interfaces';
 
 import { CompanyShow } from './show';
+
+const formInlineEditStyle = { margin: 0 };
 
 export const CompanyList: FC<IResourceComponentsProps> = () => {
     const [visibleShowDrawer, setVisibleShowDrawer] = useState<boolean>(false);
@@ -45,21 +47,22 @@ export const CompanyList: FC<IResourceComponentsProps> = () => {
         ]
     });
 
+    const rowActions = useMemo(
+        () => (record) => ({
+            onClick: (event: any) => {
+                if (event.target.nodeName === 'TD') {
+                    setEditId && setEditId(record.id);
+                }
+            }
+        }),
+        [setEditId]
+    );
+
     return (
         <>
             <List>
                 <Form {...formProps}>
-                    <Table
-                        {...tableProps}
-                        rowKey='id'
-                        onRow={(record) => ({
-                            onClick: (event: any) => {
-                                if (event.target.nodeName === 'TD') {
-                                    setEditId && setEditId(record.id);
-                                }
-                            }
-                        })}
-                    >
+                    <Table {...tableProps} rowKey='id' onRow={rowActions}>
                         <Table.Column<CompanyEntity>
                             dataIndex='name'
                             key='name'
@@ -67,7 +70,7 @@ export const CompanyList: FC<IResourceComponentsProps> = () => {
                             render={(value, record) => {
                                 if (isEditing(record.id)) {
                                     return (
-                                        <Form.Item name='title' style={{ margin: 0 }}>
+                                        <Form.Item initialValue={value} name='name' style={formInlineEditStyle}>
                                             <Input />
                                         </Form.Item>
                                     );
