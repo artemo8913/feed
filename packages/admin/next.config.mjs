@@ -3,13 +3,15 @@ import CircularDependencyPlugin from  'circular-dependency-plugin';
 import withTM from 'next-transpile-modules';
 import { i18n } from './next-i18next.config.mjs';
 
+// TODO check https://github.com/vercel/next.js/issues/39161
+
 const plugins = [withTM([
     '@feed/ui',
     '@feed/core',
     '@feed/api'
 ])];
 
-export default plugins.reduce((acc, next) => next(acc, {silent: true }, {
+let customConfig = {
     experimental: {
         newNextLinkBehavior: true,
     },
@@ -35,5 +37,19 @@ export default plugins.reduce((acc, next) => next(acc, {silent: true }, {
 
         return config
     },
-}));
+};
+
+const nextConfig = (_phase, { defaultConfig }) => {
+  return plugins.reduce(
+    (acc, plugin) => {
+      if (Array.isArray(plugin)) {
+        return plugin[0](acc, plugin[1]);
+      }
+      return plugin(acc);
+    },
+    { ...customConfig }
+  );
+};
+
+export default nextConfig;
 

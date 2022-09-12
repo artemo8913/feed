@@ -148,7 +148,7 @@
             "^.+\\.module\\.(css|sass|scss)$"
         ],
         "modulePaths": [
-            "/home/ac/WebstormProjects/refine-hackathon/job-posting-app/packages/admin/src"
+            "/home/ac/WebstormProjects/ins/feed/packages/admin/src"
         ],
         "moduleNameMapper": {
             "^react-native$": "react-native-web",
