@@ -24,21 +24,6 @@ export const JobShow: FC<IResourceComponentsProps> = () => {
             <Paragraph>
                 <strong>Web: </strong> {record?.web || '-'}
             </Paragraph>
-            <Paragraph>
-                <strong>Linkedin: </strong> {record?.linkedin || '-'}
-            </Paragraph>
-            <Paragraph>
-                <strong>Twitter: </strong> {record?.twitter || '-'}
-            </Paragraph>
-            <Paragraph>
-                <strong>Instagram: </strong> {record?.instagram || '-'}
-            </Paragraph>
-            <Paragraph>
-                <strong>Youtube: </strong> {record?.youtube || '-'}
-            </Paragraph>
-            <Paragraph>
-                <strong>Github: </strong> {record?.github || '-'}
-            </Paragraph>
         </Show>
     );
 };

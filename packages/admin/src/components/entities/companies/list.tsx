@@ -15,9 +15,9 @@ import {
     TextField,
     useEditableTable
 } from '@pankod/refine-antd';
+import { useCallback, useMemo, useState } from 'react';
 import type { IResourceComponentsProps } from '@pankod/refine-core';
 import { useShow } from '@pankod/refine-core';
-import { useMemo, useState } from 'react';
 
 import type { CompanyEntity } from '~/interfaces';
 
@@ -58,6 +58,8 @@ export const CompanyList: FC<IResourceComponentsProps> = () => {
         [setEditId]
     );
 
+    const closeDrawer = useCallback(() => setVisibleShowDrawer(false), []);
+
     return (
         <>
             <List>
@@ -83,7 +85,7 @@ export const CompanyList: FC<IResourceComponentsProps> = () => {
                         <Table.Column<CompanyEntity>
                             dataIndex='location'
                             key='location'
-                            title='Location'
+                            title='Локация'
                             render={(value) => <TextField value={value} />}
                             defaultSortOrder={getDefaultSortOrder('location', sorter)}
                             sorter
@@ -91,7 +93,6 @@ export const CompanyList: FC<IResourceComponentsProps> = () => {
                         <Table.Column<CompanyEntity>
                             dataIndex='isActive'
                             key='isActive'
-                            title='Is Active'
                             render={(value) => <TagField value={value} />}
                             defaultSortOrder={getDefaultSortOrder('status', sorter)}
                             sorter
@@ -110,6 +111,10 @@ export const CompanyList: FC<IResourceComponentsProps> = () => {
                                         </Space>
                                     );
                                 }
+                                const showListItem = () => {
+                                    setShowId(record.id);
+                                    setVisibleShowDrawer(true);
+                                };
                                 return (
                                     <Space>
                                         <EditButton hideText size='small' recordItemId={record.id} />
@@ -118,10 +123,7 @@ export const CompanyList: FC<IResourceComponentsProps> = () => {
                                             hideText
                                             size='small'
                                             recordItemId={record.id}
-                                            onClick={() => {
-                                                setShowId(record.id);
-                                                setVisibleShowDrawer(true);
-                                            }}
+                                            onClick={showListItem}
                                         />
                                     </Space>
                                 );
@@ -130,7 +132,7 @@ export const CompanyList: FC<IResourceComponentsProps> = () => {
                     </Table>
                 </Form>
             </List>
-            <Drawer visible={visibleShowDrawer} onClose={() => setVisibleShowDrawer(false)} width='50%'>
+            <Drawer visible={visibleShowDrawer} onClose={closeDrawer} width='50%'>
                 <CompanyShow id={showId as string} />
             </Drawer>
         </>

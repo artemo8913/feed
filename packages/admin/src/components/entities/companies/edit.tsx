@@ -33,31 +33,6 @@ export const CompanyEdit: FC<IResourceComponentsProps> = () => {
                             <Input />
                         </Form.Item>
                     </Col>
-                    <Col span={12}>
-                        <Form.Item label='Linkedin' name='linkedin'>
-                            <Input />
-                        </Form.Item>
-                    </Col>
-                    <Col span={12}>
-                        <Form.Item label='Twitter' name='twitter'>
-                            <Input />
-                        </Form.Item>
-                    </Col>
-                    <Col span={12}>
-                        <Form.Item label='Instagram' name='instagram'>
-                            <Input />
-                        </Form.Item>
-                    </Col>
-                    <Col span={12}>
-                        <Form.Item label='Youtube' name='youtube'>
-                            <Input />
-                        </Form.Item>
-                    </Col>
-                    <Col span={12}>
-                        <Form.Item label='Github' name='github'>
-                            <Input />
-                        </Form.Item>
-                    </Col>
                 </Row>
             </Form>
         </Edit>

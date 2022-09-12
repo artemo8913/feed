@@ -21,26 +21,6 @@ export class CompanyDto {
     web?: string;
 
     @Expose()
-    @ApiProperty({ nullable: true })
-    linkedin?: string;
-
-    @Expose()
-    @ApiProperty({ nullable: true })
-    twitter?: string;
-
-    @Expose()
-    @ApiProperty({ nullable: true })
-    instagram?: string;
-
-    @Expose()
-    @ApiProperty({ nullable: true })
-    youtube?: string;
-
-    @Expose()
-    @ApiProperty({ nullable: true })
-    github?: string;
-
-    @Expose()
     @ApiProperty()
     isActive: boolean;
 }

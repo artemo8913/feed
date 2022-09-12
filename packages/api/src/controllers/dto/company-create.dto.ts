@@ -16,25 +16,5 @@ export class CompanyCreateDto {
 
     @ApiProperty()
     @IsOptional()
-    readonly linkedin?: string;
-
-    @ApiProperty()
-    @IsOptional()
-    readonly twitter?: string;
-
-    @ApiProperty()
-    @IsOptional()
-    readonly instagram?: string;
-
-    @ApiProperty()
-    @IsOptional()
-    readonly youtube?: string;
-
-    @ApiProperty()
-    @IsOptional()
-    readonly github?: string;
-
-    @ApiProperty()
-    @IsOptional()
     readonly isActive: boolean;
 }
