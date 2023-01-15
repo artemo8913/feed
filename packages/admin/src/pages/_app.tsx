@@ -11,7 +11,7 @@ import '@pankod/refine-antd/dist/styles.min.css';
 // require('~/i18n');
 
 import { CompanyCreate, CompanyEdit, CompanyList /*, CompanyShow*/ } from '~/components/entities/companies';
-import { JobCreate, JobEdit, JobList, JobShow } from '~/components/entities/jobs';
+import { DepartmentCreate, DepartmentEdit, DepartmentList, DepartmentShow } from '~/components/entities/departments';
 import { VolCreate, VolEdit, VolList, VolShow } from '~/components/entities/vols';
 import { ACL } from '~/acl';
 import { authProvider } from '~/authProvider';
@@ -84,11 +84,11 @@ const Feed = ({ Component, pageProps }: AppProps): JSX.Element | null => {
                     icon: <Icons.TeamOutlined />
                 },
                 {
-                    name: 'jobs',
-                    list: JobList,
-                    create: JobCreate,
-                    edit: JobEdit,
-                    show: JobShow,
+                    name: 'departments',
+                    list: DepartmentList,
+                    create: DepartmentCreate,
+                    edit: DepartmentEdit,
+                    show: DepartmentShow,
                     icon: <Icons.ProfileOutlined />
                 },
                 {

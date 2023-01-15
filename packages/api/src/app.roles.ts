@@ -10,11 +10,13 @@ export const roles: RolesBuilder = new RolesBuilder();
 roles
     // editor
     .grant(AppRoles.EDITOR)
+    .read(['departments', 'vols'])
     .create(['departments', 'vols'])
     .update(['departments', 'vols'])
     // admin
     .grant(AppRoles.ADMIN)
     .extend(AppRoles.EDITOR)
-    .create(['companies', 'vols'])
-    .update(['companies', 'vols'])
-    .delete(['companies', 'departments', 'vols']);
+    .read(['departments', 'companies', 'vols'])
+    .create(['departments', 'companies', 'vols'])
+    .update(['departments', 'companies', 'vols'])
+    .delete(['departments', 'companies', 'vols']);

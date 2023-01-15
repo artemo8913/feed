@@ -6,7 +6,6 @@ import {
     List,
     Space,
     Table,
-    TagField,
     TextField,
     useSelect,
     useTable
@@ -16,7 +15,9 @@ import Select from 'rc-select';
 
 import type { CompanyEntity, DepartmentEntity } from '~/interfaces';
 
-export const JobList: FC<IResourceComponentsProps> = () => {
+const selectStyle = { minWidth: 200 };
+
+export const DepartmentList: FC<IResourceComponentsProps> = () => {
     const { sorter, tableProps } = useTable<DepartmentEntity>({
         initialSorter: [
             {
@@ -26,42 +27,34 @@ export const JobList: FC<IResourceComponentsProps> = () => {
         ]
     });
 
-    const { selectProps: companySelectProps } = useSelect<CompanyEntity>({
-        resource: 'companies'
+    const { selectProps: leadSelectProps } = useSelect<CompanyEntity>({
+        resource: 'vols'
     });
 
     return (
         <List>
             <Table {...tableProps} rowKey='id'>
                 <Table.Column
-                    dataIndex={['company', 'name']}
-                    title='Company'
+                    dataIndex='name'
+                    key='name'
+                    title='Name'
+                    render={(value) => <TextField value={value} />}
+                    defaultSortOrder={getDefaultSortOrder('name', sorter)}
+                    sorter
+                />
+                <Table.Column
+                    dataIndex={['lead', 'name']}
+                    title='Lead'
                     filterDropdown={(props) => (
                         <FilterDropdown {...props}>
                             <Select
-                                style={{ minWidth: 200 }}
+                                style={selectStyle}
                                 mode='multiple'
                                 placeholder='Select Company'
-                                {...companySelectProps}
+                                {...leadSelectProps}
                             />
                         </FilterDropdown>
                     )}
-                />
-                <Table.Column
-                    dataIndex='title'
-                    key='title'
-                    title='Title'
-                    render={(value) => <TextField value={value} />}
-                    defaultSortOrder={getDefaultSortOrder('title', sorter)}
-                    sorter
-                />
-                <Table.Column
-                    dataIndex='isActive'
-                    key='isActive'
-                    title='Is Active'
-                    render={(value) => <TagField value={value} />}
-                    defaultSortOrder={getDefaultSortOrder('status', sorter)}
-                    sorter
                 />
                 <Table.Column<DepartmentEntity>
                     title='Actions'

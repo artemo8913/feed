@@ -1,4 +1,4 @@
-import { Checkbox, Create, Form, Input, Select, useForm, useSelect } from '@pankod/refine-antd';
+import { Checkbox, Edit, Form, Input, Select, useForm, useSelect } from '@pankod/refine-antd';
 import type { IResourceComponentsProps } from '@pankod/refine-core';
 import ReactMarkdown from 'react-markdown';
 import ReactMde from 'react-mde';
@@ -9,7 +9,7 @@ import 'react-mde/lib/styles/css/react-mde-all.css';
 import type { CompanyEntity } from '~/interfaces';
 import { Rules } from '~/components/form/rules';
 
-export const JobCreate: FC<IResourceComponentsProps> = () => {
+export const DepartmentEdit: FC<IResourceComponentsProps> = () => {
     const [selectedTab, setSelectedTab] = useState<'write' | 'preview'>('write');
     const { formProps, saveButtonProps } = useForm<CompanyEntity>();
 
@@ -19,7 +19,7 @@ export const JobCreate: FC<IResourceComponentsProps> = () => {
     });
 
     return (
-        <Create saveButtonProps={saveButtonProps}>
+        <Edit saveButtonProps={saveButtonProps}>
             <Form {...formProps} layout='vertical'>
                 <Form.Item label='Job Title' name='title' rules={Rules.required}>
                     <Input />
@@ -44,6 +44,6 @@ export const JobCreate: FC<IResourceComponentsProps> = () => {
                     <Checkbox>Active</Checkbox>
                 </Form.Item>
             </Form>
-        </Create>
+        </Edit>
     );
 };

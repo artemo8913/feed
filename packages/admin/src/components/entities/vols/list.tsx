@@ -14,9 +14,9 @@ import {
 import type { DepartmentEntity } from '@feed/api/dist/src/entities/department.entity';
 import type { IResourceComponentsProps } from '@pankod/refine-core';
 // import { Loader } from '@feed/ui/src/loader';
+import { ListBooleanNegative, ListBooleanPositive } from '@feed/ui/src/icons'; // TODO exclude src
 import Select from 'rc-select';
 
-import { ListBooleanNegative, ListBooleanPositive } from '~/components/icons'; // TODO exclude src
 import type { VolEntity } from '~/interfaces';
 
 export const VolList: FC<IResourceComponentsProps> = () => {

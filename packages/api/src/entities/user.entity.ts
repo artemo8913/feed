@@ -23,8 +23,8 @@ export class UserEntity extends BaseEntity {
     })
     lastSync?: Date;
 
-    @Column()
-    appPin: string;
+    // @Column()
+    // appPin: string;
 
     // feed limit reset
     @Column({
