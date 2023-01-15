@@ -14,6 +14,10 @@ export interface ILoginForm {
     remember: boolean;
 }
 
+const rowStyle = {
+    height: '100vh'
+};
+
 export const LoginPage: FC = () => {
     const [form] = Form.useForm<ILoginForm>();
     const translate = useTranslate();
@@ -29,13 +33,7 @@ export const LoginPage: FC = () => {
 
     return (
         <Layout style={layoutStyles}>
-            <Row
-                justify='center'
-                align='middle'
-                style={{
-                    height: '100vh'
-                }}
-            >
+            <Row justify='center' align='middle' style={rowStyle}>
                 <Col xs={22}>
                     <div style={containerStyles}>
                         <div style={imageContainer}>
