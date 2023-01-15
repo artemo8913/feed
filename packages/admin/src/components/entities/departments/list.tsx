@@ -6,11 +6,11 @@ import {
     List,
     Space,
     Table,
-    TextField,
     useSelect,
     useTable
 } from '@pankod/refine-antd';
 import type { IResourceComponentsProps } from '@pankod/refine-core';
+import { renderText } from '@feed/ui/src/table';
 import Select from 'rc-select';
 
 import type { CompanyEntity, DepartmentEntity } from '~/interfaces';
@@ -38,7 +38,7 @@ export const DepartmentList: FC<IResourceComponentsProps> = () => {
                     dataIndex='name'
                     key='name'
                     title='Name'
-                    render={(value) => <TextField value={value} />}
+                    render={renderText}
                     defaultSortOrder={getDefaultSortOrder('name', sorter)}
                     sorter
                 />

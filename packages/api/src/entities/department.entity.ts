@@ -1,4 +1,10 @@
-import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+    Column,
+    Entity,
+    ManyToMany,
+    PrimaryGeneratedColumn,
+    JoinTable,
+} from 'typeorm';
 
 import { VolEntity } from '~/entities/vol.entity';
 
@@ -16,5 +22,6 @@ export class DepartmentEntity {
     @ManyToMany(() => VolEntity, (v) => v.department, {
         onDelete: 'CASCADE',
     })
+    @JoinTable()
     lead: VolEntity;
 }
