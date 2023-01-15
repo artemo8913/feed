@@ -60,8 +60,8 @@
     "dashboard": {
         "title": "Dashboard"
     },
-    "jobs": {
-        "jobs": "роаб",
+    "departments": {
+        "departments": "Направления",
         "fields": {
             "id": "Id",
             "title": "Title",
@@ -76,10 +76,10 @@
             "createdAt": "Created At"
         },
         "titles": {
-            "create": "Create Post",
-            "edit": "Edit Post",
-            "list": "Posts",
-            "show": "Show Post"
+            "create": "Создать направление",
+            "edit": "Редактировать направление",
+            "list": "Список направлений",
+            "show": "Показать направление"
         }
     },
     "vols": {
