@@ -14,10 +14,10 @@ import {
 import type { IResourceComponentsProps } from '@pankod/refine-core';
 import Select from 'rc-select';
 
-import type { CompanyEntity, JobEntity } from '~/interfaces';
+import type { CompanyEntity, DepartmentEntity } from '~/interfaces';
 
 export const JobList: FC<IResourceComponentsProps> = () => {
-    const { sorter, tableProps } = useTable<JobEntity>({
+    const { sorter, tableProps } = useTable<DepartmentEntity>({
         initialSorter: [
             {
                 field: 'id',
@@ -63,7 +63,7 @@ export const JobList: FC<IResourceComponentsProps> = () => {
                     defaultSortOrder={getDefaultSortOrder('status', sorter)}
                     sorter
                 />
-                <Table.Column<JobEntity>
+                <Table.Column<DepartmentEntity>
                     title='Actions'
                     dataIndex='actions'
                     render={(_, record) => (

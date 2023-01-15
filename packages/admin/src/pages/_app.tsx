@@ -4,6 +4,7 @@ import type { AppProps } from 'next/app';
 import { Loader } from '@feed/ui/src/loader';
 import { Refine } from '@pankod/refine-core';
 import routerProvider from '@pankod/refine-nextjs-router';
+import type { UserConfig } from 'next-i18next';
 
 import '@pankod/refine-antd/dist/styles.min.css';
 
@@ -106,4 +107,4 @@ const Feed = ({ Component, pageProps }: AppProps): JSX.Element | null => {
 };
 
 // eslint-disable-next-line import/no-default-export
-export default appWithTranslation(Feed, i18n);
+export default appWithTranslation(Feed, i18n as UserConfig);

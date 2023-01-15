@@ -12,7 +12,7 @@ export const i18n = {
     localePath,
     reloadOnPrerender: process.env.NODE_ENV === 'development',
     lng: 'ru',
-    load: 'languageOnly',
+    // load: 'languageOnly',
     supportedLngs: ['ru', 'en'],
     defaultNS: 'common',
     fallbackLng: ['en']

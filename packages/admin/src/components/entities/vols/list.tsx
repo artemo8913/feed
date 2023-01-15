@@ -11,8 +11,8 @@ import {
     useSelect,
     useTable
 } from '@pankod/refine-antd';
+import type { DepartmentEntity } from '@feed/api/dist/src/entities/department.entity';
 import type { IResourceComponentsProps } from '@pankod/refine-core';
-import type { JobEntity } from '@feed/api/dist/src/entities/job.entity';
 // import { Loader } from '@feed/ui/src/loader';
 import Select from 'rc-select';
 
@@ -92,7 +92,7 @@ export const VolList: FC<IResourceComponentsProps> = () => {
                     defaultSortOrder={getDefaultSortOrder('isBlocked', sorter)}
                     sorter
                 />
-                <Table.Column<JobEntity>
+                <Table.Column<DepartmentEntity>
                     title='Действия'
                     dataIndex='actions'
                     render={(_, record) => (
