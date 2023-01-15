@@ -37,7 +37,7 @@ module.exports = {
         '@typescript-eslint/array-type': [1, {default: 'generic'}],
         '@typescript-eslint/no-explicit-any': 0,
         '@typescript-eslint/no-empty-interface': 1,
-        '@typescript-eslint/ban-ts-comment': 1,
+        '@typescript-eslint/ban-ts-comment': 0,
         '@typescript-eslint/no-unsafe-assignment': 0,
         '@typescript-eslint/no-unsafe-member-access': 0,
         '@typescript-eslint/no-for-in-array': 0,

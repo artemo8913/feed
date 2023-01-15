@@ -1,6 +1,5 @@
 import { DataSource } from 'typeorm';
 
-import { JobEntity } from './entities/job.entity';
 import { CompanyEntity } from './entities/company.entity';
 import { UserEntity } from './entities/user.entity';
 import { VolEntity } from './entities/vol.entity';
@@ -21,7 +20,6 @@ export const AppDataSource = new DataSource({
     database: '_db/app.db',
     // entities: [__dirname + '/entities/*.entity.ts'],
     entities: [
-        JobEntity,
         CompanyEntity,
         UserEntity,
         VolEntity,

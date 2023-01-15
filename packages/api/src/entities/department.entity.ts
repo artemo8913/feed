@@ -1,6 +1,6 @@
 import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
 
-import { VolEntity } from './vol.entity';
+import { VolEntity } from '~/entities/vol.entity';
 
 @Entity({ name: 'department' })
 export class DepartmentEntity {

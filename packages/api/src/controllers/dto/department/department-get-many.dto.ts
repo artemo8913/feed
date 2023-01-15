@@ -2,16 +2,16 @@ import { Expose, Exclude, Type } from 'class-transformer';
 
 import { ApiProperty } from '@nestjs/swagger';
 
-import { JobDto } from './job.dto';
+import { DepartmentDto } from './department.dto';
 
 @Exclude()
-export class JobGetManyDto {
+export class DepartmentGetManyDto {
     @Expose()
-    @Type(() => JobDto)
+    @Type(() => DepartmentDto)
     @ApiProperty({
-        type: JobDto,
+        type: DepartmentDto,
     })
-    data: JobDto[];
+    data: DepartmentDto[];
 
     @Expose()
     @ApiProperty()

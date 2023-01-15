@@ -2,29 +2,27 @@ import { IsNumber, IsOptional, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 
-class JobUpdateCompanyDto {
+class DepartmentUpdateLeadDto {
     @ApiProperty()
     @IsOptional()
     @IsNumber()
     readonly id: number;
 }
 
-export class JobUpdateDto {
+export class DepartmentUpdateDto {
+    /*
     @ApiProperty()
-    @IsOptional()
-    readonly title: string;
+    @IsNotEmpty()
+    id: number;
+*/
 
     @ApiProperty()
     @IsOptional()
-    readonly location: string;
+    readonly name: string;
 
     @ApiProperty()
     @IsOptional()
-    readonly content?: string;
-
-    @ApiProperty()
-    @IsOptional()
-    @Type(() => JobUpdateCompanyDto)
+    @Type(() => Array<DepartmentUpdateLeadDto>)
     @ValidateNested()
-    readonly company: JobUpdateCompanyDto;
+    readonly lead: Array<DepartmentUpdateLeadDto>;
 }

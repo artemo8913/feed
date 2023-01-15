@@ -11,23 +11,23 @@ import {
 import { ACGuard, UseRoles } from 'nest-access-control';
 import { JwtAuthGuard } from '~/guards/jwt-auth.guard';
 
-import { JobEntity } from '~/entities/job.entity';
-import { JobService } from '~/services/job.service';
+import { DepartmentEntity } from '~/entities/department.entity';
+import { DepartmentService } from '~/services/department.service';
 
-import { JobCreateDto } from './dto/job/job-create.dto';
-import { JobGetManyDto } from './dto/job/job-getMany.dto';
-import { JobUpdateDto } from './dto/job/job-update.dto';
-import { JobDto } from './dto/job/job.dto';
+import { DepartmentCreateDto } from './dto/department/department-create.dto';
+import { DepartmentGetManyDto } from './dto/department/department-get-many.dto';
+import { DepartmentUpdateDto } from './dto/department/department-update.dto';
+import { DepartmentDto } from './dto/department/department.dto';
 
-@ApiTags('jobs')
+@ApiTags('departments')
 @ApiBearerAuth()
 @Crud({
     model: {
-        type: JobEntity,
+        type: DepartmentEntity,
     },
     dto: {
-        create: JobCreateDto,
-        update: JobUpdateDto,
+        create: DepartmentCreateDto,
+        update: DepartmentUpdateDto,
     },
     params: {
         id: {
@@ -39,7 +39,7 @@ import { JobDto } from './dto/job/job.dto';
     query: {
         alwaysPaginate: true,
         join: {
-            company: {
+            lead: {
                 eager: true,
             },
         },
@@ -51,52 +51,54 @@ import { JobDto } from './dto/job/job.dto';
         ],
     },
     serialize: {
-        getMany: JobGetManyDto,
-        create: JobDto,
-        update: JobDto,
-        get: JobDto,
+        getMany: DepartmentGetManyDto,
+        create: DepartmentDto,
+        update: DepartmentDto,
+        get: DepartmentDto,
     },
     routes: {
         exclude: ['createManyBase', 'replaceOneBase'],
     },
 })
 @UseGuards(JwtAuthGuard, ACGuard)
-@Controller('jobs')
-export class JobController implements CrudController<JobEntity> {
-    constructor(public service: JobService) {}
+@Controller('departments')
+export class DepartmentController implements CrudController<DepartmentEntity> {
+    constructor(public service: DepartmentService) {}
 
-    get base(): CrudController<JobEntity> {
+    get base(): CrudController<DepartmentEntity> {
         return this;
     }
 
     @Override()
     @UseRoles({
-        resource: 'jobs',
+        resource: 'departments',
         action: 'create',
     })
     createOne(
         @ParsedRequest() req: CrudRequest,
-        @ParsedBody() dto: JobCreateDto,
+        @ParsedBody() dto: DepartmentCreateDto,
     ) {
         console.log('create-dto', dto);
-        return this.base.createOneBase(req, <JobEntity>dto);
+        // @ts-ignore
+        return this.base.createOneBase(req, <DepartmentEntity>dto);
     }
 
     @Override()
     @UseRoles({
-        resource: 'jobs',
+        resource: 'departments',
         action: 'update',
     })
     updateOne(
         @ParsedRequest() req: CrudRequest,
-        @ParsedBody() dto: JobUpdateDto,
+        @ParsedBody() dto: DepartmentUpdateDto,
     ) {
-        return this.base.updateOneBase(req, <JobEntity>dto);
+        // @ts-ignore
+        return this.base.updateOneBase(req, <DepartmentEntity>dto);
     }
 
     @Override()
     @UseRoles({
-        resource: 'jobs',
+        resource: 'departments',
         action: 'delete',
     })
     deleteOne(req: CrudRequest) {

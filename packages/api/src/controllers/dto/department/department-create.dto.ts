@@ -7,29 +7,21 @@ import {
 import { Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 
-class JobCreateCompanyDto {
+class DepartmentCreateLeadDto {
     @ApiProperty()
     @IsNotEmpty()
     @IsUUID()
     readonly id: number;
 }
 
-export class JobCreateDto {
+export class DepartmentCreateDto {
     @ApiProperty()
     @IsNotEmpty()
-    readonly title: string;
+    readonly name: string;
 
     @ApiProperty()
     @IsOptional()
-    readonly location: string;
-
-    @ApiProperty()
-    @IsOptional()
-    readonly content?: string;
-
-    @ApiProperty()
-    @IsNotEmpty()
-    @Type(() => JobCreateCompanyDto)
+    @Type(() => Array<DepartmentCreateLeadDto>)
     @ValidateNested()
-    readonly company: JobCreateCompanyDto;
+    readonly lead: DepartmentCreateLeadDto[];
 }

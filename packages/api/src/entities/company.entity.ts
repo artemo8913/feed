@@ -1,6 +1,6 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
-import { JobEntity } from './job.entity';
+import { DepartmentEntity } from './department.entity';
 
 @Entity({ name: 'company' })
 export class CompanyEntity {
@@ -19,9 +19,9 @@ export class CompanyEntity {
     @Column({ default: true })
     isActive: boolean;
 
-    @OneToMany(() => JobEntity, (job) => job.company, {
+    @OneToMany(() => DepartmentEntity, (dep) => dep.lead, {
         eager: true,
         cascade: true,
     })
-    jobs?: JobEntity[];
+    departments?: DepartmentEntity[];
 }

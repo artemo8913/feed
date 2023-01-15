@@ -15,20 +15,20 @@ import { CompanyEntity } from '~/entities/company.entity';
 import { CompanyService } from '~/services/company.service';
 import { JwtAuthGuard } from '~/guards/jwt-auth.guard';
 
-import { CompanyCreateDto } from './dto/company-create.dto';
-import { CompanyGetManyDto } from './dto/company-getMany.dto';
-import { CompanyUpdateDto } from './dto/company-update.dto';
-import { CompanyDto } from './dto/company.dto';
+import { CompanyCreateDto } from './dto/compamy/company-create.dto';
+import { CompanyGetManyDto } from './dto/compamy/company-getMany.dto';
+import { CompanyUpdateDto } from './dto/compamy/company-update.dto';
+import { CompanyDto } from './dto/compamy/company.dto';
 
 @ApiTags('companies')
 @ApiBearerAuth()
 @Crud({
+    model: {
+        type: CompanyEntity,
+    },
     dto: {
         create: CompanyCreateDto,
         update: CompanyUpdateDto,
-    },
-    model: {
-        type: CompanyEntity,
     },
     params: {
         id: {

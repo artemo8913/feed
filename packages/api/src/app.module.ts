@@ -9,11 +9,11 @@ import { AuthController } from './controllers/auth.controller';
 import { AppService } from './services/app.service';
 import { CompanyRepository } from './repositories/company.repository';
 import { UserRepository } from './repositories/user.repository';
-import { JobRepository } from './repositories/job.repository';
+import { DepartmentRepository } from './repositories/department.repository';
 import { CompanyController } from './controllers/company.controller';
-import { JobController } from './controllers/job.controller';
+import { DepartmentController } from './controllers/department.controller';
 import { CompanyService } from './services/company.service';
-import { JobService } from './services/job.service';
+import { DepartmentService } from './services/department.service';
 import { UserService } from './services/user.service';
 import { AuthService } from './services/auth.service';
 import { JwtAuthStrategy } from './strategies/jwt-auth.strategy';
@@ -52,7 +52,7 @@ import { VolController } from '~/controllers/vol.controller';
         }),
         TypeOrmExModule.forCustomRepository([
             CompanyRepository,
-            JobRepository,
+            DepartmentRepository,
             UserRepository,
             VolRepository,
         ]),
@@ -65,14 +65,14 @@ import { VolController } from '~/controllers/vol.controller';
     controllers: [
         AppController,
         CompanyController,
-        JobController,
+        DepartmentController,
         VolController,
         AuthController,
     ],
     providers: [
         AppService,
         CompanyService,
-        JobService,
+        DepartmentService,
         VolService,
         UserService,
         AuthService,
