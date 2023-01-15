@@ -4,7 +4,7 @@
     "private": true,
     "license": "MIT",
     "scripts": {
-        "bs": "lerna clean -y && rimraf ./node_modules/ && yarn && lerna bootstrap",
+        "bootstrap": "lerna clean -y && rimraf ./node_modules/ && yarn && lerna bootstrap",
         "build": "nx run-many --target=build",
         "build:since": "nx affected --target=build",
         "dep": "nx dep",

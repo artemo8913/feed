@@ -1,7 +1,6 @@
 import { Button, Card, Checkbox, Col, Form, Input, Layout, Row, Typography } from 'antd';
 import { useLogin, useTranslate } from '@pankod/refine-core';
 import React from 'react';
-import type { RefineLoginPageProps } from '@pankod/refine-ui-types';
 
 import { Rules } from '../form/rules';
 
@@ -15,7 +14,7 @@ export interface ILoginForm {
     remember: boolean;
 }
 
-export const LoginPage: FC<RefineLoginPageProps> = () => {
+export const LoginPage: FC = () => {
     const [form] = Form.useForm<ILoginForm>();
     const translate = useTranslate();
 
