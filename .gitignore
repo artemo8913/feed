@@ -32,3 +32,5 @@ pwa-ver.txt
 **/*.db-shm
 
 .env
+.next
+dist
