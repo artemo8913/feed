@@ -29,7 +29,7 @@ export const AppDataSource = new DataSource({
         FeedTransactionEntity,
         LocationEntity,
     ],
-    migrations: ['db/migrations/*.ts'],
+    migrations: ['migrations/*.ts'],
     // migrations: ['db/migrations*.js'],
     logging: true,
     prepareDatabase: async (db) => {
