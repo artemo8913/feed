@@ -92,6 +92,12 @@ export const VolList: FC<IResourceComponentsProps> = () => {
                     defaultSortOrder={getDefaultSortOrder('isBlocked', sorter)}
                     sorter
                 />
+                <Table.Column
+                    dataIndex='comment'
+                    key='comment'
+                    title='Комментарий'
+                    render={(value) => <TextField value={value} />}
+                />
                 <Table.Column<DepartmentEntity>
                     title='Действия'
                     dataIndex='actions'
