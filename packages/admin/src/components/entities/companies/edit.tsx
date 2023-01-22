@@ -1,8 +1,6 @@
 import { Checkbox, Col, Edit, Form, Input, Row, Typography, useForm } from '@pankod/refine-antd';
 import type { IResourceComponentsProps } from '@pankod/refine-core';
 
-import 'react-mde/lib/styles/css/react-mde-all.css';
-
 import type { CompanyEntity } from '~/interfaces';
 import { Rules } from '~/components/form/rules';
 

@@ -1,8 +1,6 @@
 import { Create, Form, Input, Select, useForm, useSelect } from '@pankod/refine-antd';
 import type { IResourceComponentsProps } from '@pankod/refine-core';
 
-import 'react-mde/lib/styles/css/react-mde-all.css';
-
 import type { VolEntity } from '~/interfaces';
 
 import { CreateEdit } from './common';

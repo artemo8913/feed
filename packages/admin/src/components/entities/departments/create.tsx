@@ -1,10 +1,6 @@
 import { Checkbox, Create, Form, Input, Select, useForm, useSelect } from '@pankod/refine-antd';
 import type { IResourceComponentsProps } from '@pankod/refine-core';
-import ReactMarkdown from 'react-markdown';
-import ReactMde from 'react-mde';
 import { useState } from 'react';
-
-import 'react-mde/lib/styles/css/react-mde-all.css';
 
 import type { DepartmentEntity } from '~/interfaces';
 import { Rules } from '~/components/form/rules';
