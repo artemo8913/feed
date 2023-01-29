@@ -1,7 +1,7 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { VolEntity } from './vol.entity';
 
-@Entity({ name: 'FeedType' })
+@Entity({ name: 'feed_type' })
 export class FeedTypeEntity {
     @PrimaryGeneratedColumn('uuid')
     id: number;
