@@ -1,43 +1,28 @@
-import React, { Fragment, useState } from 'react';
+import React, { useState } from 'react';
 import dynamic from 'next/dynamic';
 import { useList } from '@pankod/refine-core';
 import { VolEntity } from '~/interfaces';
 import { DatePicker } from 'antd';
 const { RangePicker } = DatePicker;
 const Line = dynamic(() => import('@ant-design/plots').then(({ Line }) => Line), { ssr: false });
+const Column = dynamic(() => import('@ant-design/plots').then(({ Column }) => Column), { ssr: false });
 
-const factMock = [
-    {
-        date: new Date('2023-07-01'),
-        value: 8,
-        category: 'Фактически накормлено, чел'
-    },
-    {
-        date: new Date('2023-07-02'),
-        value: 8,
-        category: 'Фактически накормлено, чел'
-    },
-    {
-        date: new Date('2023-07-03'),
-        value: 6,
-        category: 'Фактически накормлено, чел'
-    },
-    {
-        date: new Date('2023-07-04'),
-        value: 6,
-        category: 'Фактически накормлено, чел'
-    },
-    {
-        date: new Date('2023-07-05'),
-        value: 6,
-        category: 'Фактически накормлено, чел'
-    },
-    {
-        date: new Date('2023-07-06'),
-        value: 6,
-        category: 'Фактически накормлено, чел'
-    }
-];
+interface IColumnData {
+    date: string;
+    category: 'план' | 'факт';
+    value: number;
+    mealTime: 'завтрак' | 'обед' | 'ужин';
+}
+
+const msInDay = 1000 * 60 * 60 * 24;
+
+function convertDateToString(date: Date) {
+    const year = String(date.getFullYear());
+    const month =
+        String(date.getMonth() + 1).length === 2 ? String(date.getMonth() + 1) : '0' + String(date.getMonth() + 1);
+    const day = String(date.getDate()).length === 2 ? String(date.getDate()) : '0' + String(date.getDate());
+    return `${day}.${month}.${year}`;
+}
 
 export function PublicStats() {
     const { data } = useList<VolEntity>({
@@ -58,39 +43,66 @@ export function PublicStats() {
         }
     });
     const [timePeriod, setTimePeriod] = useState({
-        start: new Date('2023-07-01'),
-        end: new Date('2023-07-30')
+        start: new Date(),
+        end: new Date(new Date().getTime() + msInDay)
     });
-    const timeDataArr: Array<{}> = [];
+    const lineDataArr: Array<{}> = [];
+    const columnDataArr: Array<IColumnData> = [];
+    //Цикл перебора дней в интервале дат (по умолчанию интервал "сегодня - завтра")
     for (
         let currentDate = timePeriod.start.getTime();
         currentDate <= timePeriod.end.getTime();
-        currentDate += 1000 * 60 * 60 * 24
+        currentDate += msInDay
     ) {
         const date = new Date(currentDate);
-        const planFeedCount = data?.data.filter((volData) => {
+        const dateStr = convertDateToString(date);
+        const planHumansCount = data?.data.filter((volData) => {
             const activeToDate = new Date(volData.activeTo ? volData.activeTo : '');
             if (activeToDate >= date) return true;
             return false;
         }).length;
-        let factFeedCount = 0;
+        let factHumansCount = 0;
         factMock.forEach((factData) => {
-            if (factData.date.getTime() === date.getTime()) factFeedCount += factData.value;
+            if (factData.date.getTime() - date.getTime() >= 0 && factData.date.getTime() - date.getTime() <= msInDay) {
+                factHumansCount += factData.value;
+            }
         });
-        timeDataArr.push({ date: date, value: planFeedCount, category: 'Необходимо накормить, чел' });
-        timeDataArr.push({ date: date, value: factFeedCount, category: 'Фактически накормлено, чел' });
+        lineDataArr.push({ date: dateStr, value: planHumansCount, category: 'Необходимо накормить, чел' });
+        lineDataArr.push({ date: dateStr, value: factHumansCount, category: 'Фактически накормлено, чел' });
+        columnDataArr.push(
+            { date: dateStr, category: 'план', value: Number(planHumansCount), mealTime: 'завтрак' },
+            { date: dateStr, category: 'план', value: Number(planHumansCount), mealTime: 'обед' },
+            { date: dateStr, category: 'план', value: Number(planHumansCount), mealTime: 'ужин' }
+        );
+        columnDataArr.push(
+            { date: dateStr, category: 'факт', value: Number(factHumansCount), mealTime: 'завтрак' },
+            { date: dateStr, category: 'факт', value: Number(factHumansCount), mealTime: 'обед' },
+            { date: dateStr, category: 'факт', value: Number(factHumansCount), mealTime: 'ужин' }
+        );
     }
-    const config = {
-        data: timeDataArr,
+    const lineConfig = {
+        data: lineDataArr,
         xField: 'date',
         yField: 'value',
-        seriesField: 'category',
-        xAxis: {
-            type: 'time'
+        seriesField: 'category'
+    };
+    const columnConfig = {
+        data: columnDataArr,
+        xField: 'date',
+        yField: 'value',
+        isGroup: true,
+        isStack: true,
+        seriesField: 'mealTime',
+        groupField: 'category',
+        tooltip: {
+            formatter: (datum) => ({
+                name: `${datum.mealTime} ${datum.category === 'план' ? 'план' : 'факт'}`,
+                value: datum.value
+            })
         }
     };
     return (
-        <Fragment>
+        <div>
             <RangePicker
                 onChange={(_, range) => {
                     console.log(range);
@@ -100,7 +112,41 @@ export function PublicStats() {
                     });
                 }}
             />
-            <Line {...config} />
-        </Fragment>
+            <Line {...lineConfig} />
+            <Column {...columnConfig} />
+        </div>
     );
 }
+
+const factMock = [
+    {
+        date: new Date(),
+        value: 8,
+        category: 'Фактически накормлено, чел'
+    },
+    {
+        date: new Date(new Date().getTime() + msInDay),
+        value: 8,
+        category: 'Фактически накормлено, чел'
+    },
+    {
+        date: new Date(new Date().getTime() + 2 * msInDay),
+        value: 6,
+        category: 'Фактически накормлено, чел'
+    },
+    {
+        date: new Date(new Date().getTime() + 3 * msInDay),
+        value: 6,
+        category: 'Фактически накормлено, чел'
+    },
+    {
+        date: new Date(new Date().getTime() + 4 * msInDay),
+        value: 6,
+        category: 'Фактически накормлено, чел'
+    },
+    {
+        date: new Date(new Date().getTime() + 5 * msInDay),
+        value: 6,
+        category: 'Фактически накормлено, чел'
+    }
+];
