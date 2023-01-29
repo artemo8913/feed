@@ -34,7 +34,7 @@ export const VolList: FC<IResourceComponentsProps> = () => {
     });
 
     // return <Loader />;
-
+    console.log(tableProps);
     return (
         <List>
             <Table {...tableProps} rowKey='id'>

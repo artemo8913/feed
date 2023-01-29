@@ -24,4 +24,8 @@ export class VolCreateDto {
     @ApiProperty()
     @IsOptional()
     readonly isBlocked: string;
+
+    @ApiProperty()
+    @IsOptional()
+    readonly comment: string;
 }

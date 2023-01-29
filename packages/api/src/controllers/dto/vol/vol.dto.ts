@@ -43,4 +43,8 @@ export class VolDto {
     @Expose()
     @ApiProperty()
     activeTo: Date;
+
+    @Expose()
+    @ApiProperty()
+    comment: string;
 }
