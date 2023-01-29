@@ -6,6 +6,39 @@ import { DatePicker } from 'antd';
 const { RangePicker } = DatePicker;
 const Line = dynamic(() => import('@ant-design/plots').then(({ Line }) => Line), { ssr: false });
 
+const factMock = [
+    {
+        date: new Date('2023-07-01'),
+        value: 8,
+        category: 'Фактически накормлено, чел'
+    },
+    {
+        date: new Date('2023-07-02'),
+        value: 8,
+        category: 'Фактически накормлено, чел'
+    },
+    {
+        date: new Date('2023-07-03'),
+        value: 6,
+        category: 'Фактически накормлено, чел'
+    },
+    {
+        date: new Date('2023-07-04'),
+        value: 6,
+        category: 'Фактически накормлено, чел'
+    },
+    {
+        date: new Date('2023-07-05'),
+        value: 6,
+        category: 'Фактически накормлено, чел'
+    },
+    {
+        date: new Date('2023-07-06'),
+        value: 6,
+        category: 'Фактически накормлено, чел'
+    }
+];
+
 export function PublicStats() {
     const { data } = useList<VolEntity>({
         resource: 'vols',
@@ -25,51 +58,28 @@ export function PublicStats() {
         }
     });
     const [timePeriod, setTimePeriod] = useState({
-        start: new Date('07.01.2023'),
-        end: new Date('07.30.2023')
+        start: new Date('2023-07-01'),
+        end: new Date('2023-07-30')
     });
     const timeDataArr: Array<{}> = [];
-    for (let start = timePeriod.start.getTime(); start <= timePeriod.end.getTime(); start += 1000 * 60 * 60 * 24) {
-        const date = new Date(start);
-        const feedCount = data?.data.filter((volData) => {
+    for (
+        let currentDate = timePeriod.start.getTime();
+        currentDate <= timePeriod.end.getTime();
+        currentDate += 1000 * 60 * 60 * 24
+    ) {
+        const date = new Date(currentDate);
+        const planFeedCount = data?.data.filter((volData) => {
             const activeToDate = new Date(volData.activeTo ? volData.activeTo : '');
-            if (activeToDate > date) return true;
+            if (activeToDate >= date) return true;
             return false;
         }).length;
-        timeDataArr.push({ date: date, value: feedCount, category: 'Необходимо накормить, чел' });
+        let factFeedCount = 0;
+        factMock.forEach((factData) => {
+            if (factData.date.getTime() === date.getTime()) factFeedCount += factData.value;
+        });
+        timeDataArr.push({ date: date, value: planFeedCount, category: 'Необходимо накормить, чел' });
+        timeDataArr.push({ date: date, value: factFeedCount, category: 'Фактически накормлено, чел' });
     }
-    timeDataArr.push(
-        {
-            date: new Date('07.01.2023'),
-            value: 8,
-            category: 'Фактически накормлено, чел'
-        },
-        {
-            date: new Date('07.02.2023'),
-            value: 8,
-            category: 'Фактически накормлено, чел'
-        },
-        {
-            date: new Date('07.03.2023'),
-            value: 6,
-            category: 'Фактически накормлено, чел'
-        },
-        {
-            date: new Date('07.04.2023'),
-            value: 6,
-            category: 'Фактически накормлено, чел'
-        },
-        {
-            date: new Date('07.05.2023'),
-            value: 6,
-            category: 'Фактически накормлено, чел'
-        },
-        {
-            date: new Date('07.06.2023'),
-            value: 6,
-            category: 'Фактически накормлено, чел'
-        }
-    );
     const config = {
         data: timeDataArr,
         xField: 'date',
@@ -79,7 +89,6 @@ export function PublicStats() {
             type: 'time'
         }
     };
-    console.log(timeDataArr);
     return (
         <Fragment>
             <RangePicker

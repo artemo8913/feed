@@ -4,7 +4,7 @@ import { /*getDefaultFilter,*/ useList, useSelect, useUpdate } from '@pankod/ref
 import { isBrowser } from '@feed/core/src/const';
 
 import type { CompanyEntity } from 'interfaces';
-
+import { PublicStats } from '../public-stats';
 import css from './qr-scan.module.css';
 
 // const { Content, Footer, Header, Sider } = Layout;
@@ -70,6 +70,7 @@ export const Dashboard: FC = () => {
             <Divider orientation='center'>ОТСКАНИРУЙ БЕЙДЖ</Divider>
             {isLoading && <Spin size='large' />}
             <Select showSearch placeholder='привязать к волонтеру' {...selectProps} />
+            <PublicStats />
             {/*
                 <div className="details">
                     <h2>{{vo.name}} ({{vo.nickname}})</h2>
