@@ -1,29 +1,35 @@
-import { Checkbox, Create, Form, Input, Select, useForm, useSelect } from '@pankod/refine-antd';
+import { Checkbox, Edit, Form, Input, Select, useForm, useSelect } from '@pankod/refine-antd';
 import type { IResourceComponentsProps } from '@pankod/refine-core';
+import ReactMarkdown from 'react-markdown';
+import ReactMde from 'react-mde';
 import { useState } from 'react';
 
-import type { DepartmentEntity } from '~/interfaces';
+import 'react-mde/lib/styles/css/react-mde-all.css';
+
 import { Rules } from '~/components/form/rules';
+import type { VolEntity } from '~/interfaces';
 
-export const DepartmentCreate: FC<IResourceComponentsProps> = () => {
+export const LocationEdit: FC<IResourceComponentsProps> = () => {
     const [selectedTab, setSelectedTab] = useState<'write' | 'preview'>('write');
-    const { formProps, saveButtonProps } = useForm<DepartmentEntity>();
+    const { formProps, saveButtonProps } = useForm<VolEntity>();
 
-    const { selectProps: leadSelectProps } = useSelect<DepartmentEntity>({
+    const { selectProps: leadSelectProps } = useSelect<VolEntity>({
         resource: 'vols',
         optionLabel: 'name'
     });
 
     return (
-        <Create saveButtonProps={saveButtonProps}>
+        <Edit saveButtonProps={saveButtonProps}>
             <Form {...formProps} layout='vertical'>
-                <Form.Item label='Name' name='name' rules={Rules.required}>
+                <Form.Item label='Job Title' name='title' rules={Rules.required}>
                     <Input />
                 </Form.Item>
                 <Form.Item label='Lead' name={['lead', 'id']} rules={Rules.required}>
                     <Select {...leadSelectProps} />
                 </Form.Item>
-                {/*
+                <Form.Item label='Location' name='location'>
+                    <Input />
+                </Form.Item>
                 <Form.Item label='Content' name='content'>
                     <ReactMde
                         selectedTab={selectedTab}
@@ -33,13 +39,11 @@ export const DepartmentCreate: FC<IResourceComponentsProps> = () => {
                         }
                     />
                 </Form.Item>
-*/}
-                {/*
+
                 <Form.Item label='Is Active' name='isActive' valuePropName='checked'>
                     <Checkbox>Active</Checkbox>
                 </Form.Item>
-*/}
             </Form>
-        </Create>
+        </Edit>
     );
 };

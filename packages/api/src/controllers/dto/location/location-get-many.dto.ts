@@ -1,16 +1,17 @@
 import { Expose, Exclude, Type } from 'class-transformer';
 
-import { CompanyDto } from './company.dto';
 import { ApiProperty } from '@nestjs/swagger';
 
+import { LocationDto } from './location.dto';
+
 @Exclude()
-export class CompanyGetManyDto {
+export class LocationGetManyDto {
     @Expose()
-    @Type(() => CompanyDto)
+    @Type(() => LocationDto)
     @ApiProperty({
-        type: CompanyDto,
+        type: LocationDto,
     })
-    data: CompanyDto[];
+    data: LocationDto[];
 
     @Expose()
     @ApiProperty()

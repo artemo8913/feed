@@ -13,11 +13,11 @@ import type { IResourceComponentsProps } from '@pankod/refine-core';
 import { renderText } from '@feed/ui/src/table';
 import Select from 'rc-select';
 
-import type { DepartmentEntity, VolEntity } from '~/interfaces';
+import type { DepartmentEntity, LocationEntity } from '~/interfaces';
 
 const selectStyle = { minWidth: 200 };
 
-export const DepartmentList: FC<IResourceComponentsProps> = () => {
+export const LocationList: FC<IResourceComponentsProps> = () => {
     const { sorter, tableProps } = useTable<DepartmentEntity>({
         initialSorter: [
             {
@@ -27,8 +27,8 @@ export const DepartmentList: FC<IResourceComponentsProps> = () => {
         ]
     });
 
-    const { selectProps: leadSelectProps } = useSelect<VolEntity>({
-        resource: 'vols'
+    const { selectProps: leadSelectProps } = useSelect<LocationEntity>({
+        resource: 'locations'
     });
 
     return (

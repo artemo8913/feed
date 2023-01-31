@@ -11,23 +11,23 @@ import {
 import { ACGuard, UseRoles } from 'nest-access-control';
 import { JwtAuthGuard } from '~/guards/jwt-auth.guard';
 
-import { VolEntity } from '~/entities/vol.entity';
-import { VolService } from '~/services/vol.service';
+import { LocationEntity } from '~/entities/location.entity';
+import { LocationService } from '~/services/location.service';
 
-import { VolCreateDto } from './dto/vol/vol-create.dto';
-import { VolGetManyDto } from './dto/vol/vol-getMany.dto';
-import { VolUpdateDto } from './dto/vol/vol-update.dto';
-import { VolDto } from './dto/vol/vol.dto';
+import { LocationCreateDto } from './dto/location/location-create.dto';
+import { LocationGetManyDto } from './dto/location/location-get-many.dto';
+import { LocationUpdateDto } from './dto/location/location-update.dto';
+import { LocationDto } from './dto/location/location.dto';
 
-@ApiTags('vols')
+@ApiTags('locations')
 @ApiBearerAuth()
 @Crud({
     model: {
-        type: VolEntity,
+        type: LocationEntity,
     },
     dto: {
-        create: VolCreateDto,
-        update: VolUpdateDto,
+        create: LocationCreateDto,
+        update: LocationUpdateDto,
     },
     params: {
         id: {
@@ -39,7 +39,7 @@ import { VolDto } from './dto/vol/vol.dto';
     query: {
         alwaysPaginate: true,
         join: {
-            vol: {
+            lead: {
                 eager: true,
             },
         },
@@ -51,53 +51,54 @@ import { VolDto } from './dto/vol/vol.dto';
         ],
     },
     serialize: {
-        getMany: VolGetManyDto,
-        create: VolDto,
-        update: VolDto,
-        get: VolDto,
+        getMany: LocationGetManyDto,
+        create: LocationDto,
+        update: LocationDto,
+        get: LocationDto,
     },
     routes: {
         exclude: ['createManyBase', 'replaceOneBase'],
     },
 })
 @UseGuards(JwtAuthGuard, ACGuard)
-@Controller('vols')
-export class VolController implements CrudController<VolEntity> {
-    constructor(public service: VolService) {}
+@Controller('locations')
+export class LocationController implements CrudController<LocationEntity> {
+    constructor(public service: LocationService) {}
 
-    get base(): CrudController<VolEntity> {
+    get base(): CrudController<LocationEntity> {
         return this;
     }
 
     @Override()
     @UseRoles({
-        resource: 'vols',
+        resource: 'locations',
         action: 'create',
     })
     createOne(
         @ParsedRequest() req: CrudRequest,
-        @ParsedBody() dto: VolCreateDto,
+        @ParsedBody() dto: LocationCreateDto,
     ) {
         console.log('create-dto', dto);
         // @ts-ignore
-        return this.base.createOneBase(req, <VolEntity>dto);
+        return this.base.createOneBase(req, <LocationEntity>dto);
     }
 
     @Override()
     @UseRoles({
-        resource: 'vols',
+        resource: 'locations',
         action: 'update',
     })
     updateOne(
         @ParsedRequest() req: CrudRequest,
-        @ParsedBody() dto: VolUpdateDto,
+        @ParsedBody() dto: LocationUpdateDto,
     ) {
-        return this.base.updateOneBase(req, <VolEntity>dto);
+        // @ts-ignore
+        return this.base.updateOneBase(req, <LocationEntity>dto);
     }
 
     @Override()
     @UseRoles({
-        resource: 'vols',
+        resource: 'locations',
         action: 'delete',
     })
     deleteOne(req: CrudRequest) {

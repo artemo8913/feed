@@ -7,13 +7,13 @@ import { JwtModule } from '@nestjs/jwt';
 import { AppController } from './controllers/app.controller';
 import { AuthController } from './controllers/auth.controller';
 import { AppService } from './services/app.service';
-import { CompanyRepository } from './repositories/company.repository';
 import { UserRepository } from './repositories/user.repository';
 import { DepartmentRepository } from './repositories/department.repository';
-import { CompanyController } from './controllers/company.controller';
+import { LocationRepository } from './repositories/location.repository';
 import { DepartmentController } from './controllers/department.controller';
-import { CompanyService } from './services/company.service';
+import { LocationController } from './controllers/location.controller';
 import { DepartmentService } from './services/department.service';
+import { LocationService } from './services/location.service';
 import { UserService } from './services/user.service';
 import { AuthService } from './services/auth.service';
 import { JwtAuthStrategy } from './strategies/jwt-auth.strategy';
@@ -51,8 +51,8 @@ import { VolController } from '~/controllers/vol.controller';
             inject: [ConfigService],
         }),
         TypeOrmExModule.forCustomRepository([
-            CompanyRepository,
             DepartmentRepository,
+            LocationRepository,
             UserRepository,
             VolRepository,
         ]),
@@ -64,15 +64,15 @@ import { VolController } from '~/controllers/vol.controller';
     ],
     controllers: [
         AppController,
-        CompanyController,
         DepartmentController,
+        LocationController,
         VolController,
         AuthController,
     ],
     providers: [
         AppService,
-        CompanyService,
         DepartmentService,
+        LocationService,
         VolService,
         UserService,
         AuthService,

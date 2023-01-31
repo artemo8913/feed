@@ -1,7 +1,7 @@
 import { IsNotEmpty, IsOptional, IsUUID } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
-class VolCreateCompanyDto {
+class VolCreateLeadDto {
     @ApiProperty()
     @IsNotEmpty()
     @IsUUID()

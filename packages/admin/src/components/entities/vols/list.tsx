@@ -39,14 +39,14 @@ export const VolList: FC<IResourceComponentsProps> = () => {
         <List>
             <Table {...tableProps} rowKey='id'>
                 <Table.Column
-                    dataIndex={['company', 'name']}
-                    title='Company'
+                    dataIndex={['department', 'name']}
+                    title='Department'
                     filterDropdown={(props) => (
                         <FilterDropdown {...props}>
                             <Select
                                 style={{ minWidth: 200 }}
                                 mode='multiple'
-                                placeholder='Select Company'
+                                placeholder='Department'
                                 {...selectProps}
                             />
                         </FilterDropdown>
