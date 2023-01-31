@@ -36,4 +36,8 @@ export class VolGetManyDto {
     @Expose()
     @ApiProperty()
     readonly isBlocked: string;
+
+    @Expose()
+    @ApiProperty()
+    readonly comment: string;
 }

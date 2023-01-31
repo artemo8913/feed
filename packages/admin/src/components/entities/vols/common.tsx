@@ -1,14 +1,15 @@
 import { Checkbox, Form, Input, Select, useSelect } from '@pankod/refine-antd';
-import type { CompanyEntity } from '@feed/api/dist/src/entities/company.entity';
-
 import { Rules } from '~/components/form';
+import type { CompanyEntity } from '@feed/api/dist/src/entities/company.entity';
+import dynamic from 'next/dynamic';
+const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
+import 'react-quill/dist/quill.snow.css';
 
 export const CreateEdit: FC = () => {
     const { selectProps } = useSelect<CompanyEntity>({
         resource: 'companies',
         optionLabel: 'name'
     });
-
     return (
         <>
             <Form.Item label='Активирован' name='isActive' valuePropName='checked'>
@@ -37,6 +38,9 @@ export const CreateEdit: FC = () => {
             </Form.Item>
             <Form.Item label='Телефон' name='phone'>
                 <Input type='phone' />
+            </Form.Item>
+            <Form.Item label='Комментарий' name='comment'>
+                <ReactQuill />
             </Form.Item>
         </>
     );
