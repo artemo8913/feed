@@ -27,7 +27,7 @@
     ],
     "devDependencies": {
         "lerna": "^5.4.1",
-        "nx": "^14.5.6"
+        "nx": "^15.6.3"
     },
     "dependencies": {
         "cross-env": "^7.0.3",
