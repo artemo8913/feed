@@ -152,6 +152,12 @@ export class VolEntity {
     activeFrom?: Date;
 
     @Column({
+        type: 'varchar',
+        nullable: true,
+    })
+    comment?: string;
+
+    @Column({
         type: 'datetime',
         nullable: true,
     })

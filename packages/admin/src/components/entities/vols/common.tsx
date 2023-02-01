@@ -1,7 +1,10 @@
 import { Checkbox, Form, Input, Select, useSelect } from '@pankod/refine-antd';
+import dynamic from 'next/dynamic';
 import type { VolEntity } from '@feed/api/dist/src/entities/vol.entity';
 
 import { Rules } from '~/components/form';
+const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
+import 'react-quill/dist/quill.snow.css';
 
 export const CreateEdit: FC = () => {
     const { selectProps: leadSelectProps } = useSelect<VolEntity>({
@@ -45,6 +48,9 @@ export const CreateEdit: FC = () => {
             </Form.Item>
             <Form.Item label='Телефон' name='phone'>
                 <Input type='phone' />
+            </Form.Item>
+            <Form.Item label='Комментарий' name='comment'>
+                <ReactQuill />
             </Form.Item>
         </>
     );
