@@ -12,15 +12,15 @@ RUN --mount=type=cache,sharing=locked,target=/root/.gradle \
 #RUN ./gradlew --build-cache --parallel --no-daemon build
 #RUN ./gradlew --build-cache --parallel build
 
-RUN --mount=type=cache,sharing=locked,target=/root/.gradle \
-    --mount=type=cache,sharing=locked,target=/build/.gradle \
-    --mount=type=cache,sharing=locked,target=/build/app/build \
-     find / -type f -name "*.apk"
-
-RUN --mount=type=cache,sharing=locked,target=/root/.gradle \
-    --mount=type=cache,sharing=locked,target=/build/.gradle \
-    --mount=type=cache,sharing=locked,target=/build/app/build \
-    ls -a1l /build/app/build/outputs/apk/*
+#RUN --mount=type=cache,sharing=locked,target=/root/.gradle \
+#    --mount=type=cache,sharing=locked,target=/build/.gradle \
+#    --mount=type=cache,sharing=locked,target=/build/app/build \
+#     find / -type f -name "*.apk"
+#
+#RUN --mount=type=cache,sharing=locked,target=/root/.gradle \
+#    --mount=type=cache,sharing=locked,target=/build/.gradle \
+#    --mount=type=cache,sharing=locked,target=/build/app/build \
+#    ls -a1l /build/app/build/outputs/apk/*
 
 RUN --mount=type=cache,sharing=locked,target=/root/.gradle \
     --mount=type=cache,sharing=locked,target=/build/.gradle \
