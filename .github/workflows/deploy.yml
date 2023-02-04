@@ -3,10 +3,26 @@ name: Docker Image CI
 on:
   push:
     branches: [ master ]
-  pull_request:
-    branches: [ master ]
 
 jobs:
+  build-apk:
+    runs-on: self-hosted
+    name: build apk
+    if: conditions.android == 'true'
+    env:
+      YA_TOKEN=${{ secrets.YA_DISK_TOKEN }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: dorny/paths-filter@v2
+        id: paths
+        with:
+          filters: |
+            android:
+              - 'android/**'
+      - name: run dockerfile
+        if: steps.paths.outputs.android == 'true'
+        run: cd android && docker build .
+
   build:
     runs-on: self-hosted
     env:
