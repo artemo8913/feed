@@ -9,7 +9,7 @@ jobs:
     runs-on: self-hosted
     name: build apk
     env:
-      YA_TOKEN: ${{ secrets.YA_DISK_TOKEN }}
+      YA_DISK_TOKEN: ${{ secrets.YA_DISK_TOKEN }}
     steps:
       - uses: actions/checkout@v3
       - uses: dorny/paths-filter@v2
@@ -20,7 +20,7 @@ jobs:
               - 'android/**'
       - name: run dockerfile
         if: steps.paths.outputs.android == 'true'
-        run: cd android && docker build --progress=plain . -t android-builder
+        run: cd android && docker build --build-arg YA_DISK_TOKEN=${YA_DISK_TOKEN} --progress=plain . -t android-builder
 
   build:
     runs-on: self-hosted
