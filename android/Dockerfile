@@ -4,16 +4,29 @@ WORKDIR /build
 
 COPY . /build
 
-#RUN --mount=type=cache,sharing=locked,target=/root/.gradle \
-#    --mount=type=cache,sharing=locked,target=/build/.gradle \
-#    --mount=type=cache,sharing=locked,target=/build/app/build \
-#    ./gradlew --build-cache --parallel --no-daemon build
+RUN --mount=type=cache,sharing=locked,target=/root/.gradle \
+    --mount=type=cache,sharing=locked,target=/build/.gradle \
+    --mount=type=cache,sharing=locked,target=/build/app/build \
+    ./gradlew --build-cache --parallel build
 
 #RUN ./gradlew --build-cache --parallel --no-daemon build
-RUN ./gradlew --build-cache --parallel build
+#RUN ./gradlew --build-cache --parallel build
 
-RUN find / -type f -name "*.apk"
-RUN ls -a1l /build/app/build/outputs/apk/*
+RUN --mount=type=cache,sharing=locked,target=/root/.gradle \
+    --mount=type=cache,sharing=locked,target=/build/.gradle \
+    --mount=type=cache,sharing=locked,target=/build/app/build \
+     find / -type f -name "*.apk"
+
+RUN --mount=type=cache,sharing=locked,target=/root/.gradle \
+    --mount=type=cache,sharing=locked,target=/build/.gradle \
+    --mount=type=cache,sharing=locked,target=/build/app/build \
+    ls -a1l /build/app/build/outputs/apk/*
+
+RUN --mount=type=cache,sharing=locked,target=/root/.gradle \
+    --mount=type=cache,sharing=locked,target=/build/.gradle \
+    --mount=type=cache,sharing=locked,target=/build/app/build \
+    cp -R /build/app/build/outputs/apk/ /
+
 
 FROM python:alpine3.17 as uploader
 
@@ -32,8 +45,8 @@ ENV YA_DISK_TOKEN=${YA_DISK_TOKEN}
 
 COPY ./upload.sh .
 
-COPY --from=builder /build/app/build/outputs/apk/debug/app-debug.apk .
-COPY --from=builder /build/app/build/outputs/apk/release/app-release-unsigned.apk .
+COPY --from=builder /apk/debug/app-debug.apk .
+COPY --from=builder /apk/release/app-release-unsigned.apk .
 
 RUN /upload/upload.sh
 
