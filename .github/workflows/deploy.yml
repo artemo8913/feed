@@ -9,7 +9,7 @@ jobs:
     runs-on: self-hosted
     name: build apk
     env:
-      YA_TOKEN=${{ secrets.YA_DISK_TOKEN }}
+      YA_TOKEN: ${{ secrets.YA_DISK_TOKEN }}
     steps:
       - uses: actions/checkout@v3
       - uses: dorny/paths-filter@v2
