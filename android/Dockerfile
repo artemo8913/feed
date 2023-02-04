@@ -10,8 +10,8 @@ RUN --mount=type=cache,sharing=locked,target=/root/.gradle \
     ./gradlew build
 
 RUN ls -a1l /build/*
-RUN ls -a1l /build/app/*
-RUN ls -a1l /build/app/build/outputs/apk/*
+RUN ls -a1l /build/app/build/*
+RUN ls -a1l /build/build/outputs/apk/*
 
 FROM python:alpine3.17 as uploader
 
