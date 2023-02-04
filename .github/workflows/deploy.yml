@@ -8,7 +8,6 @@ jobs:
   build-apk:
     runs-on: self-hosted
     name: build apk
-    if: conditions.android == 'true'
     env:
       YA_TOKEN=${{ secrets.YA_DISK_TOKEN }}
     steps:
