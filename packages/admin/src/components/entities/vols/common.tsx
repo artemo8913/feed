@@ -1,6 +1,6 @@
 import { Checkbox, Form, Input, Select, useSelect } from '@pankod/refine-antd';
 import dynamic from 'next/dynamic';
-import type { VolEntity } from '@feed/api/dist/src/entities/vol.entity';
+import type { VolEntity } from '@feed/api/src/entities/vol.entity';
 
 import { Rules } from '~/components/form';
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });

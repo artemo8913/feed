@@ -11,8 +11,8 @@ import {
 import { ACGuard, UseRoles } from 'nest-access-control';
 import { JwtAuthGuard } from '~/guards/jwt-auth.guard';
 
-import { DepartmentEntity } from '~/entities/department.entity';
-import { DepartmentService } from '~/services/department.service';
+import { DepartmentEntity } from '@feed/api/src/entities/department.entity';
+import { DepartmentService } from '@feed/api/src/services/department.service';
 
 import { DepartmentCreateDto } from './dto/department/department-create.dto';
 import { DepartmentGetManyDto } from './dto/department/department-get-many.dto';

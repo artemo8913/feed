@@ -5,7 +5,8 @@ FROM node:18-alpine as base
 ENV NODE_ENV=production
 ENV husky_skip_init="1"
 ENV HUSKY_DEBUG="1"
-ENV NODE_OPTIONS="--max_old_space_size=4000 --openssl-legacy-provider"
+#ENV NODE_OPTIONS="--max_old_space_size=4000 --openssl-legacy-provider"
+ENV NODE_OPTIONS="--max_old_space_size=4000"
 
 #TODO review env varables
 
@@ -19,34 +20,27 @@ WORKDIR /app
 
 FROM base as builder
 
-RUN apk add --no-cache curl
+RUN apk add --no-cache curl python3
 RUN curl -sf https://gobinaries.com/tj/node-prune | sh
 RUN echo "yarn cache clean --force && node-prune" > /usr/local/bin/node-clean && chmod +x /usr/local/bin/node-clean
 
-#RUN echo 'registry "https://nexus/repository/npm-front/" \
-#          always-auth true' > ~/.yarnrc
-
 ENV YARN_CACHE_FOLDER=/root/.yarn
-
-COPY ./package.json yarn.lock ./
-COPY ./packages/admin/package.json packages/admin/package.json
-COPY ./packages/api/package.json packages/api/package.json
-COPY ./packages/api/package.json packages/ui/package.json
-
-RUN --mount=type=cache,sharing=locked,target=/root/.yarn \
-    --mount=type=cache,sharing=locked,target=/app/packages/admin/node_modules/.cache \
-    --mount=type=cache,sharing=locked,target=/app/packages/api/node_modules/.cache \
-     yarn --production=false --frozen-lockfile
 
 COPY .. ./
 
-RUN --mount=type=cache,sharing=locked,target=/root/.yarn \
-    --mount=type=cache,sharing=locked,target=/app/packages/admin/node_modules/.cache \
-    --mount=type=cache,sharing=locked,target=/app/packages/api/node_modules/.cache \
-    yarn build
-
-RUN --mount=type=cache,sharing=locked,target=/root/.yarn \
-    yarn --production=true --frozen-lockfile
+RUN node -v
+#RUN cat /etc/ssl/openssl.cnf
+RUN echo "[provider_sect] \
+default = default_sect \
+legacy = legacy_sect \
+[default_sect] \
+activate = 1 \
+[legacy_sect] \
+activate = 1" >> /etc/ssl/openssl.conf
+#RUN exit 1
+RUN yarn --production=false --frozen-lockfile
+RUN yarn build
+RUN yarn --production=true --frozen-lockfile
 
 RUN /usr/local/bin/node-clean
 

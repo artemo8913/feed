@@ -11,7 +11,7 @@ import {
     useSelect,
     useTable
 } from '@pankod/refine-antd';
-import type { DepartmentEntity } from '@feed/api/dist/src/entities/department.entity';
+import type { DepartmentEntity } from '@feed/api/src/entities/department.entity';
 import type { IResourceComponentsProps } from '@pankod/refine-core';
 // import { Loader } from '@feed/ui/src/loader';
 import { ListBooleanNegative, ListBooleanPositive } from '@feed/ui/src/icons'; // TODO exclude src

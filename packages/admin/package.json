@@ -150,7 +150,7 @@
             "^.+\\.module\\.(css|sass|scss)$"
         ],
         "modulePaths": [
-            "/home/ac/WebstormProjects/ins/feed/packages/admin/src"
+            "src"
         ],
         "moduleNameMapper": {
             "^react-native$": "react-native-web",

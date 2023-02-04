@@ -11,8 +11,8 @@ import {
 import { ACGuard, UseRoles } from 'nest-access-control';
 import { JwtAuthGuard } from '~/guards/jwt-auth.guard';
 
-import { VolEntity } from '~/entities/vol.entity';
-import { VolService } from '~/services/vol.service';
+import { VolEntity } from '@feed/api/src/entities/vol.entity';
+import { VolService } from '@feed/api/src/services/vol.service';
 
 import { VolCreateDto } from './dto/vol/vol-create.dto';
 import { VolGetManyDto } from './dto/vol/vol-getMany.dto';

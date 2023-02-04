@@ -11,8 +11,8 @@ import {
 import { ACGuard, UseRoles } from 'nest-access-control';
 import { JwtAuthGuard } from '~/guards/jwt-auth.guard';
 
-import { LocationEntity } from '~/entities/location.entity';
-import { LocationService } from '~/services/location.service';
+import { LocationEntity } from '@feed/api/src/entities/location.entity';
+import { LocationService } from '@feed/api/src/services/location.service';
 
 import { LocationCreateDto } from './dto/location/location-create.dto';
 import { LocationGetManyDto } from './dto/location/location-get-many.dto';

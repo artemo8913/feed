@@ -3,8 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import { Repository } from 'typeorm';
 
-import { LocationEntity } from '~/entities/location.entity';
-import { LocationRepository } from '~/repositories/location.repository';
+import { LocationEntity } from '@feed/api/src/entities/location.entity';
+import { LocationRepository } from '@feed/api/src/repositories/location.repository';
 
 @Injectable()
 export class LocationService extends TypeOrmCrudService<LocationEntity> {
