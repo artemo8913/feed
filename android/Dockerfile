@@ -1,4 +1,16 @@
-FROM python:alpine3.17
+FROM mingc/android-build-box:latest as builder
+
+WORKDIR /build
+
+COPY . /build
+
+RUN --mount=type=cache,sharing=locked,target=/root/.gradle \
+    --mount=type=cache,sharing=locked,target=/build/.gradle \
+    --mount=type=cache,sharing=locked,target=/build/app/build \
+    ./gradlew build
+
+
+FROM python:alpine3.17 as uploader
 
 WORKDIR /opt
 
@@ -8,6 +20,14 @@ RUN pip install python-dateutil
 
 RUN git clone https://github.com/abbat/ydcmd.git
 
-RUN /opt/ydcmd/ydcmd.py --token=${YA_DISK_TOKEN} ls /ins
+WORKDIR /upload
 
-CMD [ "/opt/ydcmd/ydcmd.py", "--token=${YA_DISK_TOKEN}", "ls", "/ins" ]
+COPY ./upload.sh .
+
+COPY --from=builder /build/app/build/outputs/apk/debug/app-debug.apk .
+COPY --from=builder /build/app/build/outputs/apk/release/app-release-unsigned.apk .
+
+RUN /upload/upload.sh
+
+CMD [ "/upload/upload.sh" ]
+
