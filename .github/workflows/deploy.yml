@@ -20,7 +20,7 @@ jobs:
               - 'android/**'
       - name: run dockerfile
         if: steps.paths.outputs.android == 'true'
-        run: cd android && docker build .
+        run: cd android && docker build --progress=plain . -t android-builder
 
   build:
     runs-on: self-hosted
