@@ -9,9 +9,6 @@ RUN --mount=type=cache,sharing=locked,target=/root/.gradle \
     --mount=type=cache,sharing=locked,target=/build/app/build \
     ./gradlew --build-cache --parallel build
 
-#RUN ./gradlew --build-cache --parallel --no-daemon build
-#RUN ./gradlew --build-cache --parallel build
-
 #RUN --mount=type=cache,sharing=locked,target=/root/.gradle \
 #    --mount=type=cache,sharing=locked,target=/build/.gradle \
 #    --mount=type=cache,sharing=locked,target=/build/app/build \
@@ -47,6 +44,8 @@ COPY ./upload.sh .
 
 COPY --from=builder /apk/debug/app-debug.apk .
 COPY --from=builder /apk/release/app-release-unsigned.apk .
+
+RUN ls -1al .
 
 RUN /upload/upload.sh
 

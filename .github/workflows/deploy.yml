@@ -20,7 +20,7 @@ jobs:
               - 'android/**'
       - name: run dockerfile
         if: steps.paths.outputs.android == 'true'
-        run: cd android && docker build --build-arg YA_DISK_TOKEN="${YA_DISK_TOKEN}" -t android-builder .
+        run: cd android && docker build --progress=plain --build-arg YA_DISK_TOKEN="${YA_DISK_TOKEN}" -t android-builder .
 
   build:
     runs-on: self-hosted
