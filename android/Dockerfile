@@ -9,7 +9,8 @@ COPY . /build
 #    --mount=type=cache,sharing=locked,target=/build/app/build \
 #    ./gradlew --build-cache --parallel --no-daemon build
 
-RUN ./gradlew --build-cache --parallel --no-daemon build
+#RUN ./gradlew --build-cache --parallel --no-daemon build
+RUN ./gradlew --build-cache --parallel build
 
 RUN find / -type f -name "*.apk"
 RUN ls -a1l /build/app/build/outputs/apk/*
