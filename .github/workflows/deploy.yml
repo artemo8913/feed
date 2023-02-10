@@ -34,18 +34,18 @@ jobs:
       run: mkdir -p ${DB_DIR}
 # ADMIN
     - name: build admin
-      run: docker build . --tag $IMAGE_NAME_BASENAME-admin:$GITHUB_SHA
+      run: docker build --progress=plain --tag $IMAGE_NAME_BASENAME-admin:$GITHUB_SHA .
     - name: stop admin
       run: docker rm -f $IMAGE_NAME_BASENAME-admin
     - name: run admin
-      run: docker run -d -p 5000:5000 --network=apps -v ${DB_DIR}:/app/db --restart=always --name $IMAGE_NAME_BASENAME-admin $IMAGE_NAME_BASENAME-admin:$GITHUB_SHA
+      run: docker run -d -p 3000:3000 -p 8080:80 -p 4301:4301 --network=apps -v ${DB_DIR}:/app/db --restart=always --name $IMAGE_NAME_BASENAME-admin $IMAGE_NAME_BASENAME-admin:$GITHUB_SHA
 # BACKUP
-    - name: build backup
-      run: cd backup && docker build . --tag $IMAGE_NAME_BASENAME-backup:$GITHUB_SHA
-    - name: stop backup
-      run: docker rm -f $IMAGE_NAME-backup
-    - name: run backup
-      run: docker run -d -v ${DB_DIR}:/db --restart=always --name $IMAGE_NAME_BASENAME-backup $IMAGE_NAME_BASENAME-backup:$GITHUB_SHA
+#     - name: build backup
+#       run: cd backup && docker build . --tag $IMAGE_NAME_BASENAME-backup:$GITHUB_SHA
+#     - name: stop backup
+#       run: docker rm -f $IMAGE_NAME-backup
+#     - name: run backup
+#       run: docker run -d -v ${DB_DIR}:/db --restart=always --name $IMAGE_NAME_BASENAME-backup $IMAGE_NAME_BASENAME-backup:$GITHUB_SHA
 # CLIENT
 #     - name: copy ver
 #       run: cp pwa-ver.txt pwa-client

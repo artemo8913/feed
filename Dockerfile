@@ -39,8 +39,11 @@ ENV YARN_CACHE_FOLDER=/root/.yarn
 #activate = 1" >> /etc/ssl/openssl.conf
 #RUN exit 1
 
+COPY nginx.conf /app/
+
 COPY ./package.json yarn.lock ./
 COPY ./packages/admin/package.json packages/admin/package.json
+COPY ./packages/admin/next-i18next.config.mjs packages/admin/next-i18next.config.mjs
 COPY ./packages/api/package.json packages/api/package.json
 COPY ./packages/core/package.json packages/core/package.json
 COPY ./packages/ui/package.json packages/ui/package.json
@@ -73,17 +76,30 @@ RUN /usr/local/bin/node-clean
 
 FROM base as runner
 
+EXPOSE 3000
+EXPOSE 4301
+EXPOSE 80
+
 RUN apk add --no-cache nginx
 COPY nginx.conf /etc/nginx/nginx.conf
 
-#COPY --from=builder /app/node_modules/ /app/node_modules/xargs  kubectl delete -n <namespace> pod
+COPY --from=builder /app/node_modules /app/node_modules
+
 COPY --from=builder /app/postcss.config.js /app/
 COPY --from=builder /app/tsconfig.json /app/
 COPY --from=builder /app/tsconfig.paths.json /app/
 COPY --from=builder /app/package.json /app/
 
+COPY --from=builder /app/packages/ui/package.json /app/packages/ui/
+COPY --from=builder /app/packages/api/package.json /app/packages/api/
+COPY --from=builder /app/packages/core/package.json /app/packages/core/
+COPY --from=builder /app/packages/admin/next-i18next.config.mjs /app/packages/admin/
 COPY --from=builder /app/packages/admin/next.config.mjs /app/packages/admin/
 COPY --from=builder /app/packages/admin/.next/ /app/packages/admin/.next/
 COPY --from=builder /app/packages/api/dist/ /app/packages/api/dist/
+COPY --from=builder /app/packages/api/tsconfig.json /app/packages/api/
+COPY --from=builder /app/nginx.conf /etc
 
-#COPY --from=builder /app/entry.sh /app
+COPY --from=builder /app/entry.sh /app
+
+ENTRYPOINT ["/app/entry.sh"]
