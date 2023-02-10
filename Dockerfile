@@ -26,7 +26,7 @@ RUN echo "yarn cache clean --force && node-prune" > /usr/local/bin/node-clean &&
 
 ENV YARN_CACHE_FOLDER=/root/.yarn
 
-COPY .. ./
+#COPY .. ./
 
 #RUN node -v
 #RUN cat /etc/ssl/openssl.cnf
@@ -38,9 +38,35 @@ COPY .. ./
 #[legacy_sect] \
 #activate = 1" >> /etc/ssl/openssl.conf
 #RUN exit 1
-RUN yarn --production=false --frozen-lockfile
-RUN yarn build
-RUN yarn --production=true --frozen-lockfile
+
+COPY ./package.json yarn.lock ./
+COPY ./packages/admin/package.json packages/admin/package.json
+COPY ./packages/api/package.json packages/api/package.json
+COPY ./packages/core/package.json packages/core/package.json
+COPY ./packages/ui/package.json packages/ui/package.json
+
+RUN --mount=type=cache,sharing=locked,target=/root/.yarn \
+    --mount=type=cache,sharing=locked,target=/app/packages/admin/node_modules/.cache \
+    --mount=type=cache,sharing=locked,target=/app/packages/core/node_modules/.cache \
+    --mount=type=cache,sharing=locked,target=/app/packages/ui/node_modules/.cache \
+    --mount=type=cache,sharing=locked,target=/app/packages/api/node_modules/.cache \
+    yarn --production=false --frozen-lockfile
+
+COPY .. ./
+
+RUN --mount=type=cache,sharing=locked,target=/root/.yarn \
+    --mount=type=cache,sharing=locked,target=/app/packages/admin/node_modules/.cache \
+    --mount=type=cache,sharing=locked,target=/app/packages/core/node_modules/.cache \
+    --mount=type=cache,sharing=locked,target=/app/packages/ui/node_modules/.cache \
+    --mount=type=cache,sharing=locked,target=/app/packages/api/node_modules/.cache \
+    yarn build
+
+RUN --mount=type=cache,sharing=locked,target=/root/.yarn \
+    --mount=type=cache,sharing=locked,target=/app/packages/admin/node_modules/.cache \
+    --mount=type=cache,sharing=locked,target=/app/packages/core/node_modules/.cache \
+    --mount=type=cache,sharing=locked,target=/app/packages/ui/node_modules/.cache \
+    --mount=type=cache,sharing=locked,target=/app/packages/api/node_modules/.cache \
+    yarn --production=true --frozen-lockfile
 
 RUN /usr/local/bin/node-clean
 
