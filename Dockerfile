@@ -28,15 +28,15 @@ ENV YARN_CACHE_FOLDER=/root/.yarn
 
 COPY .. ./
 
-RUN node -v
+#RUN node -v
 #RUN cat /etc/ssl/openssl.cnf
-RUN echo "[provider_sect] \
-default = default_sect \
-legacy = legacy_sect \
-[default_sect] \
-activate = 1 \
-[legacy_sect] \
-activate = 1" >> /etc/ssl/openssl.conf
+#RUN echo "[provider_sect] \
+#default = default_sect \
+#legacy = legacy_sect \
+#[default_sect] \
+#activate = 1 \
+#[legacy_sect] \
+#activate = 1" >> /etc/ssl/openssl.conf
 #RUN exit 1
 RUN yarn --production=false --frozen-lockfile
 RUN yarn build
@@ -60,4 +60,4 @@ COPY --from=builder /app/packages/admin/next.config.mjs /app/packages/admin/
 COPY --from=builder /app/packages/admin/.next/ /app/packages/admin/.next/
 COPY --from=builder /app/packages/api/dist/ /app/packages/api/dist/
 
-COPY --from=builder /app/entry.sh /app
+#COPY --from=builder /app/entry.sh /app
