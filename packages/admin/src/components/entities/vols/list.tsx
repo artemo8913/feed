@@ -11,7 +11,7 @@ import {
     useSelect,
     useTable
 } from '@pankod/refine-antd';
-import type { DepartmentEntity } from '@feed/api/dist/src/entities/department.entity';
+import type { DepartmentEntity } from '@feed/api/src/entities/department.entity';
 import type { IResourceComponentsProps } from '@pankod/refine-core';
 // import { Loader } from '@feed/ui/src/loader';
 import { ListBooleanNegative, ListBooleanPositive } from '@feed/ui/src/icons'; // TODO exclude src
@@ -34,19 +34,19 @@ export const VolList: FC<IResourceComponentsProps> = () => {
     });
 
     // return <Loader />;
-
+    console.log(tableProps);
     return (
         <List>
             <Table {...tableProps} rowKey='id'>
                 <Table.Column
-                    dataIndex={['company', 'name']}
-                    title='Company'
+                    dataIndex={['department', 'name']}
+                    title='Department'
                     filterDropdown={(props) => (
                         <FilterDropdown {...props}>
                             <Select
                                 style={{ minWidth: 200 }}
                                 mode='multiple'
-                                placeholder='Select Company'
+                                placeholder='Department'
                                 {...selectProps}
                             />
                         </FilterDropdown>
@@ -91,6 +91,12 @@ export const VolList: FC<IResourceComponentsProps> = () => {
                     render={(value) => <ListBooleanNegative value={value} />}
                     defaultSortOrder={getDefaultSortOrder('isBlocked', sorter)}
                     sorter
+                />
+                <Table.Column
+                    dataIndex='comment'
+                    key='comment'
+                    title='Комментарий'
+                    render={(value) => <TextField value={value} />}
                 />
                 <Table.Column<DepartmentEntity>
                     title='Действия'

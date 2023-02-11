@@ -9,3 +9,6 @@ node_modules
 **/build
 **/.next
 run.sh
+**/dist
+_db
+**/tsconfig.tsbuildinfo

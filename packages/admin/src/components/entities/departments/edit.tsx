@@ -6,15 +6,15 @@ import { useState } from 'react';
 
 import 'react-mde/lib/styles/css/react-mde-all.css';
 
-import type { CompanyEntity } from '~/interfaces';
 import { Rules } from '~/components/form/rules';
+import type { VolEntity } from '~/interfaces';
 
 export const DepartmentEdit: FC<IResourceComponentsProps> = () => {
     const [selectedTab, setSelectedTab] = useState<'write' | 'preview'>('write');
-    const { formProps, saveButtonProps } = useForm<CompanyEntity>();
+    const { formProps, saveButtonProps } = useForm<VolEntity>();
 
-    const { selectProps: companySelectProps } = useSelect<CompanyEntity>({
-        resource: 'companies',
+    const { selectProps: leadSelectProps } = useSelect<VolEntity>({
+        resource: 'vols',
         optionLabel: 'name'
     });
 
@@ -24,8 +24,8 @@ export const DepartmentEdit: FC<IResourceComponentsProps> = () => {
                 <Form.Item label='Job Title' name='title' rules={Rules.required}>
                     <Input />
                 </Form.Item>
-                <Form.Item label='Company' name={['company', 'id']} rules={Rules.required}>
-                    <Select {...companySelectProps} />
+                <Form.Item label='Lead' name={['lead', 'id']} rules={Rules.required}>
+                    <Select {...leadSelectProps} />
                 </Form.Item>
                 <Form.Item label='Location' name='location'>
                     <Input />

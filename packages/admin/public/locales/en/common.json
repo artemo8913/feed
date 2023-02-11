@@ -60,12 +60,6 @@
     "dashboard": {
         "title": "Dashboard"
     },
-    "companies": {
-        "companies": "companies",
-        "fields": {
-            "isActive": "ISACTIVE"
-        }
-    },
     "posts": {
         "posts": "Posts",
         "fields": {

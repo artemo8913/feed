@@ -10,8 +10,8 @@ import '@pankod/refine-antd/dist/styles.min.css';
 
 // require('~/i18n');
 
-import { CompanyCreate, CompanyEdit, CompanyList /*, CompanyShow*/ } from '~/components/entities/companies';
 import { DepartmentCreate, DepartmentEdit, DepartmentList, DepartmentShow } from '~/components/entities/departments';
+import { LocationCreate, LocationEdit, LocationList, LocationShow } from '~/components/entities/locations';
 import { VolCreate, VolEdit, VolList, VolShow } from '~/components/entities/vols';
 import { ACL } from '~/acl';
 import { authProvider } from '~/authProvider';
@@ -76,14 +76,6 @@ const Feed = ({ Component, pageProps }: AppProps): JSX.Element | null => {
             options={{ syncWithLocation: true, disableTelemetry: true }}
             resources={[
                 {
-                    name: 'companies',
-                    list: CompanyList,
-                    create: CompanyCreate,
-                    edit: CompanyEdit,
-                    // show: CompanyShow,
-                    icon: <Icons.TeamOutlined />
-                },
-                {
                     name: 'departments',
                     list: DepartmentList,
                     create: DepartmentCreate,
@@ -97,6 +89,14 @@ const Feed = ({ Component, pageProps }: AppProps): JSX.Element | null => {
                     create: VolCreate,
                     edit: VolEdit,
                     show: VolShow,
+                    icon: <Icons.ProfileOutlined />
+                },
+                {
+                    name: 'locations',
+                    list: LocationList,
+                    create: LocationCreate,
+                    edit: LocationEdit,
+                    show: LocationShow,
                     icon: <Icons.ProfileOutlined />
                 }
             ]}

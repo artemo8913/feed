@@ -3,8 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import { Repository } from 'typeorm';
 
-import { VolEntity } from '~/entities/vol.entity';
-import { VolRepository } from '~/repositories/vol.repository';
+import { VolEntity } from '@feed/api/src/entities/vol.entity';
+import { VolRepository } from '@feed/api/src/repositories/vol.repository';
 
 @Injectable()
 export class VolService extends TypeOrmCrudService<VolEntity> {

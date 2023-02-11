@@ -16,6 +16,7 @@ export const DepartmentShow: FC<IResourceComponentsProps> = () => {
             <Title level={5}>Name</Title>
             <Text>{record?.name}</Text>
             <Title level={5}>Location</Title>
+            {/* @ts-ignore */}
             <Text>{record?.lead}</Text>
         </Show>
     );

@@ -3,8 +3,9 @@ import React, { memo } from 'react';
 import { /*getDefaultFilter,*/ useList, useSelect, useUpdate } from '@pankod/refine-core';
 import { isBrowser } from '@feed/core/src/const';
 
-import type { CompanyEntity } from 'interfaces';
 import { PublicStats } from '../public-stats';
+import type { VolEntity } from 'interfaces';
+
 import css from './qr-scan.module.css';
 
 // const { Content, Footer, Header, Sider } = Layout;
@@ -33,8 +34,8 @@ Video1.displayName = 'Video1';
 
 export const Dashboard: FC = () => {
     const vo = {};
-    const { data, isLoading } = useList<CompanyEntity>({
-        resource: 'companies',
+    const { data, isLoading } = useList<VolEntity>({
+        resource: 'vols',
         config: {
             /*filters: [
                 {
@@ -48,10 +49,10 @@ export const Dashboard: FC = () => {
     });
 
     console.log(data);
-    const mutationResult = useUpdate<CompanyEntity>();
+    const mutationResult = useUpdate<VolEntity>();
 
-    const selectProps = useSelect<CompanyEntity>({
-        resource: 'companies',
+    const selectProps = useSelect<VolEntity>({
+        resource: 'vols',
         optionLabel: 'name',
         optionValue: 'id'
         // defaultValue: getDefaultFilter('category.id', filters, 'in')
@@ -61,7 +62,7 @@ export const Dashboard: FC = () => {
 
     /*
     const handleUpdate = (item: ICompany, status: string): void => {
-        mutate({ resource: 'companies', id: item.id, values: { ...item, status } });
+        mutate({ resource: 'vols', id: item.id, values: { ...item, status } });
     };
 */
 

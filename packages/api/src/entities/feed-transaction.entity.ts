@@ -5,7 +5,7 @@ import { VolEntity } from './vol.entity';
     ulid = db.Column(db.String(256), primary_key=True, unique=True, sqlite_on_conflict_unique='IGNORE')
 */
 @Entity({
-    name: 'FeedTransaction',
+    name: 'feed_transaction',
     withoutRowid: true,
 })
 export class FeedTransactionEntity {

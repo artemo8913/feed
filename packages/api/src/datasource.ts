@@ -1,6 +1,5 @@
 import { DataSource } from 'typeorm';
 
-import { CompanyEntity } from './entities/company.entity';
 import { UserEntity } from './entities/user.entity';
 import { VolEntity } from './entities/vol.entity';
 import { DepartmentEntity } from './entities/department.entity';
@@ -20,7 +19,6 @@ export const AppDataSource = new DataSource({
     database: '_db/app.db',
     // entities: [__dirname + '/entities/*.entity.ts'],
     entities: [
-        CompanyEntity,
         UserEntity,
         VolEntity,
         DepartmentEntity,
@@ -29,7 +27,7 @@ export const AppDataSource = new DataSource({
         FeedTransactionEntity,
         LocationEntity,
     ],
-    migrations: ['db/migrations/*.ts'],
+    migrations: ['migrations/*.ts'],
     // migrations: ['db/migrations*.js'],
     logging: true,
     prepareDatabase: async (db) => {

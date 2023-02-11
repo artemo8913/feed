@@ -23,6 +23,9 @@
         "paths": {
             "~/*": [
                 "./src/*"
+            ],
+            "@feed/*": [
+                "../*"
             ]
         },
         "rootDirs": [
@@ -34,5 +37,11 @@
         "src/**/*.js",
         "src/**/*.ts",
         "ormconfig.ts"
-    ]
+    ],
+    "ts-node": {
+        // Do not forget to `npm i -D tsconfig-paths`
+        "require": [
+            "tsconfig-paths/register"
+        ]
+    }
 }

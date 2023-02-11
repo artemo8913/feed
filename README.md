@@ -4,6 +4,8 @@
 
 ```bash
 cd ./packages/api
+# yarn run _db:drop
+yarn run db:sync
 yarn run dev
 ```
 

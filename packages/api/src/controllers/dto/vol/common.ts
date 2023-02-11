@@ -1,7 +1,7 @@
 import { IsNotEmpty, IsOptional, IsUUID } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
-class VolCreateCompanyDto {
+class VolCreateLeadDto {
     @ApiProperty()
     @IsNotEmpty()
     @IsUUID()
@@ -24,4 +24,8 @@ export class VolEditCreateDto {
     @ApiProperty()
     @IsOptional()
     readonly isBlocked: string;
+
+    @ApiProperty()
+    @IsOptional()
+    readonly comment: string;
 }
