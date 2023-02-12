@@ -2,8 +2,7 @@ import dotenv from 'dotenv';
 
 // TODO ?? purge
 
-process.exit(1);
-
+// process.exit(1);
 console.log(232323, process.env.TYPEORM_SEEDING_FACTORIES);
 
 dotenv.config();
