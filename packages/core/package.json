@@ -4,7 +4,8 @@
     "private": true,
     "license": "MIT",
     "dependencies": {
-        "dotenv": "^16.0.1",
+        "dotenv": "^16.0.3",
+        "dotenv-expand": "^10.0.0",
         "eslint": "^8.22.0",
         "eslint-config-prettier": "^8.5.0",
         "eslint-plugin-filename-rules": "^1.2.0",

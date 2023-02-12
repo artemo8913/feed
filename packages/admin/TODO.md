@@ -1,0 +1,1 @@
+- check https://github.com/conceptadev/typeorm-seeding

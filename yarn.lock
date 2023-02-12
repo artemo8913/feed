@@ -1313,6 +1313,11 @@
     minimatch "^3.1.2"
     strip-json-comments "^3.1.1"
 
+"@faker-js/faker@^7.6.0":
+  version "7.6.0"
+  resolved "https://registry.yarnpkg.com/@faker-js/faker/-/faker-7.6.0.tgz#9ea331766084288634a9247fcd8b84f16ff4ba07"
+  integrity sha512-XK6BTq1NDMo9Xqw/YkYyGjSsg44fbNwYRx7QK2CuoQgyy+f1rrTDHoExVM5PsyXCtfl2vs2vVJ0MN0yN6LppRw==
+
 "@gar/promisify@^1.0.1", "@gar/promisify@^1.1.3":
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/@gar/promisify/-/promisify-1.1.3.tgz#555193ab2e3bb3b6adc3d551c9c030d9e860daf6"
@@ -4927,6 +4932,14 @@ better-sqlite3-multiple-ciphers@^7.6.2:
     bindings "^1.5.0"
     prebuild-install "^7.1.0"
 
+"better-sqlite3@npm:better-sqlite3-multiple-ciphers":
+  version "8.1.0"
+  resolved "https://registry.yarnpkg.com/better-sqlite3-multiple-ciphers/-/better-sqlite3-multiple-ciphers-8.1.0.tgz#e915823a3444affc45bb7a07017b60e14255bd36"
+  integrity sha512-NXaAv8aZ+OQZtjFeJfY44/twbTIhKfAZHkK/56PKfoOnXA+XmDAiy/9wNOTCeO0eR9S/NjtJ8Ki4jks6Xf83vw==
+  dependencies:
+    bindings "^1.5.0"
+    prebuild-install "^7.1.0"
+
 bfj@^7.0.2:
   version "7.0.2"
   resolved "https://registry.yarnpkg.com/bfj/-/bfj-7.0.2.tgz#1988ce76f3add9ac2913fd8ba47aad9e651bfbb2"
@@ -6598,22 +6611,17 @@ dot-prop@^6.0.1:
   dependencies:
     is-obj "^2.0.0"
 
-dotenv-expand@10.0.0:
+dotenv-expand@10.0.0, dotenv-expand@^10.0.0:
   version "10.0.0"
   resolved "https://registry.yarnpkg.com/dotenv-expand/-/dotenv-expand-10.0.0.tgz#12605d00fb0af6d0a592e6558585784032e4ef37"
   integrity sha512-GopVGCpVS1UKH75VKHGuQFqS1Gusej0z4FyQkPdwjil2gNIv+LNsqBlboOzpJFZKVT95GkCyWJbBSdFEFUWI2A==
 
-dotenv-expand@^5.1.0:
-  version "5.1.0"
-  resolved "https://registry.yarnpkg.com/dotenv-expand/-/dotenv-expand-5.1.0.tgz#3fbaf020bfd794884072ea26b1e9791d45a629f0"
-  integrity sha512-YXQl1DSa4/PQyRfgrv6aoNjhasp/p4qs9FjJ4q4cQk+8m4r6k4ZSiEyytKG8f8W9gi8WsQtIObNmKd+tMzNTmA==
-
-dotenv@16.0.3, dotenv@^16.0.1, dotenv@^16.0.3:
+dotenv@16.0.3, dotenv@^16.0.3:
   version "16.0.3"
   resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-16.0.3.tgz#115aec42bac5053db3c456db30cc243a5a836a07"
   integrity sha512-7GO6HghkA5fYG9TYnNxi14/7K9f5occMlp3zXAuSxn7CKCxt9xbNWG7yF8hTCSUchlfWSe3uLmlPfigevRItzQ==
 
-dotenv@^10.0.0, dotenv@~10.0.0:
+dotenv@~10.0.0:
   version "10.0.0"
   resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-10.0.0.tgz#3d4227b8fb95f81096cdd2b66653fb2c7085ba81"
   integrity sha512-rlBi9d8jpv9Sf1klPjNfFAuWDjKLwTIJJ/VxtoTwIR6hnZxcEOQCZg2oIL3MWBYw5GpUDKOEnND7LXTbIpQ03Q==
@@ -6622,6 +6630,13 @@ duplexer@^0.1.1, duplexer@^0.1.2:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/duplexer/-/duplexer-0.1.2.tgz#3abe43aef3835f8ae077d136ddce0f276b0400e6"
   integrity sha512-jtD6YG370ZCIi/9GTaJKQxWTZD045+4R4hTk/x1UyoqadyJ9x9CgSi1RlVDQF8U2sxLLSnFkCaMihqljHIWgMg==
+
+ebec@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/ebec/-/ebec-0.1.0.tgz#26da8ee79480142f3298ae7e68aa28d547d7a005"
+  integrity sha512-QP7lg0ZqM266C//l53J2ywUPSi+rsZx8/uNxkBMUPL+GpGyeEy0V5opqc1fKS6fcV/vLNnCBe2z2kNxDCQMVqg==
+  dependencies:
+    smob "^0.0.6"
 
 ecdsa-sig-formatter@1.0.11:
   version "1.0.11"
@@ -10300,6 +10315,14 @@ locate-path@^6.0.0:
   dependencies:
     p-locate "^5.0.0"
 
+locter@^0.7.0:
+  version "0.7.1"
+  resolved "https://registry.yarnpkg.com/locter/-/locter-0.7.1.tgz#30b8b556aace3827de3b35eca0fb3f885e1fd01c"
+  integrity sha512-VxvdwRG/uTKAhjBqRvINQ2c4qgony/g++eeMZmyjFXAwLmUCZo/+ckvWkxL2xkuhUz0excM70e3c8L45koPM4w==
+  dependencies:
+    ebec "^0.1.0"
+    glob "^8.1.0"
+
 lodash-es@^4.17.21:
   version "4.17.21"
   resolved "https://registry.yarnpkg.com/lodash-es/-/lodash-es-4.17.21.tgz#43e626c46e6591b7750beb2b50117390c609e3ee"
@@ -13285,6 +13308,13 @@ range-parser@^1.2.1, range-parser@~1.2.1:
   resolved "https://registry.yarnpkg.com/range-parser/-/range-parser-1.2.1.tgz#3cf37023d199e1c24d1a55b84800c2f3e6468031"
   integrity sha512-Hrgsx+orqoygnmhFbKaHE6c296J+HTAQXoxEF6gNupROmmGJRoyzfG3ccAveqCBrwr/2yxQ5BVd/GTl5agOwSg==
 
+rapiq@^0.6.3:
+  version "0.6.6"
+  resolved "https://registry.yarnpkg.com/rapiq/-/rapiq-0.6.6.tgz#cc31ea66cb0d2bcc368ef1b3b25d8e94eaac07a8"
+  integrity sha512-2Re37A3ReYIs17YngzsSFHCwp4FBJZnF2A9ajNE7l9bLDk4a9n8vLg4pLgXr7Ji2stt0cq9DeXw9Jd03ZA3Niw==
+  dependencies:
+    smob "^0.0.7"
+
 raw-body@2.5.1:
   version "2.5.1"
   resolved "https://registry.yarnpkg.com/raw-body/-/raw-body-2.5.1.tgz#fe1b1628b181b700215e5fd42389f98b71392857"
@@ -14621,6 +14651,16 @@ smart-buffer@^4.2.0:
   resolved "https://registry.yarnpkg.com/smart-buffer/-/smart-buffer-4.2.0.tgz#6e1d71fa4f18c05f7d0ff216dd16a481d0e8d9ae"
   integrity sha512-94hK0Hh8rPqQl2xXc3HsaBoOXKV20MToPkcXvwbISWLEs+64sBq5kFgn2kJDHb1Pry9yrP0dxrCI9RRci7RXKg==
 
+smob@^0.0.6:
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/smob/-/smob-0.0.6.tgz#09b268fea916158a2781c152044c6155adbb8aa1"
+  integrity sha512-V21+XeNni+tTyiST1MHsa84AQhT1aFZipzPpOFAVB8DkHzwJyjjAmt9bgwnuZiZWnIbMo2duE29wybxv/7HWUw==
+
+smob@^0.0.7:
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/smob/-/smob-0.0.7.tgz#99166e107b516c06fec0d6005a3e8a5bd2c6e18b"
+  integrity sha512-281Gl0ANIQcGGEZTQf5K3GETIE82JnhaZhY+sGJzQT5268qZR1zoXVVr60CEkdRRZS6PPo0h0Ilp0qJNYvpiow==
+
 sockjs@^0.3.24:
   version "0.3.24"
   resolved "https://registry.yarnpkg.com/sockjs/-/sockjs-0.3.24.tgz#c9bc8995f33a111bea0395ec30aa3206bdb5ccce"
@@ -15817,6 +15857,17 @@ typedarray@^0.0.6:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha512-/aCDEGatGvZ2BIk+HmLf4ifCJFwvKFNb9/JeZPMulfgFracn9QFcAf5GO8B/mweUjSoblS5In0cWhqpfs/5PQA==
+
+typeorm-extension@^2.4.2:
+  version "2.4.2"
+  resolved "https://registry.yarnpkg.com/typeorm-extension/-/typeorm-extension-2.4.2.tgz#e399ec0ba129232a4b3abcd9e76dc0aac0e4a494"
+  integrity sha512-Po/W5WC8VmaCvfEUy944nFKiVtcuawfr9Ra1AnR6QAhozvrAApJ6+bFHF6F75MlHuH7VvKKA1h5RB8HoK4EXQA==
+  dependencies:
+    "@faker-js/faker" "^7.6.0"
+    locter "^0.7.0"
+    rapiq "^0.6.3"
+    reflect-metadata "^0.1.13"
+    yargs "^17.6.2"
 
 typeorm@^0.3.7:
   version "0.3.12"

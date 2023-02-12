@@ -34,3 +34,5 @@ pwa-ver.txt
 .env
 .next
 dist
+
+*.log

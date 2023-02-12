@@ -10,5 +10,5 @@ node_modules
 **/.next
 run.sh
 **/dist
-_db
+packages/api/__db
 **/tsconfig.tsbuildinfo
