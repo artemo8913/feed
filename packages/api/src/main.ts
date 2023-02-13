@@ -11,8 +11,8 @@ async function bootstrap() {
 
     // swagger
     const options = new DocumentBuilder()
-        .setTitle('Job Posting Api')
-        .setDescription('Job Posting Api')
+        .setTitle('Insomnia Feed')
+        .setDescription('Insomnia Feed Api')
         .setVersion('1.0')
         .addBearerAuth({ type: 'http', scheme: 'bearer', bearerFormat: 'JWT' })
         .build();
