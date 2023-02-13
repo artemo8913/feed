@@ -91,18 +91,20 @@ COPY --from=builder /app/tsconfig.json /app/
 COPY --from=builder /app/tsconfig.paths.json /app/
 COPY --from=builder /app/package.json /app/
 
-COPY --from=builder /app/packages/ui/package.json /app/packages/ui/
+COPY --from=builder /app/packages/api/.env.example /app/packages/api/.env
 COPY --from=builder /app/packages/api/package.json /app/packages/api/
+COPY --from=builder /app/packages/api/dist/ /app/packages/api/dist/
+COPY --from=builder /app/packages/api/tsconfig.json /app/packages/api/
+
 COPY --from=builder /app/packages/core/package.json /app/packages/core/
 COPY --from=builder /app/packages/core/webpack/ /app/packages/core/webpack/
+
 COPY --from=builder /app/packages/admin/next-i18next.config.mjs /app/packages/admin/
 COPY --from=builder /app/packages/admin/next.config.mjs /app/packages/admin/
 COPY --from=builder /app/packages/admin/.next/ /app/packages/admin/.next/
-COPY --from=builder /app/packages/api/dist/ /app/packages/api/dist/
-COPY --from=builder /app/packages/api/tsconfig.json /app/packages/api/
-COPY --from=builder /app/nginx.conf /etc
 
-RUN /app/node-modules/.bin/typeorm-extension seed
-RUN ls -1al /app/packages/api/_db
+COPY --from=builder /app/packages/ui/package.json /app/packages/ui/
+
+COPY --from=builder /app/nginx.conf /etc
 
 ENTRYPOINT ["/app/entry.sh"]

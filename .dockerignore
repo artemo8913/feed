@@ -1,6 +1,6 @@
 Dockerfile
 .git
-.env
+**/.env
 .temp_cache
 .husky
 node_modules
