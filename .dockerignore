@@ -12,3 +12,4 @@ run.sh
 **/dist
 packages/api/__db
 **/tsconfig.tsbuildinfo
+_db

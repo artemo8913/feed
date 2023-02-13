@@ -102,9 +102,7 @@ COPY --from=builder /app/packages/api/dist/ /app/packages/api/dist/
 COPY --from=builder /app/packages/api/tsconfig.json /app/packages/api/
 COPY --from=builder /app/nginx.conf /etc
 
-# TODO: purge, use seeds
-COPY --from=builder /app/packages/api/_db /app/packages/api/_db
-
+RUN /app/node-modules/.bin/typeorm-extension seed
 RUN ls -1al /app/packages/api/_db
 
 ENTRYPOINT ["/app/entry.sh"]
