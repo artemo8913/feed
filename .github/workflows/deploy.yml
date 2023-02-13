@@ -25,7 +25,7 @@ jobs:
   build:
     runs-on: self-hosted
     env:
-      IMAGE_NAME_BASENAME: feed
+      IMAGE_NAME_BASENAME: feed-admin
       DB_DIR: /root/feed_db
     steps:
     - uses: actions/checkout@v3
@@ -36,19 +36,19 @@ jobs:
     - name: build admin
       run: |
           docker build --progress=plain \
-             --tag $IMAGE_NAME_BASENAME-admin:$GITHUB_SHA  \
+             --tag $IMAGE_NAME_BASENAME:$GITHUB_SHA  \
              --build-arg API_URL=https://feed.cherepusick.keenetic.name/api \
             .
     - name: stop admin
-      run: docker rm -f $IMAGE_NAME_BASENAME-admin
+      run: docker rm -f $IMAGE_NAME_BASENAME
     - name: run admin
       run: |
         docker run -d \
-          -p 4000:4000 -p 4301:4301 \
+          -p 4262:4262 -p 4301:4301 \
           --network=apps \
           -v ${DB_DIR}:/app/db \
           --restart=always \
-          --name $IMAGE_NAME_BASENAME-admin $IMAGE_NAME_BASENAME-admin:$GITHUB_SHA
+          --name $IMAGE_NAME_BASENAME $IMAGE_NAME_BASENAME:$GITHUB_SHA
 # BACKUP
 #     - name: build backup
 #       run: cd backup && docker build . --tag $IMAGE_NAME_BASENAME-backup:$GITHUB_SHA
