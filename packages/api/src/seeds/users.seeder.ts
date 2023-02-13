@@ -15,6 +15,7 @@ export default class UserSeeder implements Seeder {
                 username: 'admin',
                 password:
                     '$2a$12$H7T3Q6W4Xjb/wiArX1Eyc.FPPublUyDZGlptWovNTeX50p0ULw7/u',
+                roles: ['ADMIN'],
             },
         ]);
 
@@ -25,6 +26,6 @@ export default class UserSeeder implements Seeder {
         await userFactory.save();
 
         // save 5 factory generated entities, to the database
-        await userFactory.saveMany(5);
+        // await userFactory.saveMany(5);
     }
 }
