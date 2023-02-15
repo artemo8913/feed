@@ -1,4 +1,4 @@
-import { AppDataSource } from './datasource';
+import { AppDataSource } from './data-source';
 
 AppDataSource.connect().then(async (connection) => {
     // await connection.query(`PRAGMA foreign_keys=OFF`);

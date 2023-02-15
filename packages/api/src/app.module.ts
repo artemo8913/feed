@@ -20,7 +20,7 @@ import { JwtAuthStrategy } from './strategies/jwt-auth.strategy';
 
 import { roles } from './app.roles';
 import { jwtConstants } from './constants/jwt';
-import { AppDataSource } from './datasource';
+import { AppDataSource } from './data-source';
 import { TypeOrmExModule } from './database/typeorm-ex.module';
 import { VolService } from '~/services/vol.service';
 import { VolRepository } from '~/repositories/vol.repository';
