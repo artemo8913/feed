@@ -3,6 +3,7 @@ import dynamic from 'next/dynamic';
 import { useList } from '@pankod/refine-core';
 import { VolEntity } from '~/interfaces';
 import { DatePicker } from 'antd';
+import { default as dayjsExt } from '~/dateHelper';
 const { RangePicker } = DatePicker;
 const Line = dynamic(() => import('@ant-design/plots').then(({ Line }) => Line), { ssr: false });
 const Column = dynamic(() => import('@ant-design/plots').then(({ Column }) => Column), { ssr: false });
@@ -13,19 +14,30 @@ interface IColumnData {
     value: number;
     mealTime: 'завтрак' | 'обед' | 'ужин';
 }
-
-const msInDay = 1000 * 60 * 60 * 24;
-
-function convertDateToString(date: Date) {
-    const year = String(date.getFullYear());
-    const month =
-        String(date.getMonth() + 1).length === 2 ? String(date.getMonth() + 1) : '0' + String(date.getMonth() + 1);
-    const day = String(date.getDate()).length === 2 ? String(date.getDate()) : '0' + String(date.getDate());
-    return `${day}.${month}.${year}`;
-}
+// Настройки для линейного графика
+const lineConfig = {
+    xField: 'date',
+    yField: 'value',
+    seriesField: 'category'
+};
+// Настройки для столбчатого графика
+const columnConfig = {
+    xField: 'date',
+    yField: 'value',
+    isGroup: true,
+    isStack: true,
+    seriesField: 'mealTime',
+    groupField: 'category',
+    tooltip: {
+        formatter: (datum) => ({
+            name: `${datum.mealTime} ${datum.category === 'план' ? 'план' : 'факт'}`,
+            value: datum.value
+        })
+    }
+};
 
 export function PublicStats() {
-    const { data } = useList<VolEntity>({
+    const { data: vols } = useList<VolEntity>({
         resource: 'vols',
         config: {
             filters: [
@@ -43,27 +55,29 @@ export function PublicStats() {
         }
     });
     const [timePeriod, setTimePeriod] = useState({
-        start: new Date(),
-        end: new Date(new Date().getTime() + msInDay)
+        start: dayjsExt().startOf('date'),
+        end: dayjsExt().add(1, 'day').startOf('date')
     });
     const lineDataArr: Array<{}> = [];
     const columnDataArr: Array<IColumnData> = [];
     //Цикл перебора дней в интервале дат (по умолчанию интервал "сегодня - завтра")
     for (
-        let currentDate = timePeriod.start.getTime();
-        currentDate <= timePeriod.end.getTime();
-        currentDate += msInDay
+        let currentDate = timePeriod.start.valueOf();
+        currentDate <= timePeriod.end.valueOf();
+        currentDate = dayjsExt(currentDate).add(1, 'day').startOf('date').valueOf()
     ) {
-        const date = new Date(currentDate);
-        const dateStr = convertDateToString(date);
-        const planHumansCount = data?.data.filter((volData) => {
+        const date = dayjsExt(currentDate);
+        const dateStr = date.format('DD.MM.YYYY');
+        const planHumansCount = vols?.data.filter((volData) => {
             const activeToDate = new Date(volData.activeTo ? volData.activeTo : '');
-            if (activeToDate >= date) return true;
+            if (dayjsExt(activeToDate).valueOf() >= date.valueOf()) {
+                return true;
+            }
             return false;
         }).length;
         let factHumansCount = 0;
         factMock.forEach((factData) => {
-            if (factData.date.getTime() - date.getTime() >= 0 && factData.date.getTime() - date.getTime() <= msInDay) {
+            if (date.isSame(factData.date, 'year')) {
                 factHumansCount += factData.value;
             }
         });
@@ -80,72 +94,51 @@ export function PublicStats() {
             { date: dateStr, category: 'факт', value: Number(factHumansCount), mealTime: 'ужин' }
         );
     }
-    const lineConfig = {
-        data: lineDataArr,
-        xField: 'date',
-        yField: 'value',
-        seriesField: 'category'
-    };
-    const columnConfig = {
-        data: columnDataArr,
-        xField: 'date',
-        yField: 'value',
-        isGroup: true,
-        isStack: true,
-        seriesField: 'mealTime',
-        groupField: 'category',
-        tooltip: {
-            formatter: (datum) => ({
-                name: `${datum.mealTime} ${datum.category === 'план' ? 'план' : 'факт'}`,
-                value: datum.value
-            })
-        }
-    };
     return (
         <div>
             <RangePicker
                 onChange={(_, range) => {
                     console.log(range);
                     setTimePeriod({
-                        start: new Date(range[0]),
-                        end: new Date(range[1])
+                        start: dayjsExt(range[0]),
+                        end: dayjsExt(range[1])
                     });
                 }}
             />
-            <Line {...lineConfig} />
-            <Column {...columnConfig} />
+            <Line data={lineDataArr} {...lineConfig} />
+            <Column data={columnDataArr} {...columnConfig} />
         </div>
     );
 }
 
 const factMock = [
     {
-        date: new Date(),
+        date: dayjsExt(),
         value: 8,
         category: 'Фактически накормлено, чел'
     },
     {
-        date: new Date(new Date().getTime() + msInDay),
+        date: dayjsExt().add(1, 'day'),
         value: 8,
         category: 'Фактически накормлено, чел'
     },
     {
-        date: new Date(new Date().getTime() + 2 * msInDay),
+        date: dayjsExt().add(2, 'day'),
         value: 6,
         category: 'Фактически накормлено, чел'
     },
     {
-        date: new Date(new Date().getTime() + 3 * msInDay),
+        date: dayjsExt().add(3, 'day'),
         value: 6,
         category: 'Фактически накормлено, чел'
     },
     {
-        date: new Date(new Date().getTime() + 4 * msInDay),
+        date: dayjsExt().add(4, 'day'),
         value: 6,
         category: 'Фактически накормлено, чел'
     },
     {
-        date: new Date(new Date().getTime() + 5 * msInDay),
+        date: dayjsExt().add(5, 'day'),
         value: 6,
         category: 'Фактически накормлено, чел'
     }
