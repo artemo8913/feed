@@ -36,6 +36,7 @@
     "include": [
         "server",
         "src",
+        "../../env.d.ts",
         "../ui/src",
         "../../types/global.d.ts"
     ]
