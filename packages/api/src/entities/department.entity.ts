@@ -6,7 +6,7 @@ import {
     JoinTable,
 } from 'typeorm';
 
-import { VolEntity } from '~/entities/vol.entity';
+import { VolEntity } from '@feed/api/src/entities/vol.entity';
 
 @Entity({ name: 'department' })
 export class DepartmentEntity {

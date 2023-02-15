@@ -13,7 +13,7 @@ import type { IResourceComponentsProps } from '@pankod/refine-core';
 import { renderText } from '@feed/ui/src/table';
 import Select from 'rc-select';
 
-import type { CompanyEntity, DepartmentEntity } from '~/interfaces';
+import type { DepartmentEntity, VolEntity } from '~/interfaces';
 
 const selectStyle = { minWidth: 200 };
 
@@ -27,7 +27,7 @@ export const DepartmentList: FC<IResourceComponentsProps> = () => {
         ]
     });
 
-    const { selectProps: leadSelectProps } = useSelect<CompanyEntity>({
+    const { selectProps: leadSelectProps } = useSelect<VolEntity>({
         resource: 'vols'
     });
 
@@ -47,12 +47,7 @@ export const DepartmentList: FC<IResourceComponentsProps> = () => {
                     title='Lead'
                     filterDropdown={(props) => (
                         <FilterDropdown {...props}>
-                            <Select
-                                style={selectStyle}
-                                mode='multiple'
-                                placeholder='Select Company'
-                                {...leadSelectProps}
-                            />
+                            <Select style={selectStyle} mode='multiple' placeholder='Lead' {...leadSelectProps} />
                         </FilterDropdown>
                     )}
                 />

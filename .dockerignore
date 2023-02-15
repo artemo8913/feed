@@ -1,6 +1,6 @@
 Dockerfile
 .git
-.env
+**/.env
 .temp_cache
 .husky
 node_modules
@@ -9,3 +9,7 @@ node_modules
 **/build
 **/.next
 run.sh
+**/dist
+packages/api/__db
+**/tsconfig.tsbuildinfo
+_db

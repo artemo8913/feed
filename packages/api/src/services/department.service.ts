@@ -3,8 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import { Repository } from 'typeorm';
 
-import { DepartmentEntity } from '~/entities/department.entity';
-import { DepartmentRepository } from '~/repositories/department.repository';
+import { DepartmentEntity } from '@feed/api/src/entities/department.entity';
+import { DepartmentRepository } from '@feed/api/src/repositories/department.repository';
 
 @Injectable()
 export class DepartmentService extends TypeOrmCrudService<DepartmentEntity> {

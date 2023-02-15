@@ -1,10 +1,6 @@
 import { Checkbox, Create, Form, Input, Select, useForm, useSelect } from '@pankod/refine-antd';
 import type { IResourceComponentsProps } from '@pankod/refine-core';
-import ReactMarkdown from 'react-markdown';
-import ReactMde from 'react-mde';
 import { useState } from 'react';
-
-import 'react-mde/lib/styles/css/react-mde-all.css';
 
 import type { DepartmentEntity } from '~/interfaces';
 import { Rules } from '~/components/form/rules';
@@ -13,8 +9,8 @@ export const DepartmentCreate: FC<IResourceComponentsProps> = () => {
     const [selectedTab, setSelectedTab] = useState<'write' | 'preview'>('write');
     const { formProps, saveButtonProps } = useForm<DepartmentEntity>();
 
-    const { selectProps: companySelectProps } = useSelect<DepartmentEntity>({
-        resource: 'companies',
+    const { selectProps: leadSelectProps } = useSelect<DepartmentEntity>({
+        resource: 'vols',
         optionLabel: 'name'
     });
 
@@ -25,7 +21,7 @@ export const DepartmentCreate: FC<IResourceComponentsProps> = () => {
                     <Input />
                 </Form.Item>
                 <Form.Item label='Lead' name={['lead', 'id']} rules={Rules.required}>
-                    <Select {...companySelectProps} />
+                    <Select {...leadSelectProps} />
                 </Form.Item>
                 {/*
                 <Form.Item label='Content' name='content'>

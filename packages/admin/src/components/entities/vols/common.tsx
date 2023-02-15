@@ -1,15 +1,22 @@
 import { Checkbox, Form, Input, Select, useSelect } from '@pankod/refine-antd';
-import { Rules } from '~/components/form';
-import type { CompanyEntity } from '@feed/api/dist/src/entities/company.entity';
 import dynamic from 'next/dynamic';
+import type { VolEntity } from '@feed/api/src/entities/vol.entity';
+
+import { Rules } from '~/components/form';
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 import 'react-quill/dist/quill.snow.css';
 
 export const CreateEdit: FC = () => {
-    const { selectProps } = useSelect<CompanyEntity>({
-        resource: 'companies',
+    const { selectProps: leadSelectProps } = useSelect<VolEntity>({
+        resource: 'vols',
         optionLabel: 'name'
     });
+
+    const { selectProps: locationSelectProps } = useSelect<VolEntity>({
+        resource: 'locations',
+        optionLabel: 'name'
+    });
+
     return (
         <>
             <Form.Item label='Активирован' name='isActive' valuePropName='checked'>
@@ -30,8 +37,11 @@ export const CreateEdit: FC = () => {
             <Form.Item label='До' name='activeTo'>
                 <Input type='date' />
             </Form.Item>
-            <Form.Item label='Company' name={['company', 'id']} rules={Rules.required}>
-                <Select {...selectProps} />
+            <Form.Item label='Lead' name={['lead', 'id']} rules={Rules.required}>
+                <Select {...leadSelectProps} />
+            </Form.Item>
+            <Form.Item label='Location' name={['location', 'id']} rules={Rules.required}>
+                <Select {...locationSelectProps} />
             </Form.Item>
             <Form.Item label='Должность' name='position'>
                 <Input />

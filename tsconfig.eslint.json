@@ -4,6 +4,7 @@
         "./typings.d.ts",
         "./babel.config.js",
         "./src/**/*.ts",
-        "./src/**/*.tsx"
+        "./src/**/*.tsx",
+        "env.d.ts"
     ]
 }

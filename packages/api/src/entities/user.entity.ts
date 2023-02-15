@@ -6,7 +6,7 @@ export class UserEntity extends BaseEntity {
     @PrimaryGeneratedColumn('uuid')
     id: number;
 
-    @Column()
+    @Column({ unique: true })
     username: string;
 
     @Exclude()

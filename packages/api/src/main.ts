@@ -1,18 +1,18 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 import { AppModule } from './app.module';
 
-const PORT = 4000;
+const PORT = process.env.PORT || 4000;
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule, { cors: true });
 
     // swagger
     const options = new DocumentBuilder()
-        .setTitle('Job Posting Api')
-        .setDescription('Job Posting Api')
+        .setTitle('Insomnia Feed')
+        .setDescription('Insomnia Feed Api')
         .setVersion('1.0')
         .addBearerAuth({ type: 'http', scheme: 'bearer', bearerFormat: 'JWT' })
         .build();
@@ -21,6 +21,7 @@ async function bootstrap() {
 
     // validation
     app.useGlobalPipes(new ValidationPipe());
+    app.setGlobalPrefix('api');
 
     await app.listen(PORT);
 }
