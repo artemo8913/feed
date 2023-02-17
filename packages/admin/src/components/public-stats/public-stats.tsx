@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState, useCallback } from 'react';
 import dynamic from 'next/dynamic';
 import { GetListResponse, useList } from '@pankod/refine-core';
 import { VolEntity } from '~/interfaces';
@@ -46,7 +46,7 @@ interface IColumnData {
 Отфильтровывается массив с волонтерами, activeTo которых не менее переданной в функцию даты */
 function findHowManyHumansPlanToEat(vols: GetListResponse<VolEntity> | undefined, date: dayjsExt.Dayjs) {
     const humanCount = vols?.data.filter((volData) => {
-        if (!!volData.activeTo) {
+        if (!volData.activeTo) {
             return false;
         }
         const dateActiveTo = dayjsExt(volData.activeTo);
@@ -60,7 +60,7 @@ function findHowManyHumansPlanToEat(vols: GetListResponse<VolEntity> | undefined
 /**Возращает количество волонтеров, которое фактически поели в определенную дату. */
 function findHowManyHumansEat(factData: Array<IFactMockData>, date: dayjsExt.Dayjs) {
     const factHumansCountGoingToEat = factData.filter((factData) => {
-        if (!!factData.date) {
+        if (!factData.date) {
             return false;
         }
         if (date.isSame(factData.date, 'date')) {
@@ -93,6 +93,12 @@ export function PublicStats() {
         start: dayjsExt().startOf('date'),
         end: dayjsExt().add(1, 'day').startOf('date')
     });
+    const changeTimePeriod = useCallback((_, range: [string, string]) => {
+        setTimePeriod({
+            start: dayjsExt(range[0], 'YYYY-MM-DD'),
+            end: dayjsExt(range[1], 'YYYY-MM-DD')
+        });
+    }, []);
     /**Массив с данными для построения линейчатого графика */
     const lineDataArr: Array<ILineData> = [];
     /**Массив с данными для построения столбачтого графика */
@@ -107,7 +113,6 @@ export function PublicStats() {
         const dateStr = date.format('DD.MM.YYYY');
         const planHumansCountGoingToEat = findHowManyHumansPlanToEat(vols, date);
         const factHumansCountGoingToEat = findHowManyHumansEat(factDataMock, date);
-
         lineDataArr.push({ date: dateStr, value: planHumansCountGoingToEat, category: 'Необходимо накормить, чел' });
         lineDataArr.push({ date: dateStr, value: factHumansCountGoingToEat, category: 'Фактически накормлено, чел' });
         columnDataArr.push(
@@ -123,14 +128,7 @@ export function PublicStats() {
     }
     return (
         <div>
-            <RangePicker
-                onChange={(_, range) => {
-                    setTimePeriod({
-                        start: dayjsExt(range[0], 'YYYY-MM-DD'),
-                        end: dayjsExt(range[1], 'YYYY-MM-DD')
-                    });
-                }}
-            />
+            <RangePicker onChange={changeTimePeriod} />
             <Line data={lineDataArr} {...lineConfig} />
             <br />
             <Column data={columnDataArr} {...columnConfig} />
