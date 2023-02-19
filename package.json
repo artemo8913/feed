@@ -26,8 +26,8 @@
         "packages/*"
     ],
     "devDependencies": {
-        "lerna": "^5.4.1",
-        "nx": "^15.6.3"
+        "lerna": "^6.5.1",
+        "nx": "^15.7.2"
     },
     "dependencies": {
         "cross-env": "^7.0.3",
