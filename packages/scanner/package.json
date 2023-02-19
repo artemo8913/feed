@@ -1,0 +1,124 @@
+{
+    "name": "@feed/scanner",
+    "version": "0.0.1",
+    "private": true,
+    "homepage": "/cl421io",
+    "installConfig": {
+        "hoistingLimits": "workspaces"
+    },
+    "nohoist": [
+        "@craco/craco",
+        "@craco/craco/**",
+        "react-scripts",
+        "react-scripts/**"
+    ],
+    "resolutions": {
+        "@types/eslint": "^8.4.5",
+        "postcss": "^8.4.14",
+        "postcss-loader": "^7.0.0",
+        "webpack": "^5.73.0",
+        "webpack-cli": "^4.10.0",
+        "postcss-import": "^14.1.0"
+    },
+    "dependencies": {
+        "@craco/craco": "^7.0.0",
+        "@feed/core": "^0.0.1",
+        "@feed/ui": "^0.0.1",
+        "@types/node": "^18.0.0",
+        "@types/react": "^18.0.9",
+        "@types/react-dom": "^18.0.4",
+        "classnames": "^2.3.1",
+        "dayjs": "^1.11.2",
+        "dexie": "^3.2.2",
+        "dexie-react-hooks": "^1.1.1",
+        "exports-loader": "^4.0.0",
+        "imports-loader": "^4.0.0",
+        "onscan.js": "^1.5.2",
+        "postcss-mixins": "^9.0.3",
+        "qr-scanner": "^1.4.1",
+        "raw-loader": "^4.0.2",
+        "react": "^18.1.0",
+        "react-dom": "^18.1.0",
+        "react-error-boundary": "^3.1.4",
+        "react-scripts": "^5.0.1",
+        "ulid": "^2.3.0",
+        "workbox-background-sync": "^6.5.3",
+        "workbox-broadcast-update": "^6.5.3",
+        "workbox-cacheable-response": "^6.5.3",
+        "workbox-core": "^6.5.3",
+        "workbox-expiration": "^6.5.3",
+        "workbox-google-analytics": "^6.5.3",
+        "workbox-navigation-preload": "^6.5.3",
+        "workbox-precaching": "^6.5.3",
+        "workbox-range-requests": "^6.5.3",
+        "workbox-routing": "^6.5.3",
+        "workbox-strategies": "^6.5.3",
+        "workbox-streams": "^6.5.3"
+    },
+    "scripts": {
+        "start": "BROWSER=none CLIENT_ENV=development craco start --verbose",
+        "build": "CLIENT_ENV=production craco build --verbose",
+        "bl": "browserslist --update-db",
+        "lint:css": "stylelint ./src/**/*.css",
+        "lint-fix:css": "stylelint --fix ./src/**/*.css",
+        "lint:js": "eslint -c .eslintrc --ext .ts --ext .tsx src",
+        "lint-fix:js": "eslint -c .eslintrc --fix --ext .ts --ext .tsx src",
+        "lint": "npm-run-all -s lint:*",
+        "lint-fix": "npm-run-all -s lint-fix:*",
+        "tc": "tsc --noemit --emitDeclarationOnly false"
+    },
+    "eslintConfig": {
+        "extends": [
+            "react-app",
+            "react-app/jest"
+        ]
+    },
+    "browserslist": {
+        "production": [
+            ">0.2%",
+            "not dead",
+            "not op_mini all"
+        ],
+        "development": [
+            "last 1 chrome version",
+            "last 1 firefox version",
+            "last 1 safari version"
+        ]
+    },
+    "devDependencies": {
+        "@babel/plugin-transform-react-jsx": "^7.17.12",
+        "@craco/craco": "^7.0.0",
+        "@jackwilsdon/craco-use-babelrc": "^1.0.0",
+        "@typescript-eslint/eslint-plugin": "^5.28.0",
+        "@typescript-eslint/parser": "^5.28.0",
+        "@welldone-software/why-did-you-render": "^7.0.1",
+        "babel-plugin-module-resolver": "^4.1.0",
+        "browserslist": "^4.20.4",
+        "copy-webpack-plugin": "^11.0.0",
+        "craco-raw-loader": "^1.0.2",
+        "craco-swc": "^0.5.1",
+        "cross-env": "^7.0.3",
+        "eslint": "^8.18.0",
+        "eslint-config-prettier": "^8.5.0",
+        "eslint-import-resolver-typescript": "^3.1.1",
+        "eslint-plugin-filename-rules": "^1.2.0",
+        "eslint-plugin-folders": "^1.0.3",
+        "eslint-plugin-import": "^2.26.0",
+        "eslint-plugin-prettier": "^4.0.0",
+        "eslint-plugin-react-hooks": "^4.6.0",
+        "eslint-plugin-sort-destructure-keys": "^1.4.0",
+        "eslint-plugin-tree-shaking": "^1.10.0",
+        "npm-run-all": "^4.1.5",
+        "postcss": "^8.4.14",
+        "postcss-clamp": "^4.1.0",
+        "postcss-hexrgba": "^2.1.0",
+        "postcss-import": "^14.1.0",
+        "postcss-loader": "^7.0.0",
+        "postcss-media-minmax": "^5.0.0",
+        "postcss-scss": "^4.0.4",
+        "prettier": "^2.7.1",
+        "react-app-alias": "^2.2.0",
+        "react-app-alias-ex": "^2.1.0",
+        "stylelint-color-format": "^1.1.0"
+    }
+}

@@ -15,5 +15,8 @@ setSeederFactory(UserEntity, (_faker) => {
     user.password =
         '$2a$12$H7T3Q6W4Xjb/wiArX1Eyc.FPPublUyDZGlptWovNTeX50p0ULw7/u';
     user.roles = ['ADMIN'];
+
+    console.log('1111111111111111111111111111');
+
     return user;
 });

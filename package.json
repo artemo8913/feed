@@ -20,10 +20,21 @@
         "bw": "ynpx bundle-wizard \"https://ttgraf.com\"",
         "todo": "leasot -x --reporter markdown 'packages/**/*.(ts|tsx)' > TODO.md",
         "madge": "ynpx madge",
-        "stat": "tokei"
+        "stat": "tokei",
+        "husky-install": "yarn run husky install"
     },
+    "packageManager": "yarn@3.4.1",
     "workspaces": [
         "packages/*"
+    ],
+    "resolutions": {
+        "axios": "^1.3.3"
+    },
+    "nohoist": [
+        "**/react-scripts",
+        "**/react-scripts/**",
+        "**/@craco/craco",
+        "**/@craco/craco/**"
     ],
     "devDependencies": {
         "lerna": "^6.5.1",
@@ -31,6 +42,7 @@
     },
     "dependencies": {
         "cross-env": "^7.0.3",
+        "husky": "^8.0.3",
         "leasot": "^13.2.0",
         "npm-run-all": "^4.1.5"
     }
