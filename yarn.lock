@@ -1971,7 +1971,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ctrl/tinycolor@npm:^3.4.0":
+"@ctrl/tinycolor@npm:^3.4.0, @ctrl/tinycolor@npm:^3.6.0":
   version: 3.6.0
   resolution: "@ctrl/tinycolor@npm:3.6.0"
   checksum: 4d1e481b4d7f9bb23d21b5436726034d37c2a1bc751b5169ef29ead0237e96443dbccbcfa887e20c3a65ba1b5e270063bb21b4034eac97561b980cbbd5e92a16
@@ -2080,16 +2080,9 @@ __metadata:
     next-transpile-modules: ^9.0.0
     nookies: ^2.5.2
     onscan.js: ^1.5.2
-    postcss: ^8.4.4
-    postcss-flexbugs-fixes: ^5.0.2
-    postcss-loader: ^6.2.1
-    postcss-normalize: ^10.0.1
-    postcss-preset-env: ^7.0.1
     prompts: ^2.4.2
-    react: ^18.2.0
     react-app-polyfill: ^3.0.0
     react-dev-utils: ^12.0.1
-    react-dom: ^18.2.0
     react-i18next: ^11.18.3
     react-markdown: ^8.0.0
     react-mde: ^11.5.0
@@ -2148,7 +2141,6 @@ __metadata:
     nest-access-control: ^2.0.4
     passport: ^0.6.0
     passport-jwt: ^4.0.0
-    prettier: ^2.3.2
     reflect-metadata: ^0.1.13
     rimraf: ^3.0.2
     rxjs: ^7.2.0
@@ -2171,13 +2163,13 @@ __metadata:
     axios: ^1.3.3
     dotenv: ^16.0.3
     dotenv-expand: ^10.0.0
-    eslint: ^8.22.0
+    eslint: ^8.18.0
     eslint-config-prettier: ^8.5.0
     eslint-import-resolver-typescript: ^3.4.1
     eslint-plugin-filename-rules: ^1.2.0
     eslint-plugin-folders: ^1.0.3
     eslint-plugin-import: ^2.26.0
-    eslint-plugin-prettier: ^4.2.1
+    eslint-plugin-prettier: ^4.0.0
     eslint-plugin-react: ^7.31.4
     eslint-plugin-react-hooks: ^4.6.0
     eslint-plugin-sort-destructure-keys: ^1.4.0
@@ -2187,12 +2179,18 @@ __metadata:
     postcss: ^8.4.16
     postcss-custom-media: ^8.0.2
     postcss-custom-properties: ^12.1.8
+    postcss-flexbugs-fixes: ^5.0.2
     postcss-hexrgba: ^2.1.0
     postcss-import: ^15.0.0
     postcss-loader: ^7.0.1
     postcss-modules: ^5.0.0
     postcss-nested: ^5.0.6
+    postcss-normalize: ^10.0.1
+    postcss-preset-env: ^7.0.1
     postcss-scss: ^4.0.4
+    prettier: ^2.7.1
+    react: ^18.2.0
+    react-dom: ^18.2.0
     stylelint: ^14.10.0
     stylelint-color-format: ^1.1.0
     stylelint-config-hudochenkov: ^8.0.0
@@ -2230,23 +2228,11 @@ __metadata:
     copy-webpack-plugin: ^11.0.0
     craco-raw-loader: ^1.0.2
     craco-swc: ^0.5.1
-    cross-env: ^7.0.3
     dayjs: ^1.11.2
     dexie: ^3.2.2
     dexie-react-hooks: ^1.1.1
-    eslint: ^8.18.0
-    eslint-config-prettier: ^8.5.0
-    eslint-import-resolver-typescript: ^3.1.1
-    eslint-plugin-filename-rules: ^1.2.0
-    eslint-plugin-folders: ^1.0.3
-    eslint-plugin-import: ^2.26.0
-    eslint-plugin-prettier: ^4.0.0
-    eslint-plugin-react-hooks: ^4.6.0
-    eslint-plugin-sort-destructure-keys: ^1.4.0
-    eslint-plugin-tree-shaking: ^1.10.0
     exports-loader: ^4.0.0
     imports-loader: ^4.0.0
-    npm-run-all: ^4.1.5
     onscan.js: ^1.5.2
     postcss: ^8.4.14
     postcss-clamp: ^4.1.0
@@ -2256,13 +2242,10 @@ __metadata:
     postcss-media-minmax: ^5.0.0
     postcss-mixins: ^9.0.3
     postcss-scss: ^4.0.4
-    prettier: ^2.7.1
     qr-scanner: ^1.4.1
     raw-loader: ^4.0.2
-    react: ^18.1.0
     react-app-alias: ^2.2.0
     react-app-alias-ex: ^2.1.0
-    react-dom: ^18.1.0
     react-error-boundary: ^3.1.4
     react-scripts: ^5.0.1
     stylelint-color-format: ^1.1.0
@@ -6100,15 +6083,15 @@ __metadata:
   linkType: hard
 
 "antd@npm:^5.0.5":
-  version: 5.2.1
-  resolution: "antd@npm:5.2.1"
+  version: 5.2.2
+  resolution: "antd@npm:5.2.2"
   dependencies:
     "@ant-design/colors": ^7.0.0
     "@ant-design/cssinjs": ^1.5.6
     "@ant-design/icons": ^5.0.0
     "@ant-design/react-slick": ~1.0.0
     "@babel/runtime": ^7.18.3
-    "@ctrl/tinycolor": ^3.4.0
+    "@ctrl/tinycolor": ^3.6.0
     "@rc-component/mutate-observer": ^1.0.0
     "@rc-component/tour": ~1.6.0
     classnames: ^2.2.6
@@ -6153,7 +6136,7 @@ __metadata:
   peerDependencies:
     react: ">=16.9.0"
     react-dom: ">=16.9.0"
-  checksum: a3ab7a83a6eaa0b4c9a92c46574cf0dff8a9b6c69d501a303e927b0e7fd15ec81bd06b297dfe4c6bc6f650745c3499d2aa8aa3da4297a9c986d37d3cdb490d7f
+  checksum: e758fb8b1c5604c4f61bf3fab0f272fbf40251ef1dda6c60e824cec1549c92f7e4a4e28ee1260cde703c2a374ba501fa97da9788db4d379e81888473cdb94fc9
   languageName: node
   linkType: hard
 
@@ -9592,7 +9575,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-import-resolver-typescript@npm:^3.1.1, eslint-import-resolver-typescript@npm:^3.4.1":
+"eslint-import-resolver-typescript@npm:^3.4.1":
   version: 3.5.3
   resolution: "eslint-import-resolver-typescript@npm:3.5.3"
   dependencies:
@@ -9872,7 +9855,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint@npm:^8.18.0, eslint@npm:^8.21.0, eslint@npm:^8.22.0, eslint@npm:^8.3.0":
+"eslint@npm:^8.18.0, eslint@npm:^8.21.0, eslint@npm:^8.3.0":
   version: 8.34.0
   resolution: "eslint@npm:8.34.0"
   dependencies:
@@ -10349,6 +10332,7 @@ __metadata:
     lerna: ^6.5.1
     npm-run-all: ^4.1.5
     nx: ^15.7.2
+    rimraf: ^4.1.2
   languageName: unknown
   linkType: soft
 
@@ -18242,7 +18226,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:^2.3.2, prettier@npm:^2.7.1":
+"prettier@npm:^2.7.1":
   version: 2.8.4
   resolution: "prettier@npm:2.8.4"
   bin:
@@ -19261,7 +19245,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-dom@npm:^18.1.0, react-dom@npm:^18.2.0":
+"react-dom@npm:^18.2.0":
   version: 18.2.0
   resolution: "react-dom@npm:18.2.0"
   dependencies:
@@ -19553,7 +19537,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react@npm:^18.1.0, react@npm:^18.2.0":
+"react@npm:^18.2.0":
   version: 18.2.0
   resolution: "react@npm:18.2.0"
   dependencies:
@@ -20131,7 +20115,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rimraf@npm:4.1.2":
+"rimraf@npm:4.1.2, rimraf@npm:^4.1.2":
   version: 4.1.2
   resolution: "rimraf@npm:4.1.2"
   bin:
