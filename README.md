@@ -11,6 +11,11 @@ docker-compose up
 ```
 
 
+# Установка
+```bash
+yarn run bootstrap
+```
+
 # Запуск
 
 ```bash
