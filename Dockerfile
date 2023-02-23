@@ -65,7 +65,7 @@ COPY ./packages/scanner/.yarnrc.yml packages/scanner/.yarnrc.yml
 #    --mount=type=cache,sharing=locked,target=/app/packages/scanner/node_modules/.cache \
 #    yarn install --immutable
 
-RUN echo 123
+# TODO packages/admin/.next/cache
 
 RUN --mount=type=cache,sharing=locked,target=/app/.yarn/.cache \
     ls -1al /app/.yarn/.cache
@@ -129,6 +129,7 @@ COPY --from=builder /app/packages/core/webpack/ /app/packages/core/webpack/
 COPY --from=builder /app/packages/admin/next-i18next.config.mjs /app/packages/admin/
 COPY --from=builder /app/packages/admin/next.config.mjs /app/packages/admin/
 COPY --from=builder /app/packages/admin/.next/ /app/packages/admin/.next/
+COPY --from=builder /app/packages/admin/public/ /app/packages/admin/public/
 
 COPY --from=builder /app/packages/ui/package.json /app/packages/ui/
 

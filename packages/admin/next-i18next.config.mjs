@@ -1,6 +1,7 @@
-import path from 'path'
-const localePath = path.resolve('./public/locales')
+import path from 'path';
 import Backend from 'i18next-http-backend';
+
+const localePath = path.resolve('./public/locales')
 
 export const i18n = {
     debug: process.env.NODE_ENV === 'development',
@@ -16,5 +17,4 @@ export const i18n = {
     supportedLngs: ['ru', 'en'],
     defaultNS: 'common',
     fallbackLng: ['en']
-
 };
