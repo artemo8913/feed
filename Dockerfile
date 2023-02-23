@@ -119,6 +119,7 @@ COPY --from=builder /app/packages/api/.env.example /app/packages/api/.env
 COPY --from=builder /app/packages/api/package.json /app/packages/api/
 COPY --from=builder /app/packages/api/dist/ /app/packages/api/dist/
 COPY --from=builder /app/packages/api/tsconfig.json /app/packages/api/
+COPY --from=builder /app/packages/api/seed.js /app/packages/api/
 
 COPY --from=builder /app/packages/core/package.json /app/packages/core/
 COPY --from=builder /app/packages/core/webpack/ /app/packages/core/webpack/

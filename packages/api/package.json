@@ -26,9 +26,10 @@
     "db:migration:run": "yarn run typeorm migration:run -d src/data-source.ts",
     "db:migration:revert": "yarn run typeorm migration:revert",
     "db:refresh": "yarn run typeorm schema:drop -d src/data-source.ts && yarn run db:migration:run",
-    "db:seed": "yarn run typeorm-extension seed"
+    "db:seed": "typeorm-seeding seed -c ./seed.js"
   },
   "dependencies": {
+    "@concepta/typeorm-seeding": "^4.0.0-beta.0",
     "@feed/core": "^0.0.1",
     "@nestjs/cli": "^9.0.0",
     "@nestjs/common": "^9.0.9",
@@ -55,8 +56,7 @@
     "sqlite3": "^5.0.11",
     "swagger-ui-express": "^4.1.6",
     "ts-node": "^10.9.1",
-    "typeorm": "^0.3.7",
-    "typeorm-extension": "^2.4.2"
+    "typeorm": "^0.3.7"
   },
   "devDependencies": {
     "@nestjs/schematics": "^9.0.1",
