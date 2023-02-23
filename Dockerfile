@@ -31,6 +31,8 @@ COPY ./packages/api/icu/icu.c /app/packages/api/icu/
 RUN gcc -fPIC -shared packages/api/icu/icu.c `pkg-config --libs --cflags icu-uc icu-io` -o packages/api/icu/libSqliteIcu.so
 RUN ls -1al /app/packages/api/icu
 
+RUN corepack prepare yarn@3.4.1 --activate
+
 ARG API_URL
 ENV API_URL_ENV=${API_URL}
 
