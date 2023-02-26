@@ -44,7 +44,7 @@ jobs:
     - name: run admin
       run: |
         docker run -d \
-          -p 4262:4262 -p 4301:4301 \
+          -p 4262:4262 -p 4301:4301 -p 8080:80 \
           --network=apps \
           -v ${DB_DIR}:/app/db \
           --restart=always \
@@ -70,3 +70,5 @@ jobs:
       run: docker container prune --filter "until=168h" -f
     - name: cleanup docker images
       run: docker image prune -a -f --filter "until=168h"
+    - name: cleanup docker build cache
+      run: docker builder prune -a -f --filter "until=168h"

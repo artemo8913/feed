@@ -1,0 +1,38 @@
+:root {
+    --fs: calc(4vw + 12px);
+}
+
+button {
+    font-size: var(--fs);
+}
+
+.app {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 100vw;
+    min-height: 100vh;
+    font-size: var(--fs);
+    text-align: center;
+}
+
+.auth {
+    display: flex;
+    flex-direction: column;
+    gap: 2em;
+    justify-content: center;
+    align-items: center;
+    font-size: 2em;
+
+    input {
+        width: 90vw;
+        max-width: 8ch;
+        font-size: 10vw;
+    }
+
+    button {
+        width: 90vw;
+        padding: 1em;
+    }
+}

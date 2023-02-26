@@ -12,6 +12,7 @@ if (token) {
     };
 }
 
+// @ts-ignore
 const dataProvider = crudDataProvider(API_URL, axios);
 
 export { dataProvider };

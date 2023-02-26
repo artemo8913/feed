@@ -26,9 +26,11 @@
     "db:migration:run": "yarn run typeorm migration:run -d src/data-source.ts",
     "db:migration:revert": "yarn run typeorm migration:revert",
     "db:refresh": "yarn run typeorm schema:drop -d src/data-source.ts && yarn run db:migration:run",
-    "db:seed": "yarn run typeorm-extension seed"
+    "db:seed": "typeorm-seeding seed -c ./seed.js"
   },
   "dependencies": {
+    "@concepta/typeorm-seeding": "^4.0.0-beta.0",
+    "@feed/core": "^0.0.1",
     "@nestjs/cli": "^9.0.0",
     "@nestjs/common": "^9.0.9",
     "@nestjs/config": "^2.2.0",
@@ -41,7 +43,7 @@
     "@nestjsx/crud": "^5.0.0-alpha.3",
     "@nestjsx/crud-typeorm": "^5.0.0-alpha.3",
     "bcrypt": "^5.0.1",
-    "better-sqlite3": "npm:better-sqlite3-multiple-ciphers",
+    "better-sqlite3": "npm:better-sqlite3-multiple-ciphers@7.6.2",
     "better-sqlite3-multiple-ciphers": "^7.6.2",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.13.1",
@@ -54,8 +56,7 @@
     "sqlite3": "^5.0.11",
     "swagger-ui-express": "^4.1.6",
     "ts-node": "^10.9.1",
-    "typeorm": "^0.3.7",
-    "typeorm-extension": "^2.4.2"
+    "typeorm": "^0.3.7"
   },
   "devDependencies": {
     "@nestjs/schematics": "^9.0.1",
@@ -71,12 +72,10 @@
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.2.1",
     "jest": "^28.1.3",
-    "prettier": "^2.3.2",
     "supertest": "^6.1.3",
     "ts-jest": "^28.0.7",
     "ts-loader": "^9.2.3",
-    "tsconfig-paths": "^4.1.0",
-    "typescript": "^4.3.5"
+    "tsconfig-paths": "^4.1.0"
   },
   "jest": {
     "moduleFileExtensions": [

@@ -1,5 +1,4 @@
-import { DataSource, DataSourceOptions } from 'typeorm';
-import { SeederOptions } from 'typeorm-extension';
+import { DataSource } from 'typeorm';
 
 import { UserEntity } from './entities/user.entity';
 import { VolEntity } from './entities/vol.entity';
@@ -8,8 +7,6 @@ import { BadgeEntity } from './entities/badge.entity';
 import { FeedTransactionEntity } from './entities/feed-transaction.entity';
 import { FeedTypeEntity } from './entities/feed-type.entity';
 import { LocationEntity } from './entities/location.entity';
-
-type OptionsWithSeeds = DataSourceOptions & SeederOptions;
 
 export const AppDataSource = new DataSource({
     driver: require('better-sqlite3'),
@@ -31,12 +28,10 @@ export const AppDataSource = new DataSource({
         LocationEntity,
     ],
     migrations: ['src/migrations/*.{ts, js}'],
-    seeds: ['src/seeds/**/*.{ts, js}'],
-    factories: ['src/factories/**/*.{ts, js}'],
     logging: true,
     prepareDatabase: async (db) => {
-        console.log(db);
+        // console.log(db);
         await db.pragma(`cipher='sqlcipher'`);
         // await db.pragma(`foreign_keys=ON`);
     },
-} as OptionsWithSeeds);
+});

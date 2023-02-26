@@ -18,55 +18,81 @@ ENV CI_ENV=${CI}
 
 WORKDIR /app
 
+RUN yarn set version berry
+
 FROM base as builder
 
 RUN apk add --no-cache curl python3
 RUN curl -sf https://gobinaries.com/tj/node-prune | sh
-RUN echo "yarn cache clean --force && node-prune" > /usr/local/bin/node-clean && chmod +x /usr/local/bin/node-clean
+RUN echo "yarn cache clean && node-prune" > /usr/local/bin/node-clean && chmod +x /usr/local/bin/node-clean
 
 RUN apk add --no-cache build-base libffi-dev icu-dev sqlite-dev
 COPY ./packages/api/icu/icu.c /app/packages/api/icu/
 RUN gcc -fPIC -shared packages/api/icu/icu.c `pkg-config --libs --cflags icu-uc icu-io` -o packages/api/icu/libSqliteIcu.so
 RUN ls -1al /app/packages/api/icu
 
-ENV YARN_CACHE_FOLDER=/root/.yarn
+RUN corepack prepare yarn@3.4.1 --activate
 
 ARG API_URL
 ENV API_URL_ENV=${API_URL}
 
 COPY nginx.conf /app/
 
+COPY ./.yarn  ./
+COPY ./.yarn/plugins  ./.yarn/plugins
+COPY ./.yarnrc.yml ./
+
 COPY ./package.json yarn.lock ./
+
 COPY ./packages/admin/package.json packages/admin/package.json
 COPY ./packages/admin/next-i18next.config.mjs packages/admin/next-i18next.config.mjs
 COPY ./packages/admin/next.config.mjs packages/admin/next.config.mjs
+
 COPY ./packages/api/package.json packages/api/package.json
+
 COPY ./packages/core/package.json packages/core/package.json
+
 COPY ./packages/ui/package.json packages/ui/package.json
 
-RUN --mount=type=cache,sharing=locked,target=/root/.yarn \
-    --mount=type=cache,sharing=locked,target=/app/packages/admin/node_modules/.cache \
-    --mount=type=cache,sharing=locked,target=/app/packages/core/node_modules/.cache \
-    --mount=type=cache,sharing=locked,target=/app/packages/ui/node_modules/.cache \
-    --mount=type=cache,sharing=locked,target=/app/packages/api/node_modules/.cache \
-    yarn --production=false --frozen-lockfile
+COPY ./packages/scanner/package.json packages/scanner/package.json
+COPY ./packages/scanner/.yarnrc.yml packages/scanner/.yarnrc.yml
+
+#RUN --mount=type=cache,sharing=locked,target=/app/.yarn/.cache \
+#    --mount=type=cache,sharing=locked,target=/app/packages/admin/node_modules/.cache \
+#    --mount=type=cache,sharing=locked,target=/app/packages/core/node_modules/.cache \
+#    --mount=type=cache,sharing=locked,target=/app/packages/ui/node_modules/.cache \
+#    --mount=type=cache,sharing=locked,target=/app/packages/api/node_modules/.cache \
+#    --mount=type=cache,sharing=locked,target=/app/packages/scanner/node_modules/.cache \
+#    yarn install --immutable
+
+# TODO packages/admin/.next/cache
+
+RUN --mount=type=cache,sharing=locked,target=/app/.yarn/.cache \
+    ls -1al /app/.yarn/.cache
+
+RUN --mount=type=cache,sharing=locked,target=/app/.yarn/.cache \
+    yarn install --immutable
 
 COPY .. ./
 
-RUN --mount=type=cache,sharing=locked,target=/root/.yarn \
-    --mount=type=cache,sharing=locked,target=/app/packages/admin/node_modules/.cache \
-    --mount=type=cache,sharing=locked,target=/app/packages/core/node_modules/.cache \
-    --mount=type=cache,sharing=locked,target=/app/packages/ui/node_modules/.cache \
-    --mount=type=cache,sharing=locked,target=/app/packages/api/node_modules/.cache \
+#RUN --mount=type=cache,sharing=locked,target=/app/.yarn/.cache \
+#    --mount=type=cache,sharing=locked,target=/app/packages/admin/node_modules/.cache \
+#    --mount=type=cache,sharing=locked,target=/app/packages/core/node_modules/.cache \
+#    --mount=type=cache,sharing=locked,target=/app/packages/ui/node_modules/.cache \
+#    --mount=type=cache,sharing=locked,target=/app/packages/api/node_modules/.cache \
+#    --mount=type=cache,sharing=locked,target=/app/packages/scanner/node_modules/.cache \
+#    yarn build
+
+RUN --mount=type=cache,sharing=locked,target=/app/.yarn/.cache \
     yarn build
 
-RUN --mount=type=cache,sharing=locked,target=/root/.yarn \
-    --mount=type=cache,sharing=locked,target=/app/packages/admin/node_modules/.cache \
-    --mount=type=cache,sharing=locked,target=/app/packages/core/node_modules/.cache \
-    --mount=type=cache,sharing=locked,target=/app/packages/ui/node_modules/.cache \
-    --mount=type=cache,sharing=locked,target=/app/packages/api/node_modules/.cache \
-    yarn --production=true --frozen-lockfile
-
+#RUN --mount=type=cache,sharing=locked,target=/root/.yarn \
+#    --mount=type=cache,sharing=locked,target=/app/packages/admin/node_modules/.cache \
+#    --mount=type=cache,sharing=locked,target=/app/packages/core/node_modules/.cache \
+#    --mount=type=cache,sharing=locked,target=/app/packages/ui/node_modules/.cache \
+#    --mount=type=cache,sharing=locked,target=/app/packages/api/node_modules/.cache \
+#    yarn --production=true --immutable
+#
 RUN /usr/local/bin/node-clean
 
 
@@ -95,6 +121,7 @@ COPY --from=builder /app/packages/api/.env.example /app/packages/api/.env
 COPY --from=builder /app/packages/api/package.json /app/packages/api/
 COPY --from=builder /app/packages/api/dist/ /app/packages/api/dist/
 COPY --from=builder /app/packages/api/tsconfig.json /app/packages/api/
+COPY --from=builder /app/packages/api/seed.js /app/packages/api/
 
 COPY --from=builder /app/packages/core/package.json /app/packages/core/
 COPY --from=builder /app/packages/core/webpack/ /app/packages/core/webpack/
@@ -102,8 +129,12 @@ COPY --from=builder /app/packages/core/webpack/ /app/packages/core/webpack/
 COPY --from=builder /app/packages/admin/next-i18next.config.mjs /app/packages/admin/
 COPY --from=builder /app/packages/admin/next.config.mjs /app/packages/admin/
 COPY --from=builder /app/packages/admin/.next/ /app/packages/admin/.next/
+COPY --from=builder /app/packages/admin/public/ /app/packages/admin/public/
 
 COPY --from=builder /app/packages/ui/package.json /app/packages/ui/
+
+COPY --from=builder /app/packages/scanner/package.json /app/packages/scanner/
+COPY --from=builder /app/packages/scanner/build/ /app/packages/scanner/build/
 
 COPY --from=builder /app/nginx.conf /etc
 

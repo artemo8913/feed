@@ -1,8 +1,8 @@
 #!/bin/sh
 
 cd /app/packages/api
-yarn run db:seed
-ls -1al /app/packages/api/_db
+rm -rf /app/_db/*
+/app/node_modules/.bin/typeorm-seeding seed -c ./seed.js
 PORT=4262 /app/node_modules/.bin/nest start &
 
 cd /app/packages/admin
