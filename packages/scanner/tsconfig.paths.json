@@ -1,0 +1,16 @@
+{
+    "compilerOptions": {
+        "baseUrl": "..",
+        "paths": {
+            "pwa-ver.txt": [
+                "../../pwa-ver.txt"
+            ],
+            "@app": [
+                ".."
+            ],
+            "~/*": [
+                "src/*"
+            ]
+        }
+    }
+}

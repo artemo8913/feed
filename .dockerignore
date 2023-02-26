@@ -13,3 +13,5 @@ run.sh
 packages/api/__db
 **/tsconfig.tsbuildinfo
 _db
+.yarn/cache
+.yarn/install-state.gz

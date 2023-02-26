@@ -11,17 +11,28 @@ docker-compose up
 ```
 
 
+# Установка
+```bash
+yarn run bootstrap
+```
+
 # Запуск
 
 ```bash
 cd ./packages/api
 # yarn run _db:drop
+# yarn run db:seed
 yarn run db:sync
 yarn run dev
 ```
 
 ```bash
 cd ./packages/admin
+yarn run dev
+```
+
+```bash
+cd ./packages/scanner
 yarn run dev
 ```
 
@@ -36,6 +47,3 @@ admin / admin
 ```bash
 yarn run build
 ```
-
-# TODO
-- check https://github.com/markusressel/barcode-server
