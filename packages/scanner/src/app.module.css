@@ -7,14 +7,31 @@ button {
 }
 
 .app {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    align-items: center;
     width: 100vw;
     min-height: 100vh;
     font-size: var(--fs);
-    text-align: center;
+
+    .screen {
+        position: relative;
+        width: 100vw;
+        min-height: 100vh;
+
+        &.main {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+            align-items: center;
+            text-align: center;
+        }
+
+        &.left1 {
+            background-color: var(--c-yellow);
+        }
+
+        &.right1 {
+            background-color: var(--c-blue);
+        }
+    }
 }
 
 .auth {

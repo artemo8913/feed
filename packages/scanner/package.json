@@ -16,22 +16,13 @@
         "@craco/craco": "^7.0.0",
         "@feed/core": "^0.0.1",
         "@feed/ui": "^0.0.1",
-        "@types/node": "^18.0.0",
-        "@types/react": "^18.0.9",
-        "@types/react-dom": "^18.0.4",
-        "classnames": "^2.3.1",
-        "dayjs": "^1.11.2",
         "dexie": "^3.2.2",
         "dexie-react-hooks": "^1.1.1",
-        "exports-loader": "^4.0.0",
-        "imports-loader": "^4.0.0",
         "onscan.js": "^1.5.2",
-        "postcss-mixins": "^9.0.3",
         "qr-scanner": "^1.4.1",
-        "raw-loader": "^4.0.2",
         "react-error-boundary": "^3.1.4",
         "react-scripts": "^5.0.1",
-        "ulid": "^2.3.0",
+        "react-swipeable-views": "^0.14.0",
         "workbox-background-sync": "^6.5.3",
         "workbox-broadcast-update": "^6.5.3",
         "workbox-cacheable-response": "^6.5.3",
@@ -57,12 +48,6 @@
         "lint-fix": "npm-run-all -s lint-fix:*",
         "tc": "tsc --noemit --emitDeclarationOnly false"
     },
-    "eslintConfig": {
-        "extends": [
-            "react-app",
-            "react-app/jest"
-        ]
-    },
     "browserslist": {
         "production": [
             ">0.2%",
@@ -76,26 +61,11 @@
         ]
     },
     "devDependencies": {
-        "@babel/plugin-transform-react-jsx": "^7.17.12",
         "@craco/craco": "^7.0.0",
         "@jackwilsdon/craco-use-babelrc": "^1.0.0",
-        "@typescript-eslint/eslint-plugin": "^5.28.0",
-        "@typescript-eslint/parser": "^5.28.0",
-        "@welldone-software/why-did-you-render": "^7.0.1",
-        "babel-plugin-module-resolver": "^4.1.0",
-        "browserslist": "^4.20.4",
-        "copy-webpack-plugin": "^11.0.0",
         "craco-raw-loader": "^1.0.2",
         "craco-swc": "^0.5.1",
-        "postcss": "^8.4.14",
-        "postcss-clamp": "^4.1.0",
-        "postcss-hexrgba": "^2.1.0",
-        "postcss-import": "^14.1.0",
-        "postcss-loader": "^7.0.0",
-        "postcss-media-minmax": "^5.0.0",
-        "postcss-scss": "^4.0.4",
         "react-app-alias": "^2.2.0",
-        "react-app-alias-ex": "^2.1.0",
-        "stylelint-color-format": "^1.1.0"
+        "react-app-alias-ex": "^2.1.0"
     }
 }
