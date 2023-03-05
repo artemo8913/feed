@@ -6,40 +6,9 @@
     "installConfig": {
         "hoistingLimits": "workspaces"
     },
-    "nohoist": [
-        "@craco/craco",
-        "@craco/craco/**",
-        "react-scripts",
-        "react-scripts/**"
-    ],
-    "dependencies": {
-        "@craco/craco": "^7.0.0",
-        "@feed/core": "^0.0.1",
-        "@feed/ui": "^0.0.1",
-        "dexie": "^3.2.2",
-        "dexie-react-hooks": "^1.1.1",
-        "onscan.js": "^1.5.2",
-        "qr-scanner": "^1.4.1",
-        "react-error-boundary": "^3.1.4",
-        "react-scripts": "^5.0.1",
-        "react-swipeable-views": "^0.14.0",
-        "workbox-background-sync": "^6.5.3",
-        "workbox-broadcast-update": "^6.5.3",
-        "workbox-cacheable-response": "^6.5.3",
-        "workbox-core": "^6.5.3",
-        "workbox-expiration": "^6.5.3",
-        "workbox-google-analytics": "^6.5.3",
-        "workbox-navigation-preload": "^6.5.3",
-        "workbox-precaching": "^6.5.3",
-        "workbox-range-requests": "^6.5.3",
-        "workbox-routing": "^6.5.3",
-        "workbox-strategies": "^6.5.3",
-        "workbox-streams": "^6.5.3"
-    },
     "scripts": {
         "start": "BROWSER=none CLIENT_ENV=development craco start --verbose",
         "build": "CLIENT_ENV=production craco build --verbose",
-        "bl": "browserslist --update-db",
         "lint:css": "stylelint ./src/**/*.css",
         "lint-fix:css": "stylelint --fix ./src/**/*.css",
         "lint:js": "eslint -c .eslintrc --ext .ts --ext .tsx src",
@@ -60,12 +29,36 @@
             "last 1 safari version"
         ]
     },
+    "dependencies": {
+        "@feed/core": "^0.0.1",
+        "@feed/ui": "^0.0.1",
+        "dexie": "^3.2.2",
+        "dexie-react-hooks": "^1.1.1",
+        "onscan.js": "^1.5.2",
+        "qr-scanner": "^1.4.1",
+        "react-error-boundary": "^3.1.4",
+        "react-swipeable-views": "^0.14.0",
+        "workbox-background-sync": "^6.5.3",
+        "workbox-broadcast-update": "^6.5.3",
+        "workbox-cacheable-response": "^6.5.3",
+        "workbox-core": "^6.5.3",
+        "workbox-expiration": "^6.5.3",
+        "workbox-google-analytics": "^6.5.3",
+        "workbox-navigation-preload": "^6.5.3",
+        "workbox-precaching": "^6.5.3",
+        "workbox-range-requests": "^6.5.3",
+        "workbox-routing": "^6.5.3",
+        "workbox-strategies": "^6.5.3",
+        "workbox-streams": "^6.5.3"
+    },
+    "peerDependencies": {
+        "@craco/craco": "*",
+        "@jackwilsdon/craco-use-babelrc": "*"
+    },
     "devDependencies": {
         "@craco/craco": "^7.0.0",
-        "@jackwilsdon/craco-use-babelrc": "^1.0.0",
-        "craco-raw-loader": "^1.0.2",
-        "craco-swc": "^0.5.1",
-        "react-app-alias": "^2.2.0",
-        "react-app-alias-ex": "^2.1.0"
+        "copy-webpack-plugin": "^11.0.0",
+        "react-app-alias-ex": "^2.1.0",
+        "react-scripts": "^5.0.1"
     }
 }

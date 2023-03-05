@@ -13,14 +13,13 @@ import type { AppColor, IAppContext } from '~/app-context';
 import { AppContext, Colors } from '~/app-context';
 import { API_DOMAIN } from '~/config';
 import css from '~/app.module.css';
-// import { clearCache } from './lib/utils';
-import { useCheckAuth } from '~/request';
-import { MainScreen } from '~/screens/main';
-
-// eslint-disable-next-line import/no-webpack-loader-syntax,import/no-unresolved
-import ver from '!!raw-loader!pwa-ver.txt';
 import { Left1Screen } from '~/screens/left1';
+import { MainScreen } from '~/screens/main';
 import { Right1Screen } from '~/screens/rigth1';
+import { useCheckAuth } from '~/request';
+// import { clearCache } from './lib/utils';
+// eslint-disable-next-line import/no-unresolved
+import ver from '!!raw-loader!pwa-ver.txt';
 
 console.log(`local app ver: ${ver}`);
 

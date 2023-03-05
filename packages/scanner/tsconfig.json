@@ -39,6 +39,11 @@
         "checkJs": false,
         "allowJs": true,
         "noEmit": true,
+        "rootDirs": [
+            "./",
+            "./src",
+            "../../node_modules"
+        ],
         "typeRoots": [
             "node_modules/@types"
         ],
@@ -64,7 +69,7 @@
     ],
     "include": [
         "src",
-      ".eslintrc",
+        ".eslintrc",
         "typings.d.ts"
     ]
 }

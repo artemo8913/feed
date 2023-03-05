@@ -1,17 +1,17 @@
 import cn from 'classnames';
+import { useCallback, useContext, useEffect, useState } from 'react';
 
 import { ErrorMsg, LastUpdated } from '~/components/misc/misc';
 import { PostScan } from '~/components/post-scan';
 import { QrScan } from '~/components/qr-scan';
 import { BtnSync } from '~/components/btn-sync';
 import { db } from '~/db';
-
-import css from '../app.module.css';
-import { useCallback, useContext, useEffect, useState } from 'react';
 import { AppContext } from '~/app-context';
 
+import css from '../app.module.css';
+
 export const MainScreen = () => {
-    const { setLastUpdated, setColor, setVolCount, appError, lastUpdate, volCount } = useContext(AppContext);
+    const { appError, lastUpdate, setColor, setLastUpdated, setVolCount, volCount } = useContext(AppContext);
     const [scanResult, setScanResult] = useState('');
 
     const closeFeedDialog = useCallback(() => {
