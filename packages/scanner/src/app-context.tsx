@@ -11,14 +11,17 @@ export const Colors = {
 };
 
 export interface IAppContext {
-    setColor: (c: AppColor) => void;
+    setColor: (c: AppColor | null) => void;
     resetColor: () => void;
+    appError: string | null;
     setError: (err: string | null) => void;
     setLastUpdated: (ts: number) => void;
     setVolCount: (ts: number) => void;
     pin: string | null;
     setPin: (pin: string) => void;
     setAuth: (auth: boolean) => void;
+    lastUpdate: number | null;
+    volCount: number;
 }
 
 // @ts-ignore

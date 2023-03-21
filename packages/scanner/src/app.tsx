@@ -5,23 +5,20 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import axios from 'axios';
 import type { FallbackProps } from 'react-error-boundary';
 import { ErrorBoundary } from 'react-error-boundary';
+import SwipeableViews from 'react-swipeable-views';
 
-import './lib/date';
+import '~/lib/date';
 
-import { ErrorMsg, LastUpdated } from '~/components/misc/misc';
-import { PostScan } from '~/components/post-scan';
-import { QrScan } from '~/components/qr-scan';
-
-import type { AppColor, IAppContext } from './app-context';
-import { AppContext, Colors } from './app-context';
-import { API_DOMAIN } from './config';
-import { BtnSync } from './components/btn-sync';
-import css from './app.module.css';
+import type { AppColor, IAppContext } from '~/app-context';
+import { AppContext, Colors } from '~/app-context';
+import { API_DOMAIN } from '~/config';
+import css from '~/app.module.css';
+import { Left1Screen } from '~/screens/left1';
+import { MainScreen } from '~/screens/main';
+import { Right1Screen } from '~/screens/rigth1';
+import { useCheckAuth } from '~/request';
 // import { clearCache } from './lib/utils';
-import { db } from './db';
-import { useCheckAuth } from './request';
-
-// eslint-disable-next-line import/no-webpack-loader-syntax,import/no-unresolved
+// eslint-disable-next-line import/no-unresolved
 import ver from '!!raw-loader!pwa-ver.txt';
 
 console.log(`local app ver: ${ver}`);
@@ -37,21 +34,15 @@ const ErrorFallback: FC<FallbackProps> = ({ error, resetErrorBoundary }) => (
 const storedPin = localStorage.getItem('pin');
 
 const App: FC = () => {
-    const [scanResult, setScanResult] = useState('');
     const [appColor, setAppColor] = useState<AppColor | null>(null);
     const [appError, setAppError] = useState<string | null>(null);
-    const [lastUpdate, setLastUpdated] = useState<number | null>(null);
-    const [volCount, setVolCount] = useState<number>(0);
     const [pin, setPin] = useState<string | null>(storedPin);
     const [auth, setAuth] = useState<boolean>(true);
     const pinInputRef = useRef<HTMLInputElement | null>(null);
     const checkAuth = useCheckAuth(API_DOMAIN, setAuth);
     const appStyle = useMemo(() => ({ backgroundColor: Colors[appColor as AppColor] }), [appColor]);
-
-    const closeFeedDialog = useCallback(() => {
-        setAppColor(null);
-        setScanResult('');
-    }, []);
+    const [lastUpdate, setLastUpdated] = useState<number | null>(null);
+    const [volCount, setVolCount] = useState<number>(0);
 
     const tryAuth = useCallback(() => {
         const enteredPin = pinInputRef.current?.value || '';
@@ -74,7 +65,10 @@ const App: FC = () => {
             pin,
             setPin,
             setAuth,
+            appError,
             setColor: setAppColor,
+            lastUpdate,
+            volCount,
             resetColor: () => setAppColor(null),
             setError: setAppError,
             setLastUpdated: (ts) => {
@@ -83,15 +77,8 @@ const App: FC = () => {
             },
             setVolCount
         }),
-        [pin]
+        [pin, lastUpdate, volCount]
     );
-
-    console.log(scanResult, appError);
-
-    useEffect(() => {
-        void db.volunteers.count().then((c) => setVolCount(c));
-        setLastUpdated(Number(localStorage.getItem('lastUpdated')));
-    }, []);
 
     useEffect(() => {
         const checkVer = (): void => {
@@ -128,13 +115,11 @@ const App: FC = () => {
                             <button onClick={tryAuth}>ВОЙТИ</button>
                         </div>
                     ) : (
-                        <>
-                            <BtnSync />
-                            {!scanResult && <QrScan onScan={setScanResult} />}
-                            {scanResult && <PostScan closeFeed={closeFeedDialog} qrcode={scanResult} />}
-                            {appError && <ErrorMsg close={closeFeedDialog} msg={appError} />}
-                            <LastUpdated count={volCount} ts={lastUpdate || 0} />
-                        </>
+                        <SwipeableViews enableMouseEvents index={1}>
+                            <Left1Screen />
+                            <MainScreen />
+                            <Right1Screen />
+                        </SwipeableViews>
                     )}
                 </div>
             </AppContext.Provider>
