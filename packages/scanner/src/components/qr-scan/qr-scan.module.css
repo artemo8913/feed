@@ -4,10 +4,13 @@
 }
 
 .qr {
-    position: relative;
+    position: absolute;
+    display: flex;
+    width: 100vw;
+    height: 100vh;
 
     .flash {
-        position: fixed;
+        position: absolute;
         top: 2vw;
         right: 2vw;
         display: flex;

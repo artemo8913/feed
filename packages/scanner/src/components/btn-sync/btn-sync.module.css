@@ -1,5 +1,5 @@
 .btnSync {
-    position: fixed;
+    position: absolute;
     top: 2vw;
     left: 2vw;
     z-index: 1000;
