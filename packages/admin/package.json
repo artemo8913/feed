@@ -64,7 +64,7 @@
         "dev": "next dev -p 3000",
         "build": "next build",
         "test": "node scripts/test.js",
-        "lint:js": "yarn run g:eslint -c .eslintrc --ext .ts --ext .tsx src",
+        "lint:js": "eslint -c .eslintrc --ext .ts --ext .tsx src",
         "lint-fix:js": "eslint -c .eslintrc --fix --ext .ts --ext .tsx src",
         "tc": "tsc --noemit --emitDeclarationOnly false"
     },

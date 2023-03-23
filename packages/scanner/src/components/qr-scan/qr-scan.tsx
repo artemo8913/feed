@@ -1,14 +1,12 @@
 import type { CSSProperties, FC } from 'react';
 import React, { memo, useCallback, useContext, useEffect, useRef, useState } from 'react';
 import QrScanner from 'qr-scanner';
+import sas from 'onscan.js/onscan';
 
 import { AppContext } from '~/app-context';
 import { ReactComponent as Flash } from '~/icons/flash.svg';
 
 import css from './qr-scan.module.css';
-
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const sas = require('onscan.js/onscan');
 
 // @ts-ignore
 sas.attachTo(document, {
