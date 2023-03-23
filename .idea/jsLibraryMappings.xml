@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="JavaScriptLibraryMappings">
-    <file url="file://$PROJECT_DIR$" libraries="{feed/node_modules}" />
     <file url="file://$PROJECT_DIR$/packages/core" libraries="{feed/packages/core/node_modules}" />
     <file url="file://$PROJECT_DIR$/packages/scanner" libraries="{feed/packages/scanner/node_modules}" />
-    <file url="PROJECT" libraries="{@types/react, admin, api, feed/node_modules, feed/packages/core/node_modules, feed/packages/scanner/node_modules, ui}" />
+    <file url="PROJECT" libraries="{@types/react, admin, api, feed/packages/core/node_modules, feed/packages/scanner/node_modules, ui}" />
     <includedPredefinedLibrary name="HTTP Pre-Request and Response Handler" />
     <includedPredefinedLibrary name="Node.js Core" />
   </component>
