@@ -25,6 +25,14 @@
     "workspaces": {
         "packages": [
             "packages/*"
+        ],
+        "nohoist": [
+            "@craco/craco",
+            "@craco/craco/**",
+            "**/@craco/craco/**",
+            "react-scripts",
+            "react-scripts/**",
+            "**/react-scripts/**"
         ]
     },
     "resolutions": {
