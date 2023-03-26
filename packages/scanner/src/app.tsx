@@ -17,6 +17,7 @@ import { Left1Screen } from '~/screens/left1';
 import { MainScreen } from '~/screens/main';
 import { Right1Screen } from '~/screens/rigth1';
 import { useCheckAuth } from '~/request';
+
 // import { clearCache } from './lib/utils';
 // eslint-disable-next-line import/no-unresolved
 import ver from '!!raw-loader!pwa-ver.txt';
