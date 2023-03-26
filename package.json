@@ -22,10 +22,19 @@
         "stat": "tokei",
         "husky-install": "yarn run husky install"
     },
-    "packageManager": "yarn@3.4.1",
-    "workspaces": [
-        "packages/*"
-    ],
+    "workspaces": {
+        "packages": [
+            "packages/*"
+        ],
+        "nohoist": [
+            "@craco/craco",
+            "@craco/craco/**",
+            "**/@craco/craco/**",
+            "react-scripts",
+            "react-scripts/**",
+            "**/react-scripts/**"
+        ]
+    },
     "resolutions": {
         "axios": "^1.3.3"
     },
@@ -41,6 +50,6 @@
         "rimraf": "^4.1.2"
     },
     "peerDependencies": {
-        "stylelint": "*"
+        "stylelint": "workspace:^"
     }
 }

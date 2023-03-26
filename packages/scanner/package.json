@@ -3,9 +3,6 @@
     "version": "0.0.1",
     "private": true,
     "homepage": "/cl421io",
-    "installConfig": {
-        "hoistingLimits": "workspaces"
-    },
     "scripts": {
         "start": "BROWSER=none CLIENT_ENV=development craco start --verbose",
         "build": "CLIENT_ENV=production craco build --verbose",
@@ -16,6 +13,16 @@
         "lint": "npm-run-all -s lint:*",
         "lint-fix": "npm-run-all -s lint-fix:*",
         "tc": "tsc --noemit --emitDeclarationOnly false"
+    },
+    "workspaces": {
+        "nohoist": [
+            "@craco/craco",
+            "@craco/craco/**",
+            "**/@craco/craco/**",
+            "react-scripts",
+            "react-scripts/**",
+            "**/react-scripts/**"
+        ]
     },
     "browserslist": {
         "production": [
@@ -49,16 +56,14 @@
         "workbox-range-requests": "^6.5.3",
         "workbox-routing": "^6.5.3",
         "workbox-strategies": "^6.5.3",
-        "workbox-streams": "^6.5.3"
-    },
-    "peerDependencies": {
-        "@craco/craco": "*",
-        "@jackwilsdon/craco-use-babelrc": "*"
-    },
-    "devDependencies": {
+        "workbox-streams": "^6.5.3",
         "@craco/craco": "^7.0.0",
         "copy-webpack-plugin": "^11.0.0",
         "react-app-alias-ex": "^2.1.0",
         "react-scripts": "^5.0.1"
+    },
+    "peerDependencies": {
+        "@craco/craco": "*",
+        "@jackwilsdon/craco-use-babelrc": "*"
     }
 }
