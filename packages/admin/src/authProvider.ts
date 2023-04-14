@@ -49,7 +49,6 @@ export const authProvider: AuthProvider = {
             axios.defaults.headers.common = {
                 Authorization: `Bearer ${token}`
             };
-
             return Promise.resolve({ user: data });
         } catch (error) {
             return Promise.reject(error);
