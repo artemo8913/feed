@@ -16,7 +16,7 @@
     },
     "workspaces": {
         "nohoist": [
-            "*"
+            "**"
         ]
     },
     "browserslist": {
