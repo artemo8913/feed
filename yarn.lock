@@ -4760,7 +4760,7 @@ before-after-hook@^2.2.0:
   resolved "https://registry.yarnpkg.com/before-after-hook/-/before-after-hook-2.2.3.tgz#c51e809c81a4e354084422b9b26bad88249c517c"
   integrity sha512-NzUnlZexiaH/46WDhANlyR2bXRopNg4F/zuSA3OpZnllCUgRaOF2znDioDWrmbNVsuZk6l9pMquQB38cfBZwkQ==
 
-better-sqlite3-multiple-ciphers@^7.6.2, "better-sqlite3@npm:better-sqlite3-multiple-ciphers@7.6.2":
+better-sqlite3-multiple-ciphers@^7.6.2, better-sqlite3@7.6.2:
   name better-sqlite3
   version "7.6.2"
   resolved "https://registry.yarnpkg.com/better-sqlite3-multiple-ciphers/-/better-sqlite3-multiple-ciphers-7.6.2.tgz#14bdae0a129fa7b60b07a175f0c047cc5fef7567"
