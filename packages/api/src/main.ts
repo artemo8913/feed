@@ -1,6 +1,8 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import * as fs from 'fs';
+
 
 import { AppModule } from './app.module';
 
@@ -17,6 +19,9 @@ async function bootstrap() {
         .addBearerAuth({ type: 'http', scheme: 'bearer', bearerFormat: 'JWT' })
         .build();
     const document = SwaggerModule.createDocument(app, options);
+
+    fs.writeFileSync("./swagger-spec.json", JSON.stringify(document));
+
     SwaggerModule.setup('api-doc', app, document);
 
     // validation

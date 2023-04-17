@@ -1,6 +1,5 @@
 import { TsconfigPathsPlugin } from 'tsconfig-paths-webpack-plugin';
 import CircularDependencyPlugin from 'circular-dependency-plugin';
-import withTM from 'next-transpile-modules';
 import { i18n } from './next-i18next.config.mjs';
 import assert from 'assert';
 
@@ -11,13 +10,7 @@ assert(process.env.API_URL_ENV, 'env variables must be set');
 
 // TODO check https://github.com/vercel/next.js/issues/39161
 
-const plugins = [withTM([
-    '@feed/ui',
-    '@feed/core',
-    '@feed/api'
-])];
-
-let customConfig = {
+const nextConfig = {
     experimental: {
         newNextLinkBehavior: true
     },
@@ -56,19 +49,12 @@ let customConfig = {
         }
 
         return config;
-    }
-};
-
-const nextConfig = (_phase, { defaultConfig }) => {
-    return plugins.reduce(
-        (acc, plugin) => {
-            if (Array.isArray(plugin)) {
-                return plugin[0](acc, plugin[1]);
-            }
-            return plugin(acc);
-        },
-        { ...customConfig }
-    );
+    },
+    transpilePackages: [
+        '@feed/ui',
+        '@feed/core',
+        '@feed/api'
+    ]
 };
 
 export default nextConfig;
