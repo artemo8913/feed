@@ -113,8 +113,8 @@ COPY --from=builder /app/packages/admin/public/ /app/packages/admin/public/
 
 COPY --from=builder /app/packages/ui/package.json /app/packages/ui/
 
-#COPY --from=builder /app/packages/scanner/package.json /app/packages/scanner/
-#COPY --from=builder /app/packages/scanner/build/ /app/packages/scanner/build/
+COPY --from=builder /app/packages/scanner/package.json /app/packages/scanner/
+COPY --from=builder /app/packages/scanner/build/ /app/packages/scanner/build/
 
 COPY --from=builder /app/nginx.conf /etc
 
