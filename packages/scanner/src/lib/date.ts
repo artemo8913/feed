@@ -21,4 +21,7 @@ dayjs.extend(utc);
 
 export const DATE_FORMAT = 'YYYY-MM-DD';
 
-export const today = dayjs().format(DATE_FORMAT);
+export const today = dayjs('2022-07-12').format(DATE_FORMAT);
+export const breakfast = dayjs(today).add(14, 'h');
+export const lunch = dayjs(today).add(20, 'h');
+export const dinner = dayjs(today).add(24, 'h');

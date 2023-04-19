@@ -29,7 +29,7 @@ button {
         }
 
         &.right1 {
-            background-color: var(--c-blue);
+            /*background-color: var(--c-blue);*/
         }
     }
 }
