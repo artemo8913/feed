@@ -91,36 +91,44 @@ export function joinTxs(txsCollection: Collection<TransactionJoined>): Promise<A
     });
 }
 
-export async function getVolsOnField(date: Date, feedType?: FeedType): Promise<Array<Volunteer>> {
+export async function getVols(statsDate: Date, feedType?: FeedType): Promise<Array<Volunteer>> {
     if (feedType) {
         return db.volunteers
             .where('feed_type')
             .equals(feedType)
             .filter((vol) => {
-                return vol.active_from < date && vol.active_to > date && vol.is_active && !vol.is_blocked;
+                return (
+                    vol.active_to &&
+                    vol.active_from &&
+                    vol.active_from <= dayjs(statsDate).add(1, 'd').toDate() &&
+                    vol.active_to >= statsDate &&
+                    !(vol.paid && !vol.is_active)
+                );
             })
             .toArray();
     } else {
         return db.volunteers
             .toCollection()
             .filter((vol) => {
-                return vol.active_from < date && vol.active_to > date && vol.is_active && !vol.is_blocked;
+                return (
+                    vol.active_to &&
+                    vol.active_from &&
+                    vol.active_from <= dayjs(statsDate).add(1, 'd').toDate() &&
+                    vol.active_to >= statsDate &&
+                    !(vol.paid && !vol.is_active)
+                );
             })
             .toArray();
     }
 }
 
-export async function getFeedStats(
-    dateFrom: Date,
-    dateTo: Date,
-    feedType?: FeedType
-): Promise<Array<TransactionJoined>> {
-    const txs = db.transactions.where('ts').between(dayjs(dateFrom).unix(), dayjs(dateTo).unix());
+export async function getFeedStats(statsDate: Date, feedType?: FeedType): Promise<Array<TransactionJoined>> {
+    const txs = db.transactions.where('ts').between(dayjs(statsDate).unix(), dayjs(statsDate).add(1, 'd').unix());
 
     if (feedType) {
         return joinTxs(txs).then((txs) =>
             txs.filter((tx) => {
-                return tx.vol?.feed_type === feedType && tx.vol.is_active && !tx.vol.is_blocked;
+                return tx.vol && tx.vol.feed_type === feedType;
             })
         );
     } else {
