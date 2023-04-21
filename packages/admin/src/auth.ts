@@ -21,7 +21,9 @@ export const getUserData = <T extends true | false>(ctx, decode: T): UserDataRet
     const cookies = nookies.get(ctx);
     const token = cookies[AUTH_COOKIE_NAME];
 
-    if (!token) return null;
+    if (!token) {
+        return null;
+    }
 
     return decode ? <UserDataReturn<T>>jwt_decode<UserData>(token) : <UserDataReturn<T>>token;
 };
