@@ -4,8 +4,8 @@
     "private": true,
     "homepage": "/cl421io",
     "scripts": {
-        "start": "cross-env BROWSER=none CLIENT_ENV=development craco start --verbose",
-        "build": "cross-env CLIENT_ENV=production craco build --verbose",
+        "start": "BROWSER=none CLIENT_ENV=development craco start --verbose",
+        "build": "CLIENT_ENV=production craco build --verbose",
         "lint:css": "stylelint ./src/**/*.css",
         "lint-fix:css": "stylelint --fix ./src/**/*.css",
         "lint:js": "eslint -c .eslintrc --ext .ts --ext .tsx src",
@@ -60,7 +60,9 @@
         "@craco/craco": "^7.0.0",
         "copy-webpack-plugin": "^11.0.0",
         "react-app-alias-ex": "^2.1.0",
-        "react-scripts": "^5.0.1"
+        "react-scripts": "^5.0.1",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0"
     },
     "peerDependencies": {
         "@craco/craco": "*",
