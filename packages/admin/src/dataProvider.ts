@@ -1,6 +1,6 @@
 import crudDataProvider from '@pankod/refine-nestjsx-crud';
 
-import { API_URL } from '~/const';
+import { NEW_API_URL } from '~/const';
 import { axios } from '~/authProvider';
 import { getUserData } from '~/auth';
 
@@ -13,6 +13,6 @@ if (token) {
 }
 
 // @ts-ignore
-const dataProvider = crudDataProvider(API_URL, axios);
+const dataProvider = crudDataProvider(NEW_API_URL, axios);
 
 export { dataProvider };
