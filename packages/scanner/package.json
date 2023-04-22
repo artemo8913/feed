@@ -4,7 +4,7 @@
     "private": true,
     "homepage": "/cl421io",
     "scripts": {
-        "start": "BROWSER=none CLIENT_ENV=development craco start --verbose",
+        "start": "craco start --verbose BROWSER=none CLIENT_ENV=development",
         "build": "CLIENT_ENV=production craco build --verbose",
         "lint:css": "stylelint ./src/**/*.css",
         "lint-fix:css": "stylelint --fix ./src/**/*.css",

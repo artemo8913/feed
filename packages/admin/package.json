@@ -20,6 +20,7 @@
         "camelcase": "^6.2.1",
         "case-sensitive-paths-webpack-plugin": "^2.4.0",
         "circular-dependency-plugin": "^5.2.2",
+        "cross-env": "^7.0.3",
         "css-loader": "^6.5.1",
         "css-minimizer-webpack-plugin": "^3.2.0",
         "file-loader": "^6.2.0",
@@ -42,9 +43,9 @@
         "onscan.js": "^1.5.2",
         "prompts": "^2.4.2",
         "react": "^18.2.0",
-        "react-dom": "^18.2.0",
         "react-app-polyfill": "^3.0.0",
         "react-dev-utils": "^12.0.1",
+        "react-dom": "^18.2.0",
         "react-i18next": "^11.18.3",
         "react-markdown": "^8.0.0",
         "react-mde": "^11.5.0",
@@ -63,7 +64,7 @@
         "workbox-webpack-plugin": "^6.4.1"
     },
     "scripts": {
-        "dev": "next dev -p 3000",
+        "dev": "cross-env API_URL_ENV='http://localhost:4000/api' next dev -p 3000",
         "build": "next build",
         "test": "node scripts/test.js",
         "lint:js": "eslint -c .eslintrc --ext .ts --ext .tsx src",
