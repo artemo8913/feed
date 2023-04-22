@@ -19,7 +19,7 @@ import { CustomSider } from '~/components';
 import { Dashboard } from '~/components/dashboard';
 import { dataProvider } from '~/dataProvider';
 import { LoginPage } from '~/components/login';
-import { PublicStats } from '~/components/public-stats';
+import { PublicStats } from '~/components/entities/statistic';
 
 // eslint-disable-next-line no-restricted-imports
 import { i18n } from '../../next-i18next.config.mjs';
@@ -48,20 +48,7 @@ const Feed = ({ Component, pageProps }: AppProps): JSX.Element | null => {
 
     return (
         <Refine
-            routerProvider={{
-                ...routerProvider,
-                routes: [
-                    {
-                        element: <Dashboard />,
-                        path: '/dashboard',
-                        layout: true
-                    },
-                    {
-                        element: <PublicStats />,
-                        path: '/pstat'
-                    }
-                ]
-            }}
+            routerProvider={routerProvider}
             DashboardPage={Dashboard}
             ReadyPage={CustomReadyPage}
             notificationProvider={notificationProvider}
@@ -81,7 +68,12 @@ const Feed = ({ Component, pageProps }: AppProps): JSX.Element | null => {
                     create: DepartmentCreate,
                     edit: DepartmentEdit,
                     show: DepartmentShow,
-                    icon: <Icons.ProfileOutlined />
+                    icon: <Icons.AccountBookOutlined />
+                },
+                {
+                    name: 'statistics',
+                    list: PublicStats,
+                    icon: <Icons.LineChartOutlined />
                 },
                 {
                     name: 'vols',
