@@ -19,7 +19,7 @@ import { CustomSider } from '~/components';
 import { Dashboard } from '~/components/dashboard';
 import { dataProvider } from '~/dataProvider';
 import { LoginPage } from '~/components/login';
-import { PublicStats } from '~/components/entities/statistic';
+import { PublicStatistic } from '~/components/entities/statistic';
 
 // eslint-disable-next-line no-restricted-imports
 import { i18n } from '../../next-i18next.config.mjs';
@@ -72,7 +72,7 @@ const Feed = ({ Component, pageProps }: AppProps): JSX.Element | null => {
                 },
                 {
                     name: 'statistics',
-                    list: PublicStats,
+                    list: PublicStatistic,
                     icon: <Icons.LineChartOutlined />
                 },
                 {

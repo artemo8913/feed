@@ -5,10 +5,13 @@ import { VolEntity } from '~/interfaces';
 import { DatePicker } from 'antd';
 import { default as dayjsExt } from './dateHealper';
 import { ColumnConfig, LineConfig } from '@ant-design/plots';
+
+import { apiMock } from './mock';
+import { TableStats } from './TableStats';
+
 const { RangePicker } = DatePicker;
 const Line = dynamic(() => import('@ant-design/plots').then(({ Line }) => Line), { ssr: false });
 const Column = dynamic(() => import('@ant-design/plots').then(({ Column }) => Column), { ssr: false });
-
 
 export interface IFactMockData {
     date: dayjsExt.Dayjs;
@@ -48,7 +51,6 @@ const factDataMock: Array<IFactMockData> = [
         category: 'Фактически накормлено, чел'
     }
 ];
-
 
 /**Настройки для линейчатого графика*/
 const lineConfig: Omit<LineConfig, 'data'> = {
@@ -111,7 +113,7 @@ function findHowManyHumansEat(factData: Array<IFactMockData>, date: dayjsExt.Day
     return factHumansCountGoingToEat || 0;
 }
 
-export function PublicStats() {
+export function PublicStatistic() {
     const { data: vols } = useList<VolEntity>({
         resource: 'vols',
         config: {
@@ -168,6 +170,7 @@ export function PublicStats() {
     }
     return (
         <div>
+            <TableStats />
             <RangePicker onChange={changeTimePeriod} />
             <Line data={lineDataArr} {...lineConfig} />
             <br />
