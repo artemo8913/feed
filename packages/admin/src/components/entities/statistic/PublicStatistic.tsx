@@ -1,180 +1,115 @@
 import { useState, useCallback } from 'react';
-import dynamic from 'next/dynamic';
-import { GetListResponse, useList } from '@pankod/refine-core';
-import { VolEntity } from '~/interfaces';
-import { DatePicker } from 'antd';
+import { Col, Row, Form, Radio, DatePicker, Divider } from 'antd';
+import { RadioChangeEvent } from '@pankod/refine-antd';
 import { default as dayjsExt } from './dateHealper';
-import { ColumnConfig, LineConfig } from '@ant-design/plots';
+import TableStats, { TableStatDataType } from './TableStats';
+import locale from 'antd/lib/date-picker/locale/ru_RU';
+import { apiMock, ICurrentAPI } from './mock';
+import LinearChart from './LinearChart';
+import ColumnChart from './ColumnChart';
 
-import { apiMock } from './mock';
-import { TableStats } from './TableStats';
+type TypeOfHumans = 'all' | 'meatEaters' | 'vegetarian';
+type MealTimeEN = 'morning' | 'lunch' | 'dinner' | 'night' | 'total';
+type MealTimeRU = 'завтрак' | 'обед' | 'ужин' | 'дожор' | 'всего';
 
 const { RangePicker } = DatePicker;
-const Line = dynamic(() => import('@ant-design/plots').then(({ Line }) => Line), { ssr: false });
-const Column = dynamic(() => import('@ant-design/plots').then(({ Column }) => Column), { ssr: false });
+const dateFormat = 'DD.MM.YYYY';
+const apiUrl = 'https://yclins.cherepusick.keenetic.name/feeds';
 
-export interface IFactMockData {
-    date: dayjsExt.Dayjs;
-    value: number;
-    category: string;
-}
-
-const factDataMock: Array<IFactMockData> = [
-    {
-        date: dayjsExt(),
-        value: 8,
-        category: 'Фактически накормлено, чел'
-    },
-    {
-        date: dayjsExt().add(1, 'day'),
-        value: 8,
-        category: 'Фактически накормлено, чел'
-    },
-    {
-        date: dayjsExt().add(2, 'day'),
-        value: 6,
-        category: 'Фактически накормлено, чел'
-    },
-    {
-        date: dayjsExt().add(3, 'day'),
-        value: 6,
-        category: 'Фактически накормлено, чел'
-    },
-    {
-        date: dayjsExt().add(4, 'day'),
-        value: 6,
-        category: 'Фактически накормлено, чел'
-    },
-    {
-        date: dayjsExt().add(5, 'day'),
-        value: 6,
-        category: 'Фактически накормлено, чел'
+//Функции для обработки данных
+function handleDataForTable(res: ICurrentAPI, typeOfEater: TypeOfHumans): TableStatDataType[] {
+    if (!res) {
+        return [];
     }
-];
-
-/**Настройки для линейчатого графика*/
-const lineConfig: Omit<LineConfig, 'data'> = {
-    xField: 'date',
-    yField: 'value',
-    seriesField: 'category'
-};
-interface ILineData {
-    date: string;
-    value: number;
-    category: 'Необходимо накормить, чел' | 'Фактически накормлено, чел';
-}
-/**Настройки для столбчатого графика*/
-const columnConfig: Omit<ColumnConfig, 'data'> = {
-    xField: 'date',
-    yField: 'value',
-    isGroup: true,
-    isStack: true,
-    seriesField: 'mealTime',
-    groupField: 'category',
-    tooltip: {
-        formatter: (datum) => ({
-            name: `${datum.mealTime} ${datum.category === 'план' ? 'план' : 'факт'}`,
-            value: datum.value
-        })
+    const statsFact = { morning: 0, lunch: 0, dinner: 0, night: 0, total: 0 };
+    let nutritionTypePlanned = 0;
+    let totalNutritionTypePlanned = 0;
+    for (let mealTime in statsFact) {
+        if (typeOfEater === 'all') {
+            statsFact[mealTime] = res.stats[mealTime]['веган'] + res.stats[mealTime]['мясоед'];
+        } else if (typeOfEater === 'meatEaters') {
+            statsFact[mealTime] = res.stats[mealTime]['мясоед'];
+        } else if (typeOfEater === 'vegetarian') {
+            statsFact[mealTime] = res.stats[mealTime]['веган'];
+        }
     }
-};
-interface IColumnData {
-    date: string;
-    category: 'план' | 'факт';
-    value: number;
-    mealTime: 'завтрак' | 'обед' | 'ужин';
-}
-/**Возращает количество волонтеров, которые будет находится в поле в определенную дату.
-Отфильтровывается массив с волонтерами, activeTo которых не менее переданной в функцию даты */
-function findHowManyHumansPlanToEat(vols: GetListResponse<VolEntity> | undefined, date: dayjsExt.Dayjs) {
-    const humanCount = vols?.data.filter((volData) => {
-        if (!volData.activeTo) {
-            return false;
-        }
-        const dateActiveTo = dayjsExt(volData.activeTo);
-        if (dayjsExt(dateActiveTo).valueOf() >= date.valueOf()) {
-            return true;
-        }
-        return false;
-    }).length;
-    return humanCount || 0;
-}
-/**Возращает количество волонтеров, которое фактически поели в определенную дату. */
-function findHowManyHumansEat(factData: Array<IFactMockData>, date: dayjsExt.Dayjs) {
-    const factHumansCountGoingToEat = factData.filter((factData) => {
-        if (!factData.date) {
-            return false;
-        }
-        if (date.isSame(factData.date, 'date')) {
-            return true;
-        }
-        return false;
-    }).length;
-    return factHumansCountGoingToEat || 0;
+
+    if (typeOfEater === 'all') {
+        nutritionTypePlanned = res.nutritionTypePlanned['веган'] + res.nutritionTypePlanned['мясоед'];
+    } else if (typeOfEater === 'meatEaters') {
+        nutritionTypePlanned = res.nutritionTypePlanned['мясоед'];
+    } else if (typeOfEater === 'vegetarian') {
+        nutritionTypePlanned = res.nutritionTypePlanned['веган'];
+    }
+
+    return [
+        { key: '1', mealTimeType: 'завтрак', nutritionTypePlanned, statsFact: statsFact.morning },
+        { key: '2', mealTimeType: 'обед', nutritionTypePlanned, statsFact: statsFact.lunch },
+        { key: '3', mealTimeType: 'ужин', nutritionTypePlanned, statsFact: statsFact.dinner },
+        { key: '4', mealTimeType: 'дожор', nutritionTypePlanned, statsFact: statsFact.night },
+        { key: '5', mealTimeType: 'всего', nutritionTypePlanned, statsFact: statsFact.total }
+    ];
 }
 
-export function PublicStatistic() {
-    const { data: vols } = useList<VolEntity>({
-        resource: 'vols',
-        config: {
-            filters: [
-                {
-                    field: 'isActive',
-                    operator: 'eq',
-                    value: true
-                },
-                {
-                    field: 'isBlocked',
-                    operator: 'eq',
-                    value: false
-                }
-            ]
+function PublicStatistic() {
+    // Фильтр типа питания
+    const [typeOfEater, setTypeOfEater] = useState<TypeOfHumans>('all');
+    const changeTypeOfEater = (e: RadioChangeEvent) => {
+        setTypeOfEater(e.target?.value);
+    };
+    // Для выбора даты
+    const [date, setDate] = useState<dayjsExt.Dayjs | null>(dayjsExt().startOf('date'));
+    const changeDate = (value: dayjsExt.Dayjs | null, dateString: string) => {
+        setDate(value);
+    };
+    const convertDateToStringForApi = (date: dayjsExt.Dayjs | null) => {
+        if (date === null) {
+            return dayjsExt().format('YYYY-MM-DD HH:mm:ss');
         }
-    });
-    const [timePeriod, setTimePeriod] = useState({
-        start: dayjsExt().startOf('date'),
-        end: dayjsExt().add(1, 'day').startOf('date')
-    });
+        return date.format('YYYY-MM-DD HH:mm:ss');
+    };
+
+    // Для выбора диапазона дат
+    const [timePeriod, setTimePeriod] = useState([
+        dayjsExt().startOf('date'),
+        dayjsExt().add(1, 'day').startOf('date')
+    ]);
     const changeTimePeriod = useCallback((_, range: [string, string]) => {
-        setTimePeriod({
-            start: dayjsExt(range[0], 'YYYY-MM-DD'),
-            end: dayjsExt(range[1], 'YYYY-MM-DD')
-        });
+        setTimePeriod([dayjsExt(range[0], 'YYYY-MM-DD'), dayjsExt(range[1], 'YYYY-MM-DD')]);
     }, []);
-    /**Массив с данными для построения линейчатого графика */
-    const lineDataArr: Array<ILineData> = [];
-    /**Массив с данными для построения столбачтого графика */
-    const columnDataArr: Array<IColumnData> = [];
-    //Цикл перебора дней в интервале дат (по умолчанию интервал "сегодня - завтра")
-    for (
-        let currentDate = timePeriod.start.valueOf();
-        currentDate <= timePeriod.end.valueOf();
-        currentDate = dayjsExt(currentDate).add(1, 'day').startOf('date').valueOf()
-    ) {
-        const date = dayjsExt(currentDate);
-        const dateStr = date.format('DD.MM.YYYY');
-        const planHumansCountGoingToEat = findHowManyHumansPlanToEat(vols, date);
-        const factHumansCountGoingToEat = findHowManyHumansEat(factDataMock, date);
-        lineDataArr.push({ date: dateStr, value: planHumansCountGoingToEat, category: 'Необходимо накормить, чел' });
-        lineDataArr.push({ date: dateStr, value: factHumansCountGoingToEat, category: 'Фактически накормлено, чел' });
-        columnDataArr.push(
-            { date: dateStr, category: 'план', value: Number(planHumansCountGoingToEat), mealTime: 'завтрак' },
-            { date: dateStr, category: 'план', value: Number(planHumansCountGoingToEat), mealTime: 'обед' },
-            { date: dateStr, category: 'план', value: Number(planHumansCountGoingToEat), mealTime: 'ужин' }
-        );
-        columnDataArr.push(
-            { date: dateStr, category: 'факт', value: Number(factHumansCountGoingToEat), mealTime: 'завтрак' },
-            { date: dateStr, category: 'факт', value: Number(factHumansCountGoingToEat), mealTime: 'обед' },
-            { date: dateStr, category: 'факт', value: Number(factHumansCountGoingToEat), mealTime: 'ужин' }
-        );
-    }
+
+    const dataForTable = handleDataForTable(apiMock[convertDateToStringForApi(date)], typeOfEater);
+
     return (
         <div>
-            <TableStats />
-            <RangePicker onChange={changeTimePeriod} />
-            <Line data={lineDataArr} {...lineConfig} />
-            <br />
-            <Column data={columnDataArr} {...columnConfig} />
+            <Row>
+                <Col span={16} offset={4}>
+                    <Form layout='inline'>
+                        <Form.Item label='Тип людей по питанию'>
+                            <Radio.Group value={typeOfEater} onChange={changeTypeOfEater}>
+                                <Radio.Button value='all'>Все</Radio.Button>
+                                <Radio.Button value='meatEaters'>Мясоеды</Radio.Button>
+                                <Radio.Button value='vegetarian'>Вегетерианцы</Radio.Button>
+                            </Radio.Group>
+                        </Form.Item>
+                        <Form.Item>
+                            <DatePicker
+                                locale={locale}
+                                defaultValue={date || undefined}
+                                onChange={changeDate}
+                                format={dateFormat}
+                            />
+                        </Form.Item>
+                    </Form>
+                    <TableStats data={dataForTable} />
+                    <Divider />
+                    <RangePicker locale={locale} format={dateFormat} onChange={changeTimePeriod} />
+                    {/* <LinearChart /> */}
+                    {/* <ColumnChart /> */}
+                </Col>
+            </Row>
         </div>
     );
 }
+export { PublicStatistic };
+export type { MealTimeRU };
