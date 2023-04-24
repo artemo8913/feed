@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import dayjs from 'dayjs';
 
-import { FeedType, getFeedStats, getVols } from '~/db';
+import { FeedType, getFeedStats, getVolsOnField } from '~/db';
 import type { DbQueryHook } from '~/request-local-db/lib';
 import { getMealTime } from '~/lib/date';
 
@@ -28,16 +28,16 @@ export const useGetLocalStats = (statsDate): DbQueryHook => {
         setProgress(true);
 
         const onFieldPromises = Object.keys(FeedType).map(async (key) => {
-            await getVols(statsDate, FeedType[key]).then((vols) => {
+            await getVolsOnField(statsDate, FeedType[key]).then((vols) => {
                 const breakfast = vols.filter(
                     (vol) =>
-                        vol.active_to > mealTime.breakfast.toDate() && vol.active_from < mealTime.breakfast.toDate()
+                        vol.active_to >= mealTime.breakfast.toDate() && vol.active_from < mealTime.breakfast.toDate()
                 ).length;
                 const lunch = vols.filter(
-                    (vol) => vol.active_to > mealTime.lunch.toDate() && vol.active_from < mealTime.lunch.toDate()
+                    (vol) => vol.active_to >= mealTime.lunch.toDate() && vol.active_from < mealTime.lunch.toDate()
                 ).length;
                 const dinner = vols.filter(
-                    (vol) => vol.active_to > mealTime.dinner.toDate() && vol.active_from < mealTime.dinner.toDate()
+                    (vol) => vol.active_to >= mealTime.dinner.toDate() && vol.active_from < mealTime.dinner.toDate()
                 ).length;
 
                 onFieldTemp[FeedType[key]] = {
@@ -66,13 +66,13 @@ export const useGetLocalStats = (statsDate): DbQueryHook => {
         const fedPromises = Object.keys(FeedType).map(async (key) => {
             await getFeedStats(statsDate, FeedType[key]).then((txs) => {
                 const breakfast = txs.filter(
-                    (tx) => tx.vol && tx.ts > dayjs(statsDate).unix() && tx.ts < mealTime.breakfast.unix()
+                    (tx) => tx.vol && tx.ts >= dayjs(statsDate).unix() && tx.ts < mealTime.breakfast.unix()
                 ).length;
                 const lunch = txs.filter(
-                    (tx) => tx.vol && tx.ts > mealTime.breakfast.unix() && tx.ts < mealTime.lunch.unix()
+                    (tx) => tx.vol && tx.ts >= mealTime.breakfast.unix() && tx.ts < mealTime.lunch.unix()
                 ).length;
                 const dinner = txs.filter(
-                    (tx) => tx.vol && tx.ts > mealTime.lunch.unix() && tx.ts < mealTime.dinner.unix()
+                    (tx) => tx.vol && tx.ts >= mealTime.lunch.unix() && tx.ts < mealTime.dinner.unix()
                 ).length;
                 fedTemp[FeedType[key]] = {
                     breakfast,

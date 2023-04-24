@@ -91,7 +91,7 @@ export function joinTxs(txsCollection: Collection<TransactionJoined>): Promise<A
     });
 }
 
-export async function getVols(statsDate: Date, feedType?: FeedType): Promise<Array<Volunteer>> {
+export async function getVolsOnField(statsDate: Date, feedType?: FeedType): Promise<Array<Volunteer>> {
     if (feedType) {
         return db.volunteers
             .where('feed_type')

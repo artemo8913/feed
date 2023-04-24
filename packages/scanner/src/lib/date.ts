@@ -27,7 +27,7 @@ export type MealTime = {
     dinner: dayjs.Dayjs;
 };
 
-export const getToday = (): string => dayjs('2022-07-12').format(DATE_FORMAT);
+export const getToday = (): string => dayjs().format(DATE_FORMAT);
 
 export const getMealTime = (): MealTime => {
     const today = getToday();

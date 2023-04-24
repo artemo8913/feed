@@ -1,0 +1,24 @@
+.label {
+    display: inline-block;
+    padding: 5px 10px;
+    border-right: 1px solid #d0d0d0;
+
+    transition: background-color 0.1s;
+
+    &:nth-last-child(1) {
+         border-right: none;
+    }
+}
+
+.btnGroup {
+    overflow: hidden;
+}
+
+.radio {
+    display: none;
+}
+
+.active {
+    background: #333;
+    color: #fff;
+}
