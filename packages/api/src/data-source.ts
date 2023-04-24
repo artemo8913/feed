@@ -9,8 +9,8 @@ import { FeedTypeEntity } from './entities/feed-type.entity';
 import { LocationEntity } from './entities/location.entity';
 
 export const AppDataSource = new DataSource({
-    driver: require('better-sqlite3'),
-    type: 'better-sqlite3',
+    driver: require('sqlite3'),
+    type: 'sqlite',
     // host: configService.get<string>('TYPEORM_HOST'),
     // port: configService.get<number>('TYPEORM_PORT'),
     // username: configService.get<string>('TYPEORM_USERNAME'),
@@ -29,9 +29,9 @@ export const AppDataSource = new DataSource({
     ],
     migrations: ['src/migrations/*.{ts, js}'],
     logging: true,
-    prepareDatabase: async (db) => {
-        // console.log(db);
-        await db.pragma(`cipher='sqlcipher'`);
-        // await db.pragma(`foreign_keys=ON`);
-    },
+    // prepareDatabase: async (db) => {
+    //     // console.log(db);
+    //     await db.pragma(`cipher='sqlcipher'`);
+    //     // await db.pragma(`foreign_keys=ON`);
+    // },
 });
