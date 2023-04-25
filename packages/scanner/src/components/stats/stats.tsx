@@ -15,11 +15,11 @@ export type FeedTypeState = 'total' | 'FT1' | 'FT2';
 const dev = process.env.NODE_ENV !== 'production';
 
 export const Stats = () => {
-    const { data, get, progress, updated } = useGetLocalStats(dayjs(getToday()).toDate());
+    const { error, fed, onField, progress, update, updated } = useGetLocalStats(dayjs(getToday()).toDate());
     const [feedTypeState, setFeedTypeState] = useState<FeedTypeState>('total');
 
     const updateStats = (): void => {
-        void get();
+        void update();
     };
 
     const test = () => {
@@ -42,11 +42,10 @@ export const Stats = () => {
                     Обновить
                 </button>
             </div>
-            {!progress && updated ? (
-                <StatsTable onField={data.onField[feedTypeState]} fed={data.fed[feedTypeState]} />
-            ) : (
-                <div>Загрузка...</div>
-            )}
+            {updated && <StatsTable onField={onField[feedTypeState]} fed={fed[feedTypeState]} />}
+            {progress && !error && <div>Загрузка...</div>}
+            {error && <div>Что-то пошло не так</div>}
+
             {dev && <button onClick={test}>Create x10 trans</button>}
         </>
     );

@@ -32,10 +32,6 @@ export const useSync = (baseUrl: string, pin: string | null, setAuth: (auth: boo
 
         // eslint-disable-next-line @typescript-eslint/no-misused-promises
         return new Promise((res, rej) => {
-<<<<<<< HEAD
-            // debugger;
-=======
->>>>>>> main
             const success = (): void => {
                 setFetching(false);
                 setError(null);

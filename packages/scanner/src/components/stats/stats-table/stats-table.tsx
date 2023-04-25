@@ -35,6 +35,11 @@ export const StatsTable = ({ fed, onField }: StatsTableProps) => {
                     <td>{fed.dinner}</td>
                     <td>{onField.dinner}</td>
                 </tr>
+                <tr>
+                    <th scope='row'>Дожор</th>
+                    <td>{fed.night}</td>
+                    <td>{onField.night}</td>
+                </tr>
             </tbody>
         </table>
     );

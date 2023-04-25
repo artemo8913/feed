@@ -101,9 +101,11 @@ export async function getVolsOnField(statsDate: Date, feedType?: FeedType): Prom
                     vol.active_to &&
                     vol.active_from &&
                     vol.active_from <= dayjs(statsDate).add(1, 'd').toDate() &&
-                    vol.active_to >= statsDate &&
-                    !(vol.paid && !vol.is_active)
+                    vol.active_to >= statsDate
                 );
+            })
+            .filter((vol) => {
+                return vol.active_from < statsDate ? vol.is_active : vol.paid ? vol.is_active : true;
             })
             .toArray();
     } else {
@@ -114,16 +116,18 @@ export async function getVolsOnField(statsDate: Date, feedType?: FeedType): Prom
                     vol.active_to &&
                     vol.active_from &&
                     vol.active_from <= dayjs(statsDate).add(1, 'd').toDate() &&
-                    vol.active_to >= statsDate &&
-                    !(vol.paid && !vol.is_active)
+                    vol.active_to >= statsDate
                 );
+            })
+            .filter((vol) => {
+                return vol.active_from < statsDate ? vol.is_active : vol.paid ? vol.is_active : true;
             })
             .toArray();
     }
 }
 
 export async function getFeedStats(statsDate: Date, feedType?: FeedType): Promise<Array<TransactionJoined>> {
-    const txs = db.transactions.where('ts').between(dayjs(statsDate).unix(), dayjs(statsDate).add(1, 'd').unix());
+    const txs = db.transactions.where('ts').between(dayjs(statsDate).unix(), dayjs(statsDate).add(31, 'h').unix());
 
     if (feedType) {
         return joinTxs(txs).then((txs) =>
