@@ -1,2 +1,2 @@
 export * from './lib';
-export * from './use-get-local-stats';
+export * from './use-local-stats';

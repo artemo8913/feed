@@ -5,7 +5,7 @@ export interface IStats {
     night: number;
 }
 
-export interface GetLocalStatsHook {
+export interface LocalStatsHook {
     error: any;
     progress: boolean;
     updated: boolean;

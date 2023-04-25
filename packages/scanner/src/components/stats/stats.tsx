@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
 
 import { StatsTable } from '~/components/stats/stats-table';
-import { useGetLocalStats } from '~/request-local-db';
+import { useLocalStats } from '~/request-local-db';
 import { createMockData } from '~/lib/mock';
 import { getToday } from '~/lib/date';
 import { StatsFilter } from '~/components/stats/stats-filter';
@@ -15,7 +15,7 @@ export type FeedTypeState = 'total' | 'FT1' | 'FT2';
 const dev = process.env.NODE_ENV !== 'production';
 
 export const Stats = () => {
-    const { error, fed, onField, progress, update, updated } = useGetLocalStats(dayjs(getToday()).toDate());
+    const { error, fed, onField, progress, update, updated } = useLocalStats(dayjs(getToday()).toDate());
     const [feedTypeState, setFeedTypeState] = useState<FeedTypeState>('total');
 
     const updateStats = (): void => {

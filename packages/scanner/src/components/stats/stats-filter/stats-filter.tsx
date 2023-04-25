@@ -24,16 +24,20 @@ export const StatsFilter = ({ feedTypeState, setFeedTypeState }: StatsFilterProp
     const buttons = buttonsData.map(({ label, name }) => {
         const active = feedTypeState === name;
         return (
-            <>
-                <input type='radio' className={style.radio} name={'feedType'} id={name} value={name} key={name} />
-                <label
-                    htmlFor={name}
-                    onClick={() => setFeedTypeState(name)}
-                    className={active ? `${style.active} ${style.label}` : style.label}
-                >
+            <div className={style.radioWrapper} key={name}>
+                <input
+                    type='radio'
+                    className={style.radio}
+                    name={'feedType'}
+                    id={name}
+                    value={name}
+                    onChange={() => setFeedTypeState(name)}
+                    checked={feedTypeState === name}
+                />
+                <label htmlFor={name} className={active ? `${style.active} ${style.label}` : style.label}>
                     {label}
                 </label>
-            </>
+            </div>
         );
     });
 

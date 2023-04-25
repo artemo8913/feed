@@ -1,10 +1,10 @@
 import { useState } from 'react';
 
 import { FeedType, getFeedStats, getVolsOnField } from '~/db';
-import type { GetLocalStatsHook, IStats } from '~/request-local-db/lib';
+import type { IStats, LocalStatsHook } from '~/request-local-db/lib';
 import { getMealTime } from '~/lib/date';
 
-export const useGetLocalStats = (statsDate): GetLocalStatsHook => {
+export const useLocalStats = (statsDate): LocalStatsHook => {
     const onFieldTemp: Record<string, IStats> = {};
     const fedTemp: Record<string, IStats> = {};
 
@@ -22,7 +22,6 @@ export const useGetLocalStats = (statsDate): GetLocalStatsHook => {
 
         const onFieldPromises = Object.keys(FeedType).map(async (key) => {
             await getVolsOnField(statsDate, FeedType[key]).then((vols) => {
-                console.log('len', vols.length);
                 const breakfast = vols.filter((vol) => vol.active_from < statsDate).length;
                 const lunch = vols.length;
                 const dinner = vols.length;
