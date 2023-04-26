@@ -11,6 +11,11 @@ button {
     min-height: 100vh;
     font-size: var(--fs);
 
+    h2 {
+        margin: 15px 0 10px 0;
+        text-align: center;
+    }
+
     .screen {
         position: relative;
         width: 100vw;
@@ -29,7 +34,7 @@ button {
         }
 
         &.right1 {
-            background-color: var(--c-blue);
+            /*background-color: var(--c-blue);*/
         }
     }
 }

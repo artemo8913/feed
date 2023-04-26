@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import type { Table } from 'dexie';
+import type { Collection, Table } from 'dexie';
 import Dexie from 'dexie';
 import { ulid } from 'ulid';
 
@@ -8,6 +8,10 @@ export interface Transaction {
     vol_id: number;
     amount: number;
     ts: number;
+}
+
+export interface TransactionJoined extends Transaction {
+    vol?: Volunteer;
 }
 
 export enum FeedType {
@@ -71,3 +75,67 @@ export const dbIncFeed = async (vol: Volunteer): Promise<any> => {
         });
     return await addTransaction(vol);
 };
+
+export function joinTxs(txsCollection: Collection<TransactionJoined>): Promise<Array<TransactionJoined>> {
+    return txsCollection.toArray((transactions: Array<TransactionJoined>) => {
+        const volsPromises = transactions.map((transaction) => {
+            return db.volunteers.get({ id: transaction.vol_id });
+        });
+
+        return Dexie.Promise.all(volsPromises).then((vols) => {
+            transactions.forEach((transaction: TransactionJoined, i) => {
+                transaction.vol = vols[i];
+            });
+            return transactions;
+        });
+    });
+}
+
+export async function getVolsOnField(statsDate: Date, feedType?: FeedType): Promise<Array<Volunteer>> {
+    if (feedType) {
+        return db.volunteers
+            .where('feed_type')
+            .equals(feedType)
+            .filter((vol) => {
+                return (
+                    vol.active_to &&
+                    vol.active_from &&
+                    vol.active_from <= dayjs(statsDate).add(1, 'd').toDate() &&
+                    vol.active_to >= statsDate
+                );
+            })
+            .filter((vol) => {
+                return vol.active_from < statsDate ? vol.is_active : vol.paid ? vol.is_active : true;
+            })
+            .toArray();
+    } else {
+        return db.volunteers
+            .toCollection()
+            .filter((vol) => {
+                return (
+                    vol.active_to &&
+                    vol.active_from &&
+                    vol.active_from <= dayjs(statsDate).add(1, 'd').toDate() &&
+                    vol.active_to >= statsDate
+                );
+            })
+            .filter((vol) => {
+                return vol.active_from < statsDate ? vol.is_active : vol.paid ? vol.is_active : true;
+            })
+            .toArray();
+    }
+}
+
+export async function getFeedStats(statsDate: Date, feedType?: FeedType): Promise<Array<TransactionJoined>> {
+    const txs = db.transactions.where('ts').between(dayjs(statsDate).unix(), dayjs(statsDate).add(31, 'h').unix());
+
+    if (feedType) {
+        return joinTxs(txs).then((txs) =>
+            txs.filter((tx) => {
+                return tx.vol && tx.vol.feed_type === feedType;
+            })
+        );
+    } else {
+        return joinTxs(txs);
+    }
+}

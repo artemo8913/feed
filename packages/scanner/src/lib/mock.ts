@@ -11,7 +11,7 @@ export interface VolResponse {
 }
 
 const createTestTrans = (): VolResponse => {
-    const rndShift = rndInt(4, 27);
+    const rndShift = rndInt(7, 31);
     let ts: any = dayjs().startOf('day').add(rndShift, 'hour');
     ts = ts.unix();
 

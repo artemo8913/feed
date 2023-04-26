@@ -2,6 +2,7 @@
     "extends": [
         "../../.eslintrc.js"
     ],
+    "root": true,
     "parserOptions": {
         "project": "./tsconfig.eslint.json"
     },
