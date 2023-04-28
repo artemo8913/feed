@@ -1,3 +1,5 @@
+import type { TransactionJoined } from '~/db';
+
 export interface IStats {
     breakfast: number;
     lunch: number;
@@ -11,5 +13,13 @@ export interface LocalStatsHook {
     updated: boolean;
     onField: Record<string, IStats>;
     fed: Record<string, IStats>;
-    update: (data?: any) => Promise<any>;
+    update: () => Promise<any>;
+}
+
+export interface LocalLastTransHook {
+    error: any;
+    progress: boolean;
+    updated: boolean;
+    transactions: Array<TransactionJoined>;
+    update: () => Promise<any>;
 }

@@ -20,8 +20,9 @@ button {
         position: relative;
         width: 100vw;
         min-height: 100vh;
+        overflow: auto;
 
-        &.main {
+&.main {
             display: flex;
             flex-direction: column;
             justify-content: space-evenly;
@@ -29,11 +30,11 @@ button {
             text-align: center;
         }
 
-        &.left1 {
-            background-color: var(--c-yellow);
+        &.history {
+            /*background-color: var(--c-yellow);*/
         }
 
-        &.right1 {
+        &.stats {
             /*background-color: var(--c-blue);*/
         }
     }

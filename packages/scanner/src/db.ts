@@ -139,3 +139,8 @@ export async function getFeedStats(statsDate: Date, feedType?: FeedType): Promis
         return joinTxs(txs);
     }
 }
+
+export async function getLastTrans(): Promise<Array<TransactionJoined>> {
+    const txs = db.transactions.where('ts').between(dayjs().subtract(20, 'm').unix(), dayjs().unix());
+    return joinTxs(txs);
+}

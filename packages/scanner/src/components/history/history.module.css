@@ -1,0 +1,30 @@
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    color: #333;
+    font-size: 0.75em;
+
+    thead {
+        background-color: #333;
+        color: #fff;
+
+        th {
+            padding: 10px;
+            font-weight: 500;
+            text-align: left;
+            border: 1px solid #d0d0d0;
+        }
+    }
+
+tbody {
+    tr:nth-child(even) {
+        background-color: #f5f5f5;
+    }
+
+        td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #d0d0d0;
+        }
+    }
+}

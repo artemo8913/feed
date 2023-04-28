@@ -13,9 +13,9 @@ import type { AppColor, IAppContext } from '~/app-context';
 import { AppContext, Colors } from '~/app-context';
 import { API_DOMAIN } from '~/config';
 import css from '~/app.module.css';
-import { Left1Screen } from '~/screens/left1';
+import { HistoryScreen } from '~/screens/history';
 import { MainScreen } from '~/screens/main';
-import { Right1Screen } from '~/screens/rigth1';
+import { StatsScreen } from '~/screens/stats';
 import { useCheckAuth } from '~/request';
 
 // import { clearCache } from './lib/utils';
@@ -116,10 +116,10 @@ const App: FC = () => {
                             <button onClick={tryAuth}>ВОЙТИ</button>
                         </div>
                     ) : (
-                        <SwipeableViews enableMouseEvents index={1}>
-                            <Left1Screen />
+                        <SwipeableViews enableMouseEvents index={0}>
                             <MainScreen />
-                            <Right1Screen />
+                            <HistoryScreen />
+                            <StatsScreen />
                         </SwipeableViews>
                     )}
                 </div>

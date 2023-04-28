@@ -12,8 +12,7 @@ export interface VolResponse {
 
 const createTestTrans = (): VolResponse => {
     const rndShift = rndInt(7, 31);
-    let ts: any = dayjs().startOf('day').add(rndShift, 'hour');
-    ts = ts.unix();
+    const ts: any = dayjs().startOf('day').add(rndShift, 'hour');
 
     return {
         vol_id: rndInt(0, 600),
