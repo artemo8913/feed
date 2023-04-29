@@ -1,12 +1,12 @@
 import { Table } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
-import { MealTimeRU } from './PublicStatistic';
+import { MealTimeRU } from '../types';
 
 interface TableStatDataType {
     key: string;
     mealTimeType: MealTimeRU;
-    nutritionTypePlanned: number;
-    statsFact: number;
+    plan: number;
+    fact: number;
 }
 const columns: ColumnsType<TableStatDataType> = [
     {
@@ -16,13 +16,13 @@ const columns: ColumnsType<TableStatDataType> = [
     },
     {
         title: 'План (по количеству людей на поле)',
-        dataIndex: 'nutritionTypePlanned',
-        key: 'nutritionTypePlanned'
+        dataIndex: 'plan',
+        key: 'plan'
     },
     {
         title: 'Факт (количество приемов пищи)',
-        dataIndex: 'statsFact',
-        key: 'statsFact'
+        dataIndex: 'fact',
+        key: 'fact'
     }
 ];
 
