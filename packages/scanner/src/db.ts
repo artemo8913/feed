@@ -140,7 +140,7 @@ export async function getFeedStats(statsDate: Date, feedType?: FeedType): Promis
     }
 }
 
-export async function getLastTrans(): Promise<Array<TransactionJoined>> {
-    const txs = db.transactions.where('ts').between(dayjs().subtract(20, 'm').unix(), dayjs().unix());
+export function getLastTrans(offset: number): Promise<Array<TransactionJoined>> {
+    const txs = db.transactions.where('ts').above(dayjs().subtract(20, 'm').unix()).reverse().offset(offset).limit(20);
     return joinTxs(txs);
 }

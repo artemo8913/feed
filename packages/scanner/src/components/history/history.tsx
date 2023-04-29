@@ -1,17 +1,27 @@
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
+import { useLiveQuery } from 'dexie-react-hooks';
 
-import { useLocalLastTrans } from '~/request-local-db';
-import HistoryTable from '~/components/history/history-table';
+import { HistoryTable } from '~/components/history/history-table';
+import { getLastTrans } from '~/db';
 
-export const History = () => {
-    const { error, progress, transactions, update, updated } = useLocalLastTrans();
-    useEffect(() => {
-        void update();
-    }, []);
+export const History: React.FC = () => {
+    const [error, setError] = useState<any>(null);
+    const transactions = useLiveQuery(
+        () => {
+            try {
+                return getLastTrans(0);
+            } catch (e) {
+                setError(e);
+                console.error(e);
+            }
+        },
+        [],
+        null
+    );
     return (
         <>
-            {updated && <HistoryTable transactions={transactions} />}
-            {progress && !error && <div>Загрузка...</div>}
+            {transactions && !error && <HistoryTable transactions={transactions} />}
+            {!transactions && <div>Загрузка...</div>}
             {error && <div>Что-то пошло не так</div>}
         </>
     );

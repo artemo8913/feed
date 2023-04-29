@@ -17,12 +17,14 @@ import { HistoryScreen } from '~/screens/history';
 import { MainScreen } from '~/screens/main';
 import { StatsScreen } from '~/screens/stats';
 import { useCheckAuth } from '~/request';
+import { MockTrans } from '~/components/mock-trans/mock-trans';
 
 // import { clearCache } from './lib/utils';
 // eslint-disable-next-line import/no-unresolved
 import ver from '!!raw-loader!pwa-ver.txt';
 
 console.log(`local app ver: ${ver}`);
+const dev = process.env.NODE_ENV !== 'production';
 
 const ErrorFallback: FC<FallbackProps> = ({ error, resetErrorBoundary }) => (
     <div role='alert'>
@@ -122,6 +124,7 @@ const App: FC = () => {
                             <StatsScreen />
                         </SwipeableViews>
                     )}
+                    {dev && <MockTrans />}
                 </div>
             </AppContext.Provider>
         </ErrorBoundary>

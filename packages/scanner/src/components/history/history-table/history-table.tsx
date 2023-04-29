@@ -6,18 +6,21 @@ import type { TransactionJoined } from '~/db';
 import style from './history.module.css';
 
 interface HistoryListProps {
-    transactions: Array<TransactionJoined>;
+    transactions: Array<TransactionJoined> | undefined;
 }
 
-const HistoryTable = ({ transactions }: HistoryListProps) => {
-    const txItems = transactions.map((transaction, index) => {
-        return (
-            <tr key={index}>
-                <td>{transaction.vol?.name}</td>
-                <td>{dayjs.unix(transaction.ts).format('MM.DD hh:mm').toString()}</td>
-            </tr>
-        );
-    });
+export const HistoryTable = ({ transactions }: HistoryListProps) => {
+    let txItems;
+    if (transactions) {
+        txItems = transactions.map((transaction, index) => {
+            return (
+                <tr key={index}>
+                    <td>{transaction.vol?.name}</td>
+                    <td>{dayjs.unix(transaction.ts).format('YYYY.MM.DD hh:mm:ss').toString()}</td>
+                </tr>
+            );
+        });
+    }
     return (
         <table className={style.table}>
             <thead>
@@ -30,5 +33,3 @@ const HistoryTable = ({ transactions }: HistoryListProps) => {
         </table>
     );
 };
-
-export default HistoryTable;

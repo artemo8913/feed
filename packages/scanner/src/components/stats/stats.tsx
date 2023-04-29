@@ -12,9 +12,7 @@ import style from './stats.module.css';
 
 export type FeedTypeState = 'total' | 'FT1' | 'FT2';
 
-const dev = process.env.NODE_ENV !== 'production';
-
-export const Stats = () => {
+export const Stats: React.FC = () => {
     const { error, fed, onField, progress, update, updated } = useLocalStats(dayjs(getToday()).toDate());
     const [feedTypeState, setFeedTypeState] = useState<FeedTypeState>('total');
 
@@ -22,15 +20,6 @@ export const Stats = () => {
         void update();
     };
 
-    const test = () => {
-        const trans = createMockData(10);
-        const txPromises = trans.map((tx) => {
-            void db.transactions.add(tx);
-        });
-        void Promise.all(txPromises).then(() => {
-            updateStats();
-        });
-    };
     useEffect(() => {
         updateStats();
     }, []);
@@ -45,8 +34,6 @@ export const Stats = () => {
             {updated && <StatsTable onField={onField[feedTypeState]} fed={fed[feedTypeState]} />}
             {progress && !error && <div>Загрузка...</div>}
             {error && <div>Что-то пошло не так</div>}
-
-            {dev && <button onClick={test}>Create x10 trans</button>}
         </>
     );
 };

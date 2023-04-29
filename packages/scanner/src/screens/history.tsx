@@ -1,6 +1,6 @@
 import cn from 'classnames';
 
-import { History } from '~/components/history/history';
+import { History } from '~/components/history';
 
 import css from '../app.module.css';
 
