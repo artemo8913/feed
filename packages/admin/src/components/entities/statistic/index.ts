@@ -1,1 +1,1 @@
-export * from './ui/PublicStatistic';
+export * from './ui/publicStatistic';

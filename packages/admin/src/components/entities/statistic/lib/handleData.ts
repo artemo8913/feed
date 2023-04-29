@@ -1,7 +1,7 @@
 import { ICurrentAPI, IHumanFeedTypesNumber, IStatisticsAPI, MealTimeEN, MealTimeRU, TypeOfEaters } from '../types';
-import { IColumnChartData } from '../ui/ColumnChart';
-import { ILinearChartData } from '../ui/LinearChart';
-import { TableStatDataType } from '../ui/TableStats';
+import { IColumnChartData } from '../ui/columnChart';
+import { ILinearChartData } from '../ui/linearChart';
+import { TableStatDataType } from '../ui/tableStats';
 
 // Массивы с наименованием приемов пищи для перебора значений
 const mealTimesEnArr: Readonly<MealTimeEN[]> = ['morning', 'lunch', 'dinner', 'night'];

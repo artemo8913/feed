@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react';
 import { Col, Row, Form, Radio, DatePicker, Divider, Button, Space } from 'antd';
 import { RadioChangeEvent } from '@pankod/refine-antd';
-import { default as dayjsExt } from '../lib/dateHealper';
+import { default as dayjsExt } from '../lib/dateHelper';
 import TableStats from './TableStats';
 import locale from 'antd/lib/date-picker/locale/ru_RU';
 import { apiMock } from '../lib/mock';
