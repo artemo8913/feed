@@ -2,7 +2,7 @@
 
 FROM node:18-alpine as base
 
-ENV NODE_ENV=production
+# ENV NODE_ENV=development
 ENV husky_skip_init="1"
 ENV HUSKY_DEBUG="1"
 #ENV NODE_OPTIONS="--max_old_space_size=4000 --openssl-legacy-provider"
@@ -33,30 +33,36 @@ ENV YARN_CACHE_FOLDER=/root/.yarn
 COPY nginx.conf /app/
 
 ARG API_URL
+ARG NEW_API_URL
 ENV API_URL_ENV=${API_URL}
+ENV NEW_API_URL_ENV=${NEW_API_URL}
 
 
-COPY ./package.json yarn.lock ./
+COPY ./package.json /app/package.json
+COPY ./yarn.lock /app/yarn.lock
 
-COPY ./packages/admin/package.json packages/admin/package.json
-COPY ./packages/admin/next-i18next.config.mjs packages/admin/next-i18next.config.mjs
-COPY ./packages/admin/next.config.mjs packages/admin/next.config.mjs
-COPY ./packages/api/package.json packages/api/package.json
-COPY ./packages/core/package.json packages/core/package.json
-COPY ./packages/ui/package.json packages/ui/package.json
-COPY ./packages/scanner/package.json packages/scanner/package.json
+COPY ./packages/admin/package.json /app/packages/admin/package.json
+COPY ./packages/admin/next-i18next.config.mjs /app/packages/admin/next-i18next.config.mjs
+COPY ./packages/admin/next.config.mjs /app/packages/admin/next.config.mjs
+COPY ./packages/api/package.json /app/packages/api/package.json
+COPY ./packages/core/package.json /app/packages/core/package.json
+COPY ./packages/ui/package.json /app/packages/ui/package.json
+COPY ./packages/scanner/package.json /app/packages/scanner/package.json
 
 RUN --mount=type=cache,sharing=locked,target=/root/.yarn \
+    --mount=type=cache,sharing=locked,target=/app/node_modules/.cache \
     --mount=type=cache,sharing=locked,target=/app/packages/admin/node_modules/.cache \
     --mount=type=cache,sharing=locked,target=/app/packages/admin/.next/.cache \
     --mount=type=cache,sharing=locked,target=/app/packages/core/node_modules/.cache \
     --mount=type=cache,sharing=locked,target=/app/packages/ui/node_modules/.cache \
     --mount=type=cache,sharing=locked,target=/app/packages/api/node_modules/.cache \
+    --mount=type=cache,sharing=locked,target=/app/packages/scanner/node_modules/.cache \
     yarn --frozen-lockfile
 
-COPY .. ./
+COPY . /app
 
-RUN --mount=type=cache,sharing=locked,target=/app/.yarn/.cache \
+RUN --mount=type=cache,sharing=locked,target=/root/.yarn \
+    --mount=type=cache,sharing=locked,target=/app/node_modules/.cache \
     --mount=type=cache,sharing=locked,target=/app/packages/admin/node_modules/.cache \
     --mount=type=cache,sharing=locked,target=/app/packages/admin/.next/.cache \
     --mount=type=cache,sharing=locked,target=/app/packages/core/node_modules/.cache \
@@ -66,11 +72,13 @@ RUN --mount=type=cache,sharing=locked,target=/app/.yarn/.cache \
     yarn build
 
 RUN --mount=type=cache,sharing=locked,target=/root/.yarn \
+    --mount=type=cache,sharing=locked,target=/app/node_modules/.cache \
     --mount=type=cache,sharing=locked,target=/app/packages/admin/node_modules/.cache \
     --mount=type=cache,sharing=locked,target=/app/packages/admin/.next/.cache \
     --mount=type=cache,sharing=locked,target=/app/packages/core/node_modules/.cache \
     --mount=type=cache,sharing=locked,target=/app/packages/ui/node_modules/.cache \
     --mount=type=cache,sharing=locked,target=/app/packages/api/node_modules/.cache \
+    --mount=type=cache,sharing=locked,target=/app/packages/scanner/node_modules/.cache \
     yarn --prod --frozen-lockfile
 
 RUN /usr/local/bin/node-clean
@@ -86,7 +94,9 @@ RUN apk add --no-cache nginx
 COPY nginx.conf /etc/nginx/nginx.conf
 
 ARG API_URL
+ARG NEW_API_URL
 ENV API_URL_ENV=${API_URL}
+ENV NEW_API_URL_ENV=${NEW_API_URL}
 
 COPY --from=builder /app/entry.sh /app
 
