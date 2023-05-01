@@ -5,16 +5,11 @@ import type { VolEntity } from '@feed/api/src/entities/vol.entity';
 // import { Rules } from '~/components/form';
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 import 'react-quill/dist/quill.snow.css';
-import { DepartmentEntity, LocationEntity } from '~/interfaces';
+import type { DepartmentEntity } from '~/interfaces';
 
 export const CreateEdit: FC = () => {
     const { selectProps: leadSelectProps } = useSelect<VolEntity>({
         resource: 'vols',
-        optionLabel: 'name'
-    });
-
-    const { selectProps: locationSelectProps } = useSelect<LocationEntity>({
-        resource: 'locations',
         optionLabel: 'name'
     });
 
@@ -25,9 +20,9 @@ export const CreateEdit: FC = () => {
 
     const getDepartmentIds = (department) => {
         return {
-            value: department ? department.map(d => d.id) : department
+            value: department ? department.map((d) => d.id || d) : department
         };
-    }
+    };
 
     return (
         <>
@@ -44,19 +39,16 @@ export const CreateEdit: FC = () => {
                 <Input />
             </Form.Item>
             <Form.Item label='От' name='activeFrom'>
-                <Input type='date' />
+                <Input type='datetime-local' />
             </Form.Item>
             <Form.Item label='До' name='activeTo'>
-                <Input type='date' />
+                <Input type='datetime-local' />
             </Form.Item>
             <Form.Item label='Шеф' name={['lead', 'id']}>
                 <Select {...leadSelectProps} />
             </Form.Item>
-            <Form.Item label='Служба' getValueProps={getDepartmentIds} name='department'>
-                <Select mode="multiple" {...departmentSelectProps} />
-            </Form.Item>
-            <Form.Item label='Локация' name='location'>
-                <Select {...locationSelectProps} />
+            <Form.Item label='Служба / Локация' getValueProps={getDepartmentIds} name='department'>
+                <Select mode='multiple' {...departmentSelectProps} />
             </Form.Item>
             <Form.Item label='Должность' name='position'>
                 <Input />

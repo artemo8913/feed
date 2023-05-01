@@ -1,23 +1,14 @@
-import {
-    DateField,
-    DeleteButton,
-    EditButton,
-    List,
-    Space,
-    Table,
-    TextField,
-} from '@pankod/refine-antd';
+import { DateField, DeleteButton, EditButton, List, Space, Table, TextField } from '@pankod/refine-antd';
 import type { DepartmentEntity } from '@feed/api/src/entities/department.entity';
-import { IResourceComponentsProps, useList } from '@pankod/refine-core';
+import type { IResourceComponentsProps } from '@pankod/refine-core';
+import { useList } from '@pankod/refine-core';
 // import { Loader } from '@feed/ui/src/loader';
 import { ListBooleanNegative, ListBooleanPositive } from '@feed/ui/src/icons'; // TODO exclude src
 import Select from 'rc-select';
+import { useMemo, useState } from 'react';
+import { Input } from 'antd';
 
 import type { VolEntity } from '~/interfaces';
-import { useState } from 'react';
-
-import { Input } from 'antd';
-import { useMemo } from 'react';
 
 export const VolList: FC<IResourceComponentsProps> = () => {
     const [searchText, setSearchText] = useState('');
@@ -27,12 +18,14 @@ export const VolList: FC<IResourceComponentsProps> = () => {
     });
 
     const filteredData = useMemo(() => {
-        return searchText ? data?.data.filter(item => {
-            const searchTextInLowerCase = searchText.toLowerCase();
-            return [item.nick, item.name, item.department?.map(d => d.name).join(', ')].some((text) => {
-                return text?.toLowerCase().includes(searchTextInLowerCase);
-            })
-        }) : data?.data;
+        return searchText
+            ? data?.data.filter((item) => {
+                  const searchTextInLowerCase = searchText.toLowerCase();
+                  return [item.nick, item.name, item.department?.map((d) => d.name).join(', ')].some((text) => {
+                      return text?.toLowerCase().includes(searchTextInLowerCase);
+                  });
+              })
+            : data?.data;
     }, [data, searchText]);
 
     // const { selectProps } = useSelect<VolEntity>({
@@ -43,15 +36,19 @@ export const VolList: FC<IResourceComponentsProps> = () => {
 
     const getSorter = (field: string) => {
         return (a, b) => {
-            if (a[field] < b[field]) {return -1;}
-            if (a[field] > b[field]) {return 1;}
+            if (a[field] < b[field]) {
+                return -1;
+            }
+            if (a[field] > b[field]) {
+                return 1;
+            }
             return 0;
-        }
-    }
+        };
+    };
 
     return (
         <List>
-            <Input value={searchText} onChange={(e) => setSearchText(e.target.value)} ></Input>
+            <Input value={searchText} onChange={(e) => setSearchText(e.target.value)}></Input>
             <Table dataSource={filteredData} rowKey='id'>
                 <Table.Column
                     dataIndex='nick'
@@ -71,7 +68,7 @@ export const VolList: FC<IResourceComponentsProps> = () => {
                     dataIndex='department'
                     key='department'
                     title='Службы'
-                    render={(value) => <TextField value={value.map(v => v.name).join(', ')} />}
+                    render={(value) => <TextField value={value.map((v) => v.name).join(', ')} />}
                     // filterDropdown={(props) => (
                     //     <FilterDropdown {...props}>
                     //         <Select
