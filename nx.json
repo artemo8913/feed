@@ -8,5 +8,10 @@
         "parallel": false
       }
     }
+  },
+  "targetDefaults": {
+    "build": {
+      "dependsOn": ["^build"]
+    }
   }
 }
