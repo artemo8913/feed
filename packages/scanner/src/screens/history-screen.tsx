@@ -1,13 +1,15 @@
+import React from 'react';
 import cn from 'classnames';
 
 import { History } from '~/components/history';
+import { ScreenHeader } from '~/components/screen-header';
 
 import css from '../app.module.css';
 
-export const HistoryScreen = () => {
+export const HistoryScreen: React.FC = () => {
     return (
         <div className={cn(css.screen, css.history)}>
-            <h2>История</h2>
+            <ScreenHeader>История</ScreenHeader>
             <History />
         </div>
     );

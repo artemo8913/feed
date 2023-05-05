@@ -13,11 +13,14 @@ import type { AppColor, IAppContext } from '~/app-context';
 import { AppContext, Colors } from '~/app-context';
 import { API_DOMAIN } from '~/config';
 import css from '~/app.module.css';
-import { HistoryScreen } from '~/screens/history';
+import { HistoryScreen } from '~/screens/history-screen';
 import { MainScreen } from '~/screens/main';
-import { StatsScreen } from '~/screens/stats';
+import { StatsScreen } from '~/screens/stats-screen';
 import { useCheckAuth } from '~/request';
 import { MockTrans } from '~/components/mock-trans/mock-trans';
+
+import { ViewContext } from './view-context';
+import type { IViewContext } from './view-context';
 
 // import { clearCache } from './lib/utils';
 // eslint-disable-next-line import/no-unresolved
@@ -46,6 +49,7 @@ const App: FC = () => {
     const appStyle = useMemo(() => ({ backgroundColor: Colors[appColor as AppColor] }), [appColor]);
     const [lastUpdate, setLastUpdated] = useState<number | null>(null);
     const [volCount, setVolCount] = useState<number>(0);
+    const [currentView, setCurrentView] = useState<number>(0);
 
     const tryAuth = useCallback(() => {
         const enteredPin = pinInputRef.current?.value || '';
@@ -83,6 +87,14 @@ const App: FC = () => {
         [pin, lastUpdate, volCount]
     );
 
+    const viewContextValue: IViewContext = useMemo(
+        () => ({
+            currentView: currentView,
+            setCurrentView: setCurrentView
+        }),
+        [currentView]
+    );
+
     useEffect(() => {
         const checkVer = (): void => {
             console.log('online, check ver..');
@@ -118,11 +130,17 @@ const App: FC = () => {
                             <button onClick={tryAuth}>ВОЙТИ</button>
                         </div>
                     ) : (
-                        <SwipeableViews enableMouseEvents index={0}>
-                            <MainScreen />
-                            <HistoryScreen />
-                            <StatsScreen />
-                        </SwipeableViews>
+                        <ViewContext.Provider value={viewContextValue}>
+                            <SwipeableViews
+                                enableMouseEvents
+                                index={currentView}
+                                onChangeIndex={(index) => setCurrentView(index)}
+                            >
+                                <MainScreen />
+                                <HistoryScreen />
+                                <StatsScreen />
+                            </SwipeableViews>
+                        </ViewContext.Provider>
                     )}
                     {dev && <MockTrans />}
                 </div>

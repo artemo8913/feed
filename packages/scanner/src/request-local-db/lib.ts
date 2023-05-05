@@ -19,7 +19,6 @@ export interface LocalStatsHook {
 export interface LocalLastTransHook {
     error: any;
     progress: boolean;
-    updated: boolean;
     transactions: Array<TransactionJoined>;
-    update: () => Promise<any>;
+    update: (limit: number) => Promise<any>;
 }

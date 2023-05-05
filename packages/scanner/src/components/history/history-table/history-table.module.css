@@ -1,11 +1,13 @@
 .table {
     width: 100%;
     border-collapse: collapse;
-    color: #333;
+    color: var(--c-dark);
     font-size: 0.75em;
 
     thead {
-        background-color: #333;
+        position: sticky;
+        top: 0;
+        background-color: var(--c-dark);
         color: #fff;
 
         th {
@@ -13,12 +15,13 @@
             font-weight: 500;
             text-align: left;
             border: 1px solid #d0d0d0;
+            border-top: none;
         }
     }
 
 tbody {
     tr:nth-child(even) {
-        background-color: #f5f5f5;
+        background-color: var(--c-light);
     }
 
         td {
