@@ -55,8 +55,6 @@ COPY . /app
 
 RUN yarn build
 
-RUN cd packages/admin && yarn build
-
 RUN yarn --prod --frozen-lockfile
 
 RUN /usr/local/bin/node-clean
