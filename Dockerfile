@@ -49,37 +49,13 @@ COPY ./packages/core/package.json /app/packages/core/package.json
 COPY ./packages/ui/package.json /app/packages/ui/package.json
 COPY ./packages/scanner/package.json /app/packages/scanner/package.json
 
-RUN --mount=type=cache,sharing=locked,target=/root/.yarn \
-    --mount=type=cache,sharing=locked,target=/app/node_modules/.cache \
-    --mount=type=cache,sharing=locked,target=/app/packages/admin/node_modules/.cache \
-    --mount=type=cache,sharing=locked,target=/app/packages/admin/.next/.cache \
-    --mount=type=cache,sharing=locked,target=/app/packages/core/node_modules/.cache \
-    --mount=type=cache,sharing=locked,target=/app/packages/ui/node_modules/.cache \
-    --mount=type=cache,sharing=locked,target=/app/packages/api/node_modules/.cache \
-    --mount=type=cache,sharing=locked,target=/app/packages/scanner/node_modules/.cache \
-    yarn --frozen-lockfile
+RUN yarn --frozen-lockfile
 
 COPY . /app
 
-RUN --mount=type=cache,sharing=locked,target=/root/.yarn \
-    --mount=type=cache,sharing=locked,target=/app/node_modules/.cache \
-    --mount=type=cache,sharing=locked,target=/app/packages/admin/node_modules/.cache \
-    --mount=type=cache,sharing=locked,target=/app/packages/admin/.next/.cache \
-    --mount=type=cache,sharing=locked,target=/app/packages/core/node_modules/.cache \
-    --mount=type=cache,sharing=locked,target=/app/packages/ui/node_modules/.cache \
-    --mount=type=cache,sharing=locked,target=/app/packages/api/node_modules/.cache \
-    --mount=type=cache,sharing=locked,target=/app/packages/scanner/node_modules/.cache \
-    yarn build
+RUN yarn build
 
-RUN --mount=type=cache,sharing=locked,target=/root/.yarn \
-    --mount=type=cache,sharing=locked,target=/app/node_modules/.cache \
-    --mount=type=cache,sharing=locked,target=/app/packages/admin/node_modules/.cache \
-    --mount=type=cache,sharing=locked,target=/app/packages/admin/.next/.cache \
-    --mount=type=cache,sharing=locked,target=/app/packages/core/node_modules/.cache \
-    --mount=type=cache,sharing=locked,target=/app/packages/ui/node_modules/.cache \
-    --mount=type=cache,sharing=locked,target=/app/packages/api/node_modules/.cache \
-    --mount=type=cache,sharing=locked,target=/app/packages/scanner/node_modules/.cache \
-    yarn --prod --frozen-lockfile
+RUN yarn --prod --frozen-lockfile
 
 RUN /usr/local/bin/node-clean
 
