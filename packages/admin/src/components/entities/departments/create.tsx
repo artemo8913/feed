@@ -2,15 +2,15 @@ import { Checkbox, Create, Form, Input, Select, useForm, useSelect } from '@pank
 import type { IResourceComponentsProps } from '@pankod/refine-core';
 import { useState } from 'react';
 
-import type { DepartmentEntity } from '~/interfaces';
+import type { DepartmentEntity, VolEntity } from '~/interfaces';
 import { Rules } from '~/components/form/rules';
 
 export const DepartmentCreate: FC<IResourceComponentsProps> = () => {
     const [selectedTab, setSelectedTab] = useState<'write' | 'preview'>('write');
     const { formProps, saveButtonProps } = useForm<DepartmentEntity>();
 
-    const { selectProps: leadSelectProps } = useSelect<DepartmentEntity>({
-        resource: 'vols',
+    const { selectProps: leadSelectProps } = useSelect<VolEntity>({
+        resource: 'volunteers',
         optionLabel: 'name'
     });
 

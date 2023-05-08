@@ -28,7 +28,7 @@ export const DepartmentList: FC<IResourceComponentsProps> = () => {
     });
 
     const { selectProps: leadSelectProps } = useSelect<VolEntity>({
-        resource: 'vols'
+        resource: 'volunteers'
     });
 
     return (

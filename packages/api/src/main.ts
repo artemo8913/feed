@@ -28,7 +28,7 @@ async function bootstrap() {
     app.useGlobalPipes(new ValidationPipe());
     app.setGlobalPrefix('api');
 
-    const API_SERVICE_URL = "http://localhost:5000";
+    const API_SERVICE_URL = "http://localhost:8000";
 
     // Proxy endpoints
     app.use('/api/v1', createProxyMiddleware({
@@ -36,7 +36,13 @@ async function bootstrap() {
       changeOrigin: true,
       pathRewrite: {
         // [`^/api/v1`]: '/api/v1',
-      }
+      },
+      onProxyRes: (proxyRes, _req, _res) => {
+        proxyRes.headers['Access-Control-Allow-Origin'] = 'http://localhost:3002';
+        proxyRes.headers['Access-Control-Allow-Credentials'] = '*';
+        proxyRes.headers['Access-Control-Allow-Methods'] = 'GET, OPTIONS, POST, PUT, PATCH, DELETE';
+        proxyRes.headers['Access-Control-Allow-Headers'] = 'Authorization, Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers';
+          },
     }));
 
     await app.listen(PORT);

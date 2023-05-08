@@ -84,7 +84,7 @@ const Feed = ({ Component, pageProps }: AppProps): JSX.Element | null => {
                     icon: <Icons.ProfileOutlined />
                 },
                 {
-                    name: 'vols',
+                    name: 'volunteers',
                     list: VolList,
                     create: VolCreate,
                     edit: VolEdit,

@@ -19,7 +19,7 @@ import { VolGetManyDto } from './dto/vol/vol-getMany.dto';
 import { VolUpdateDto } from './dto/vol/vol-update.dto';
 import { VolDto } from './dto/vol/vol.dto';
 
-@ApiTags('vols')
+@ApiTags('volunteers')
 @ApiBearerAuth()
 @Crud({
     model: {
@@ -61,7 +61,7 @@ import { VolDto } from './dto/vol/vol.dto';
     },
 })
 @UseGuards(JwtAuthGuard, ACGuard)
-@Controller('vols')
+@Controller('volunteers')
 export class VolController implements CrudController<VolEntity> {
     constructor(public service: VolService) {}
 
@@ -71,7 +71,7 @@ export class VolController implements CrudController<VolEntity> {
 
     @Override()
     @UseRoles({
-        resource: 'vols',
+        resource: 'volunteers',
         action: 'create',
     })
     createOne(
@@ -85,7 +85,7 @@ export class VolController implements CrudController<VolEntity> {
 
     @Override()
     @UseRoles({
-        resource: 'vols',
+        resource: 'volunteers',
         action: 'update',
     })
     updateOne(
@@ -97,7 +97,7 @@ export class VolController implements CrudController<VolEntity> {
 
     @Override()
     @UseRoles({
-        resource: 'vols',
+        resource: 'volunteers',
         action: 'delete',
     })
     deleteOne(req: CrudRequest) {
