@@ -1,10 +1,9 @@
 // import crudDataProvider from '@pankod/refine-nestjsx-crud';
-import { DataProvider } from '@pankod/refine-core';
+import type { DataProvider } from '@pankod/refine-core';
 
 import { NEW_API_URL } from '~/const';
 import { axios } from '~/authProvider';
 import { getUserData } from '~/auth';
-
 
 const token = getUserData({}, false);
 
@@ -14,46 +13,43 @@ if (token) {
     };
 }
 
-import { AxiosInstance } from "axios";
-import { stringify } from "query-string";
+import type { AxiosInstance } from 'axios';
+import { stringify } from 'query-string';
 // import { DataProvider } from "@refinedev/core";
 // import { axiosInstance, generateSort, generateFilter } from "./utils";
 
-type MethodTypes = "get" | "delete" | "head" | "options";
-type MethodTypesWithBody = "post" | "put" | "patch";
+type MethodTypes = 'get' | 'delete' | 'head' | 'options';
+type MethodTypesWithBody = 'post' | 'put' | 'patch';
 
 export const crudDataProvider = (
     apiUrl: string,
-    httpClient: AxiosInstance = axios,
-): Omit<
-    Required<DataProvider>,
-    "createMany" | "updateMany" | "deleteMany"
-> => ({
-    getList: async ({ resource, pagination, /*filters, sorters,*/ meta }) => {
+    httpClient: AxiosInstance = axios
+): Omit<Required<DataProvider>, 'createMany' | 'updateMany' | 'deleteMany' | 'custom'> => ({
+    getList: async ({ metaData, pagination, /*filters, sorters,*/ resource }) => {
         const url = `${apiUrl}/${resource}`;
 
         const {
             current = 1,
-            pageSize = 10,
-            mode = "server",
+            pageSize = 10
+            // mode = "server",
         } = pagination ?? {};
 
-        const { headers: headersFromMeta, method } = meta ?? {};
-        const requestMethod = (method as MethodTypes) ?? "get";
+        const { headers: headersFromMeta, method } = metaData ?? {};
+        const requestMethod = (method as MethodTypes) ?? 'get';
 
         // const queryFilters = generateFilter(filters);
 
-        const query: {
-            _start?: number;
-            _end?: number;
-            _sort?: string;
-            _order?: string;
-        } = {};
+        // const query: {
+        //     _start?: number;
+        //     _end?: number;
+        //     _sort?: string;
+        //     _order?: string;
+        // } = {};
 
-        if (mode === "server") {
-            query._start = (current - 1) * pageSize;
-            query._end = current * pageSize;
-        }
+        // if (mode === "server") {
+        // query._start = (current - 1) * pageSize;
+        // query._end = current * pageSize;
+        // }
 
         // const generatedSort = generateSort(sorters);
         // if (generatedSort) {
@@ -66,92 +62,91 @@ export const crudDataProvider = (
             `${url}?limit=10000`,
             // `${url}?${stringify(query)}&${stringify(queryFilters)}`,
             {
-                headers: headersFromMeta,
-            },
+                headers: headersFromMeta
+            }
         );
 
         return {
             data: data.results,
-            total: data.count,
+            total: data.count
         };
     },
 
-    getMany: async ({ resource, ids, meta }) => {
-        const { headers, method } = meta ?? {};
-        const requestMethod = (method as MethodTypes) ?? "get";
+    getMany: async ({ ids, metaData, resource }) => {
+        const { headers, method } = metaData ?? {};
+        const requestMethod = (method as MethodTypes) ?? 'get';
 
-        const { data } = await httpClient[requestMethod](
-            `${apiUrl}/${resource}?${stringify({ id: ids })}`,
-            { headers },
-        );
+        const { data } = await httpClient[requestMethod](`${apiUrl}/${resource}?${stringify({ id: ids })}`, {
+            headers
+        });
 
         return {
-            data,
+            data
         };
     },
 
-    create: async ({ resource, variables, meta }) => {
+    create: async ({ metaData, resource, variables }) => {
         const url = `${apiUrl}/${resource}/`;
 
-        const { headers, method } = meta ?? {};
-        const requestMethod = (method as MethodTypesWithBody) ?? "post";
+        const { headers, method } = metaData ?? {};
+        const requestMethod = (method as MethodTypesWithBody) ?? 'post';
 
         const { data } = await httpClient[requestMethod](url, variables, {
-            headers,
+            headers
         });
 
         return {
-            data,
+            data
         };
     },
 
-    update: async ({ resource, id, variables, meta }) => {
+    update: async ({ id, metaData, resource, variables }) => {
         const url = `${apiUrl}/${resource}/${id}/`;
 
-        const { headers, method } = meta ?? {};
-        const requestMethod = (method as MethodTypesWithBody) ?? "patch";
+        const { headers, method } = metaData ?? {};
+        const requestMethod = (method as MethodTypesWithBody) ?? 'patch';
 
         const { data } = await httpClient[requestMethod](url, variables, {
-            headers,
+            headers
         });
 
         return {
-            data,
+            data
         };
     },
 
-    getOne: async ({ resource, id, meta }) => {
+    getOne: async ({ id, metaData, resource }) => {
         const url = `${apiUrl}/${resource}/${id}`;
 
-        const { headers, method } = meta ?? {};
-        const requestMethod = (method as MethodTypes) ?? "get";
+        const { headers, method } = metaData ?? {};
+        const requestMethod = (method as MethodTypes) ?? 'get';
 
         const { data } = await httpClient[requestMethod](url, { headers });
 
         return {
-            data,
+            data
         };
     },
 
-    deleteOne: async ({ resource, id, variables, meta }) => {
+    deleteOne: async ({ id, metaData, resource, variables }) => {
         const url = `${apiUrl}/${resource}/${id}`;
 
-        const { headers, method } = meta ?? {};
-        const requestMethod = (method as MethodTypesWithBody) ?? "delete";
+        const { headers, method } = metaData ?? {};
+        const requestMethod = (method as MethodTypesWithBody) ?? 'delete';
 
         const { data } = await httpClient[requestMethod](url, {
             data: variables,
-            headers,
+            headers
         });
 
         return {
-            data,
+            data
         };
     },
 
     getApiUrl: () => {
         return apiUrl;
-    },
+    }
 
     // custom: async ({
     //     url,

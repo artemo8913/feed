@@ -18,17 +18,25 @@ export const VolList: FC<IResourceComponentsProps> = () => {
     });
 
     const { data: departments } = useList<DepartmentEntity>({
-        resource: 'departments',
-        optionLabel: 'name'
+        resource: 'departments'
     });
 
-    const departmentNameById = departments ? departments.data.reduce((result, { id, name }) => ({...result, [id]: name}), {}) : {};
+    const departmentNameById = departments
+        ? departments.data.reduce((result, { id, name }) => ({ ...result, [id]: name }), {})
+        : {};
 
     const filteredData = useMemo(() => {
         return searchText
             ? data?.data.filter((item) => {
                   const searchTextInLowerCase = searchText.toLowerCase();
-                  return [item.nickname, item.name, item.departments?.map((id) => departmentNameById[id]).filter(name => name).join(', ')].some((text) => {
+                  return [
+                      item.nickname,
+                      item.name,
+                      item.departments
+                          ?.map((id) => departmentNameById[id])
+                          .filter((name) => name)
+                          .join(', ')
+                  ].some((text) => {
                       return text?.toLowerCase().includes(searchTextInLowerCase);
                   });
               })
@@ -75,7 +83,14 @@ export const VolList: FC<IResourceComponentsProps> = () => {
                     dataIndex='departments'
                     key='departments    '
                     title='Службы'
-                    render={(value) => <TextField value={value.map((id) => departmentNameById[id]).filter(name => name).join(', ')} />}
+                    render={(value) => (
+                        <TextField
+                            value={value
+                                .map((id) => departmentNameById[id])
+                                .filter((name) => name)
+                                .join(', ')}
+                        />
+                    )}
                     // filterDropdown={(props) => (
                     //     <FilterDropdown {...props}>
                     //         <Select

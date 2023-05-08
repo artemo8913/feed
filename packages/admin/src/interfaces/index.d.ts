@@ -18,10 +18,10 @@ export interface VolEntity {
     arrival_date?: Date;
     departure_date?: Date;
     // chef?: VolEntity[];
-    departments?: number[]; //DepartmentEntity[];
+    departments?: Array<number>; //DepartmentEntity[];
     // location?: LocationEntity[];
     // badgeType?: BadgeEntity;
-    feed_type?: number;//FeedTypeEntity;
+    feed_type?: number; //FeedTypeEntity;
 }
 
 export { DepartmentEntity } from '@feed/api/src/entities/department.entity';
