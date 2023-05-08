@@ -1,7 +1,7 @@
 docker rm -f admin
 docker build \
     --progress=plain \
-    --build-arg API_URL=http://localhost:4000 \
+    --build-arg API_URL=http://localhost:8080/oldapi \
     --build-arg NEW_API_URL=http://localhost:4000 \
     -t admin \
     .
