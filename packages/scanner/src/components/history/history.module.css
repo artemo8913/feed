@@ -1,0 +1,11 @@
+.history {
+    position: relative;
+    height: calc(100vh - var(--header-h-mobile));
+    overflow: auto;
+}
+
+@media --desktop {
+    .history {
+        height: calc(100vh - var(--header-h-mobile));
+}
+}

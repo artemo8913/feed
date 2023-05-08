@@ -2,6 +2,7 @@
     display: inline-block;
     padding: 5px 10px;
     transition: background-color 0.1s;
+
 }
 
 .btnGroup {
@@ -22,6 +23,6 @@
 }
 
 .active {
-    background: #333;
+    background: var(--c-dark);
     color: #fff;
 }

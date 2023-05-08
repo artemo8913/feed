@@ -91,7 +91,7 @@ export function joinTxs(txsCollection: Collection<TransactionJoined>): Promise<A
     });
 }
 
-export async function getVolsOnField(statsDate: Date, feedType?: FeedType): Promise<Array<Volunteer>> {
+export function getVolsOnField(statsDate: Date, feedType?: FeedType): Promise<Array<Volunteer>> {
     if (feedType) {
         return db.volunteers
             .where('feed_type')
@@ -126,7 +126,7 @@ export async function getVolsOnField(statsDate: Date, feedType?: FeedType): Prom
     }
 }
 
-export async function getFeedStats(statsDate: Date, feedType?: FeedType): Promise<Array<TransactionJoined>> {
+export function getFeedStats(statsDate: Date, feedType?: FeedType): Promise<Array<TransactionJoined>> {
     const txs = db.transactions.where('ts').between(dayjs(statsDate).unix(), dayjs(statsDate).add(31, 'h').unix());
 
     if (feedType) {
@@ -138,4 +138,14 @@ export async function getFeedStats(statsDate: Date, feedType?: FeedType): Promis
     } else {
         return joinTxs(txs);
     }
+}
+
+export function getLastTrans(offset: number, limit: number): Promise<Array<TransactionJoined>> {
+    const txs = db.transactions
+        .where('ts')
+        .above(dayjs().subtract(20, 'm').unix())
+        .reverse()
+        .offset(offset)
+        .limit(limit);
+    return joinTxs(txs);
 }

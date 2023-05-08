@@ -10,9 +10,14 @@ export interface VolResponse {
     ulid: string;
 }
 
-const createTestTrans = (): VolResponse => {
-    const rndShift = rndInt(7, 31);
-    let ts: any = dayjs().startOf('day').add(rndShift, 'hour');
+const createTestTrans = (type: 'now' | 'rnd'): VolResponse => {
+    let ts: any;
+    if (type === 'now') {
+        ts = dayjs();
+    }
+    if (type === 'rnd') {
+        ts = dayjs().startOf('day').add(rndInt(7, 31), 'h');
+    }
     ts = ts.unix();
 
     return {
@@ -23,7 +28,7 @@ const createTestTrans = (): VolResponse => {
     };
 };
 
-export const createMockData = (cnt: number): Array<VolResponse> =>
+export const createMockData = (cnt: number, type: 'now' | 'rnd'): Array<VolResponse> =>
     Array(cnt)
         .fill(0)
-        .map(() => createTestTrans());
+        .map(() => createTestTrans(type));

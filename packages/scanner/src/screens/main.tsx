@@ -1,5 +1,5 @@
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import cn from 'classnames';
-import { useCallback, useContext, useEffect, useState } from 'react';
 
 import { ErrorMsg, LastUpdated } from '~/components/misc/misc';
 import { PostScan } from '~/components/post-scan';
@@ -10,7 +10,7 @@ import { AppContext } from '~/app-context';
 
 import css from '../app.module.css';
 
-export const MainScreen = () => {
+export const MainScreen = React.memo(function MainScreen() {
     const { appError, lastUpdate, setColor, setLastUpdated, setVolCount, volCount } = useContext(AppContext);
     const [scanResult, setScanResult] = useState('');
 
@@ -33,4 +33,4 @@ export const MainScreen = () => {
             <LastUpdated count={volCount} ts={lastUpdate || 0} />
         </div>
     );
-};
+});
