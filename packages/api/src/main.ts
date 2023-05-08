@@ -2,7 +2,7 @@ import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as fs from 'fs';
-import { createProxyMiddleware } from 'http-proxy-middleware';
+
 
 import { AppModule } from './app.module';
 
@@ -27,17 +27,6 @@ async function bootstrap() {
     // validation
     app.useGlobalPipes(new ValidationPipe());
     app.setGlobalPrefix('api');
-
-    const API_SERVICE_URL = "https://jsonplaceholder.typicode.com";
-
-    // Proxy endpoints
-    app.use('/testapi', createProxyMiddleware({
-      target: API_SERVICE_URL,
-      changeOrigin: true,
-      pathRewrite: {
-          [`^/testspi`]: '',
-      }
-    }));
 
     await app.listen(PORT);
 }
