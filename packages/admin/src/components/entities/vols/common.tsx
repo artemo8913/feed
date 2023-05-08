@@ -9,7 +9,7 @@ import type { DepartmentEntity } from '~/interfaces';
 
 export const CreateEdit: FC = () => {
     const { selectProps: leadSelectProps } = useSelect<VolEntity>({
-        resource: 'vols',
+        resource: 'volunteers',
         optionLabel: 'name'
     });
 
@@ -26,28 +26,28 @@ export const CreateEdit: FC = () => {
 
     return (
         <>
-            <Form.Item name='isActive' valuePropName='checked'>
+            <Form.Item name='is_active' valuePropName='checked'>
                 <Checkbox>Активирован</Checkbox>
             </Form.Item>
-            <Form.Item name='isBlocked' valuePropName='checked'>
+            <Form.Item name='is_blocked' valuePropName='checked'>
                 <Checkbox>Заблокирован</Checkbox>
             </Form.Item>
             <Form.Item label='Имя' name='name'>
                 <Input />
             </Form.Item>
-            <Form.Item label='Позывной' name='nick'>
+            <Form.Item label='Позывной' name='nickname'>
                 <Input />
             </Form.Item>
-            <Form.Item label='От' name='activeFrom'>
+            <Form.Item label='От' name='active_from'>
                 <Input type='datetime-local' />
             </Form.Item>
-            <Form.Item label='До' name='activeTo'>
+            <Form.Item label='До' name='active_to'>
                 <Input type='datetime-local' />
             </Form.Item>
             <Form.Item label='Шеф' name={['lead', 'id']}>
                 <Select {...leadSelectProps} />
             </Form.Item>
-            <Form.Item label='Служба / Локация' getValueProps={getDepartmentIds} name='department'>
+            <Form.Item label='Служба / Локация' getValueProps={getDepartmentIds} name='departments'>
                 <Select mode='multiple' {...departmentSelectProps} />
             </Form.Item>
             <Form.Item label='Должность' name='position'>

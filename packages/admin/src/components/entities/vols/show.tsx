@@ -14,10 +14,10 @@ export const VolShow: FC<IResourceComponentsProps> = () => {
     return (
         <Show isLoading={isLoading}>
             <Title level={5}>Активирован</Title>
-            <Checkbox value={record?.isActive} />
+            <Checkbox value={record?.is_active} />
 
             <Title level={5}>Блокирован</Title>
-            <Checkbox value={record?.isBlocked} />
+            <Checkbox value={record?.is_blocked} />
 
             <Title level={5}>Имя</Title>
             <Text>{record?.name}</Text>

@@ -41,10 +41,12 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_filters',
     'drf_spectacular',
+    'corsheaders',
     'feeder',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -129,7 +131,6 @@ USE_I18N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
@@ -204,3 +205,5 @@ SERVER_EMAIL = EMAIL_FROM
 _email_backend = os.environ.get("EMAIL_BACKEND", "")
 if _email_backend:
     EMAIL_BACKEND = _email_backend
+
+# APPEND_SLASH = False

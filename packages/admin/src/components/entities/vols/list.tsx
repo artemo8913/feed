@@ -14,14 +14,21 @@ export const VolList: FC<IResourceComponentsProps> = () => {
     const [searchText, setSearchText] = useState('');
 
     const { data } = useList<VolEntity>({
-        resource: 'vols'
+        resource: 'volunteers'
     });
+
+    const { data: departments } = useList<DepartmentEntity>({
+        resource: 'departments',
+        optionLabel: 'name'
+    });
+
+    const departmentNameById = departments ? departments.data.reduce((result, { id, name }) => ({...result, [id]: name}), {}) : {};
 
     const filteredData = useMemo(() => {
         return searchText
             ? data?.data.filter((item) => {
                   const searchTextInLowerCase = searchText.toLowerCase();
-                  return [item.nick, item.name, item.department?.map((d) => d.name).join(', ')].some((text) => {
+                  return [item.nickname, item.name, item.departments?.map((id) => departmentNameById[id]).filter(name => name).join(', ')].some((text) => {
                       return text?.toLowerCase().includes(searchTextInLowerCase);
                   });
               })
@@ -29,7 +36,7 @@ export const VolList: FC<IResourceComponentsProps> = () => {
     }, [data, searchText]);
 
     // const { selectProps } = useSelect<VolEntity>({
-    //     resource: 'vols'
+    //     resource: 'volunteers'
     // });
 
     // return <Loader />;
@@ -51,11 +58,11 @@ export const VolList: FC<IResourceComponentsProps> = () => {
             <Input value={searchText} onChange={(e) => setSearchText(e.target.value)}></Input>
             <Table dataSource={filteredData} rowKey='id'>
                 <Table.Column
-                    dataIndex='nick'
-                    key='nick'
+                    dataIndex='nickname'
+                    key='nickname'
                     title='Позывной'
                     render={(value) => <TextField value={value} />}
-                    sorter={getSorter('nick')}
+                    sorter={getSorter('nickname')}
                 />
                 <Table.Column
                     dataIndex='name'
@@ -65,10 +72,10 @@ export const VolList: FC<IResourceComponentsProps> = () => {
                     sorter={getSorter('name')}
                 />
                 <Table.Column
-                    dataIndex='department'
-                    key='department'
+                    dataIndex='departments'
+                    key='departments    '
                     title='Службы'
-                    render={(value) => <TextField value={value.map((v) => v.name).join(', ')} />}
+                    render={(value) => <TextField value={value.map((id) => departmentNameById[id]).filter(name => name).join(', ')} />}
                     // filterDropdown={(props) => (
                     //     <FilterDropdown {...props}>
                     //         <Select
@@ -81,32 +88,32 @@ export const VolList: FC<IResourceComponentsProps> = () => {
                     // )}
                 />
                 <Table.Column
-                    dataIndex='activeFrom'
-                    key='activeFrom'
+                    dataIndex='active_from'
+                    key='active_from'
                     title='От'
                     render={(value) => <DateField value={value} />}
-                    sorter={getSorter('activeFrom')}
+                    sorter={getSorter('active_from')}
                 />
                 <Table.Column
-                    dataIndex='activeTo'
-                    key='activeTo'
+                    dataIndex='active_to'
+                    key='active_to'
                     title='До'
                     render={(value) => <DateField value={value} />}
-                    sorter={getSorter('activeTo')}
+                    sorter={getSorter('active_to')}
                 />
                 <Table.Column
-                    dataIndex='isActive'
-                    key='isActive'
+                    dataIndex='is_active'
+                    key='is_active'
                     title='Активирован'
                     render={(value) => <ListBooleanPositive value={value} />}
-                    sorter={getSorter('isActive')}
+                    sorter={getSorter('is_active')}
                 />
                 <Table.Column
-                    dataIndex='isBlocked'
-                    key='isBlocked'
+                    dataIndex='is_blocked'
+                    key='is_blocked'
                     title='Заблокирован'
                     render={(value) => <ListBooleanNegative value={value} />}
-                    sorter={getSorter('isBlocked')}
+                    sorter={getSorter('is_blocked')}
                 />
                 <Table.Column
                     dataIndex='comment'

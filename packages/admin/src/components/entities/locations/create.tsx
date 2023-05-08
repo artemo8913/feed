@@ -10,7 +10,7 @@ export const LocationCreate: FC<IResourceComponentsProps> = () => {
     const { formProps, saveButtonProps } = useForm<DepartmentEntity>();
 
     const { selectProps: leadSelectProps } = useSelect<DepartmentEntity>({
-        resource: 'vols',
+        resource: 'volunteers',
         optionLabel: 'name'
     });
 

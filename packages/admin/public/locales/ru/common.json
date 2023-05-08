@@ -82,8 +82,8 @@
             "show": "Показать направление"
         }
     },
-    "vols": {
-        "vols": "Волонтеры",
+    "volunteers": {
+        "volunteers": "Волонтеры",
         "fields": {
             "id": "Id",
             "name": "Имя",

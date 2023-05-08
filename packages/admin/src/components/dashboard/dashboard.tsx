@@ -34,7 +34,7 @@ Video1.displayName = 'Video1';
 export const Dashboard: FC = () => {
     const vo = {};
     const { data, isLoading } = useList<VolEntity>({
-        resource: 'vols',
+        resource: 'volunteers',
         config: {
             /*filters: [
                 {
@@ -51,7 +51,7 @@ export const Dashboard: FC = () => {
     const mutationResult = useUpdate<VolEntity>();
 
     const selectProps = useSelect<VolEntity>({
-        resource: 'vols',
+        resource: 'volunteers',
         optionLabel: 'name',
         optionValue: 'id'
         // defaultValue: getDefaultFilter('category.id', filters, 'in')
@@ -61,7 +61,7 @@ export const Dashboard: FC = () => {
 
     /*
     const handleUpdate = (item: ICompany, status: string): void => {
-        mutate({ resource: 'vols', id: item.id, values: { ...item, status } });
+        mutate({ resource: 'volunteers', id: item.id, values: { ...item, status } });
     };
 */
 
