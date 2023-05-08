@@ -28,14 +28,14 @@ async function bootstrap() {
     app.useGlobalPipes(new ValidationPipe());
     app.setGlobalPrefix('api');
 
-    const API_SERVICE_URL = "https://jsonplaceholder.typicode.com";
+    const API_SERVICE_URL = "http://localhost:5000";
 
     // Proxy endpoints
-    app.use('/api/v2', createProxyMiddleware({
+    app.use('/api/v1', createProxyMiddleware({
       target: API_SERVICE_URL,
       changeOrigin: true,
       pathRewrite: {
-          [`^/api/v2`]: '',
+        // [`^/api/v1`]: '/api/v1',
       }
     }));
 

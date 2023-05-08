@@ -37,7 +37,6 @@ ARG NEW_API_URL
 ENV API_URL_ENV=${API_URL}
 ENV NEW_API_URL_ENV=${NEW_API_URL}
 
-
 COPY ./package.json /app/package.json
 COPY ./yarn.lock /app/yarn.lock
 
@@ -66,7 +65,7 @@ EXPOSE 3000
 EXPOSE 4301
 EXPOSE 80
 
-RUN apk add --no-cache nginx
+RUN apk add --no-cache nginx python3 py3-pip tzdata
 COPY nginx.conf /etc/nginx/nginx.conf
 
 ARG API_URL
@@ -103,5 +102,20 @@ COPY --from=builder /app/packages/scanner/package.json /app/packages/scanner/
 COPY --from=builder /app/packages/scanner/build/ /app/packages/scanner/build/
 
 COPY --from=builder /app/nginx.conf /etc
+
+# jango backend
+WORKDIR /app
+RUN mkdir backend/ backend/logs/ backend/data/
+
+ENV PYTHONUNBUFFERED 1
+
+COPY ./backend/requirements.txt /app/backend
+RUN cd backend && pip install -r requirements.txt --no-cache-dir
+
+COPY ./backend/config /app/backend/config
+COPY ./backend/feeder /app/backend/feeder
+COPY ./backend/.gitignore /app/backend/
+COPY ./backend/manage.py /app/backend/
+COPY ./backend/.env.sample /app/backend/.env
 
 ENTRYPOINT ["/app/entry.sh"]
