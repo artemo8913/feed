@@ -1,6 +1,8 @@
 import dayjs from 'dayjs';
 import { ulid } from 'ulid';
 
+import { MealTime } from '~/db';
+
 import { rndInt } from './utils';
 
 export interface VolResponse {
@@ -8,6 +10,7 @@ export interface VolResponse {
     amount: 1;
     ts: number;
     ulid: string;
+    mealTime: MealTime;
 }
 
 const createTestTrans = (type: 'now' | 'rnd'): VolResponse => {
@@ -24,7 +27,8 @@ const createTestTrans = (type: 'now' | 'rnd'): VolResponse => {
         vol_id: rndInt(0, 600),
         amount: 1,
         ts,
-        ulid: ulid(ts)
+        ulid: ulid(ts),
+        mealTime: MealTime.breakfast
     };
 };
 
