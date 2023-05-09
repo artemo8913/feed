@@ -28,7 +28,14 @@ export type MealTime = {
     night: dayjs.Dayjs;
 };
 
-export const getToday = (): string => dayjs().format(DATE_FORMAT);
+export const getToday = (): string => {
+    const now = dayjs();
+    if (now.isAfter(dayjs().startOf('day').add(7, 'h'))) {
+        return now.startOf('day').format(DATE_FORMAT);
+    } else {
+        return now.startOf('day').subtract(1, 'day').format(DATE_FORMAT);
+    }
+};
 
 export const getMealTime = (): MealTime => {
     const today = getToday();

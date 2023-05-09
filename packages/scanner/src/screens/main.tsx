@@ -7,6 +7,7 @@ import { QrScan } from '~/components/qr-scan';
 import { BtnSync } from '~/components/btn-sync';
 import { db } from '~/db';
 import { AppContext } from '~/app-context';
+import { MainScreenStats } from '~/components/main-screen-stats';
 
 import css from '../app.module.css';
 
@@ -31,6 +32,7 @@ export const MainScreen = React.memo(function MainScreen() {
             {scanResult && <PostScan closeFeed={closeFeedDialog} qrcode={scanResult} />}
             {appError && <ErrorMsg close={closeFeedDialog} msg={appError} />}
             <LastUpdated count={volCount} ts={lastUpdate || 0} />
+            <MainScreenStats />
         </div>
     );
 });
