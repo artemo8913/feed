@@ -20,6 +20,15 @@ yarn run bootstrap
 # Запуск
 
 ```bash
+cd ./backend
+python3 -m venv venv
+. ./venv/bin/activate
+./manage.py migrate
+./manage.py loaddata colors feed_types kitchens
+./manage.py runserver localhost:8000
+```
+
+```bash
 cd ./packages/api
 # yarn run _db:drop
 # yarn run db:seed

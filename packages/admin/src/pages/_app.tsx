@@ -11,7 +11,8 @@ import '@pankod/refine-antd/dist/reset.css';
 // require('~/i18n');
 
 import { DepartmentCreate, DepartmentEdit, DepartmentList, DepartmentShow } from '~/components/entities/departments';
-import { LocationCreate, LocationEdit, LocationList, LocationShow } from '~/components/entities/locations';
+import { Sync } from '~/components/sync';
+// import { LocationCreate, LocationEdit, LocationList, LocationShow } from '~/components/entities/locations';
 import { VolCreate, VolEdit, VolList, VolShow } from '~/components/entities/vols';
 import { ACL } from '~/acl';
 import { authProvider } from '~/authProvider';
@@ -76,14 +77,6 @@ const Feed = ({ Component, pageProps }: AppProps): JSX.Element | null => {
             options={{ syncWithLocation: true, disableTelemetry: true }}
             resources={[
                 {
-                    name: 'departments',
-                    list: DepartmentList,
-                    create: DepartmentCreate,
-                    edit: DepartmentEdit,
-                    show: DepartmentShow,
-                    icon: <Icons.ProfileOutlined />
-                },
-                {
                     name: 'volunteers',
                     list: VolList,
                     create: VolCreate,
@@ -92,13 +85,26 @@ const Feed = ({ Component, pageProps }: AppProps): JSX.Element | null => {
                     icon: <Icons.ProfileOutlined />
                 },
                 {
-                    name: 'locations',
-                    list: LocationList,
-                    create: LocationCreate,
-                    edit: LocationEdit,
-                    show: LocationShow,
+                    name: 'departments',
+                    list: DepartmentList,
+                    create: DepartmentCreate,
+                    edit: DepartmentEdit,
+                    show: DepartmentShow,
                     icon: <Icons.ProfileOutlined />
-                }
+                },
+                {
+                    name: 'sync',
+                    list: Sync,
+                    icon: <Icons.ProfileOutlined />
+                },
+                // {
+                //     name: 'locations',
+                //     list: LocationList,
+                //     create: LocationCreate,
+                //     edit: LocationEdit,
+                //     show: LocationShow,
+                //     icon: <Icons.ProfileOutlined />
+                // }
             ]}
         >
             <Component {...pageProps} />
