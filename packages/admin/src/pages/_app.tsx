@@ -96,7 +96,7 @@ const Feed = ({ Component, pageProps }: AppProps): JSX.Element | null => {
                     name: 'sync',
                     list: Sync,
                     icon: <Icons.ProfileOutlined />
-                },
+                }
                 // {
                 //     name: 'locations',
                 //     list: LocationList,
