@@ -11,14 +11,14 @@ export const PostScan: FC<{
     closeFeed: () => void;
 }> = memo(({ closeFeed, qrcode }) => {
     const vol = useLiveQuery(async () => await db.volunteers.where('qr').equals(qrcode).first(), [qrcode]);
-    const { setColor } = useContext(AppContext);
+    const { mealTime, setColor } = useContext(AppContext);
 
     console.log({ vol, qrcode });
 
     const feed = useCallback(async () => {
-        if (vol) {
+        if (vol && mealTime) {
             try {
-                await dbIncFeed(vol);
+                await dbIncFeed(vol, mealTime);
                 closeFeed();
             } catch (e) {
                 console.error(e);

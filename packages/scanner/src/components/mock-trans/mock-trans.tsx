@@ -1,17 +1,21 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 
 import { createMockData } from '~/lib/mock';
 import { db } from '~/db';
+import { AppContext } from '~/app-context';
 
 import style from './mock-trans.module.css';
 
 export const MockTrans: React.FC = () => {
     const [count, setCount] = useState<number>(1);
+    const { mealTime } = useContext(AppContext);
     const addTestTrans = (count: number, type: 'now' | 'rnd') => {
-        const trans = createMockData(count, type);
-        trans.forEach((tx) => {
-            void db.transactions.add(tx);
-        });
+        if (mealTime) {
+            const trans = createMockData(count, type, mealTime);
+            trans.forEach((tx) => {
+                void db.transactions.add(tx);
+            });
+        }
     };
     return (
         <div className={style.mockBlock}>

@@ -1,8 +1,7 @@
 import { useState } from 'react';
 
-import { FeedType, getFeedStats, getVolsOnField } from '~/db';
+import { FeedType, getFeedStats, getVolsOnField, MealTime } from '~/db';
 import type { IStats, LocalStatsHook } from '~/request-local-db/lib';
-import { getMealTime } from '~/lib/date';
 
 export const useLocalStats = (statsDate): LocalStatsHook => {
     const onFieldTemp: Record<string, IStats> = {};
@@ -15,8 +14,6 @@ export const useLocalStats = (statsDate): LocalStatsHook => {
     const [updated, setUpdated] = useState<boolean>(false);
 
     const update = () => {
-        const mealTime = getMealTime();
-
         setUpdated(false);
         setProgress(true);
 
@@ -54,18 +51,10 @@ export const useLocalStats = (statsDate): LocalStatsHook => {
 
         const fedPromises = Object.keys(FeedType).map(async (key) => {
             await getFeedStats(statsDate, FeedType[key]).then((txs) => {
-                const breakfast = txs.filter(
-                    (tx) => tx.vol && tx.ts >= mealTime.breakfast.unix() && tx.ts < mealTime.lunch.unix()
-                ).length;
-                const lunch = txs.filter(
-                    (tx) => tx.vol && tx.ts >= mealTime.lunch.unix() && tx.ts < mealTime.dinner.unix()
-                ).length;
-                const dinner = txs.filter(
-                    (tx) => tx.vol && tx.ts >= mealTime.dinner.unix() && tx.ts < mealTime.night.unix()
-                ).length;
-                const night = txs.filter(
-                    (tx) => tx.vol && tx.ts >= mealTime.night.unix() && tx.ts < mealTime.lunch.add(1, 'd').unix()
-                ).length;
+                const breakfast = txs.filter((tx) => tx.vol && tx.mealTime === MealTime.breakfast).length;
+                const lunch = txs.filter((tx) => tx.vol && tx.mealTime === MealTime.lunch).length;
+                const dinner = txs.filter((tx) => tx.vol && tx.mealTime === MealTime.dinner).length;
+                const night = txs.filter((tx) => tx.vol && tx.mealTime === MealTime.night).length;
                 fedTemp[FeedType[key]] = {
                     breakfast,
                     lunch,

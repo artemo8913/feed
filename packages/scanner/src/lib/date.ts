@@ -21,21 +21,11 @@ dayjs.extend(utc);
 
 export const DATE_FORMAT = 'YYYY-MM-DD';
 
-export type MealTime = {
-    breakfast: dayjs.Dayjs;
-    lunch: dayjs.Dayjs;
-    dinner: dayjs.Dayjs;
-    night: dayjs.Dayjs;
-};
-
-export const getToday = (): string => dayjs().format(DATE_FORMAT);
-
-export const getMealTime = (): MealTime => {
-    const today = getToday();
-    return {
-        breakfast: dayjs(today).add(7, 'h'),
-        lunch: dayjs(today).add(14, 'h'),
-        dinner: dayjs(today).add(18, 'h'),
-        night: dayjs(today).add(22, 'h')
-    };
+export const getToday = (): string => {
+    const now = dayjs();
+    if (now.isAfter(dayjs().startOf('day').add(7, 'h'))) {
+        return now.startOf('day').format(DATE_FORMAT);
+    } else {
+        return now.startOf('day').subtract(1, 'day').format(DATE_FORMAT);
+    }
 };

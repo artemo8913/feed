@@ -22,11 +22,12 @@ export const useSendTrans = (baseUrl: string, pin: string | null, setAuth: (auth
             return Promise.resolve(false);
         }
 
-        const data = (trans || []).map(({ amount, ts, ulid, vol_id }) => ({
+        const data = (trans || []).map(({ amount, mealTime, ts, ulid, vol_id }) => ({
             vol_id,
             amount,
             ts,
-            ulid
+            ulid,
+            mealTime
         }));
 
         setFetching(true);

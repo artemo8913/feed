@@ -16,7 +16,7 @@ export const HistoryTable = React.memo(function HistoryTable({ transactions }: H
             <tr key={index}>
                 <td>{transaction.vol?.name}</td>
                 <td>{transaction.vol?.feed_type === FeedType.FT1 ? 'Мясоед' : 'Веган'}</td>
-                <td>{dayjs.unix(transaction.ts).format('YYYY.MM.DD hh:mm:ss').toString()}</td>
+                <td>{dayjs.unix(transaction.ts).format('YYYY.MM.DD HH:mm:ss').toString()}</td>
             </tr>
         );
     });

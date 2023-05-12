@@ -2,7 +2,7 @@
     display: flex;
     gap: 5px;
     position: absolute;
-    bottom: 4vh;
+    bottom: 10vh;
     right: 2vw;
 
     button {

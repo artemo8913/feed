@@ -92,6 +92,11 @@ function registerValidSW(swUrl: string, config?: Config): void {
                                 config.onSuccess(registration);
                             }
                         }
+                        if (registration.waiting) {
+                            registration.waiting.postMessage({ type: 'SKIP_WAITING' });
+                            alert('Доступно обновление, приложение перезагрузится');
+                            window.location.reload();
+                        }
                     }
                 };
             };
