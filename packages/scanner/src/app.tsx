@@ -24,7 +24,7 @@ import { MealTimeSelect } from '~/components/meal-time-select';
 import type { IViewContext } from './view-context';
 import { ViewContext } from './view-context';
 
-// import { clearCache } from './lib/utils';
+import { clearCache } from './lib/utils';
 // eslint-disable-next-line import/no-unresolved
 import ver from '!!raw-loader!pwa-ver.txt';
 
@@ -100,29 +100,29 @@ const App: FC = () => {
         [currentView]
     );
 
-    // useEffect(() => {
-    //     const checkVer = (): void => {
-    //         console.log('online, check ver..');
-    //         void axios.get('public/pwa-ver.txt').then(({ data }: any): void => {
-    //             console.log(`remote app ver: ${data}`);
-    //             if (data !== Number(ver)) {
-    //                 console.log('new version, reloading...');
-    //                 alert('Доступно обновление, приложение перезагрузиться');
-    //                 clearCache();
-    //             }
-    //         });
-    //     };
-    //
-    //     if (navigator.onLine) {
-    //         checkVer();
-    //     }
-    //
-    //     window.addEventListener('online', checkVer);
-    //
-    //     return () => {
-    //         window.removeEventListener('online', checkVer);
-    //     };
-    // }, []);
+    useEffect(() => {
+        const checkVer = (): void => {
+            console.log('online, check ver..');
+            void axios.get('public/pwa-ver.txt').then(({ data }: any): void => {
+                console.log(`remote app ver: ${data}`);
+                if (data !== Number(ver)) {
+                    console.log('new version, reloading...');
+                    alert('Доступно обновление, приложение перезагрузиться');
+                    clearCache();
+                }
+            });
+        };
+    
+        if (navigator.onLine) {
+            checkVer();
+        }
+    
+        window.addEventListener('online', checkVer);
+    
+        return () => {
+            window.removeEventListener('online', checkVer);
+        };
+    }, []);
 
     return (
         // @ts-ignore
