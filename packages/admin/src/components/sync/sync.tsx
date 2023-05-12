@@ -9,8 +9,7 @@ import { Button, List } from '@pankod/refine-antd';
 
 export const Sync: FC = () => {
     const [disabled, setDisabled] = useState(false);
-    const [notionSyncText, setNotionSyncText] = useState('');
-    const onClick = async () => {
+    const syncNotion = async () => {
         setDisabled(true);
         try {
             await axios.post(`${apiUrl}/notion-sync`);
@@ -20,12 +19,15 @@ export const Sync: FC = () => {
             setDisabled(false);
         }
     };
+    const onClick = () => {
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
+        syncNotion();
+    };
     return (
         <List>
             <Button disabled={disabled} onClick={onClick}>
                 Синхронизация с Notion
             </Button>
-            {notionSyncText}
         </List>
     );
 };
