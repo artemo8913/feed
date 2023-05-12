@@ -46,7 +46,7 @@ export interface Volunteer {
     location: Array<{ name: string }>;
 }
 
-const DB_VERSION = 3;
+const DB_VERSION = 4;
 
 export class MySubClassedDexie extends Dexie {
     transactions!: Table<Transaction>;
@@ -55,7 +55,7 @@ export class MySubClassedDexie extends Dexie {
     constructor() {
         super('yclins');
         this.version(DB_VERSION).stores({
-            transactions: '&&ulid, vol_id, amount, ts',
+            transactions: '&&ulid, vol_id, amount, ts, mealTime',
             volunteers:
                 '&qr, *id, name, nickname, balance, is_blocked, is_active, feed_type, paid, active_from, active_to, department, location, expired'
         });
