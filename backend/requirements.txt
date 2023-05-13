@@ -12,3 +12,4 @@ arrow
 drf-spectacular
 python-dotenv
 sentry-sdk
+dj-rest-auth

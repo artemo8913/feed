@@ -63,7 +63,7 @@ class KitchenSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Kitchen
-        fields = '__all__'
+        fields = ['id', 'name', 'comment']
 
 
 class SyncStatisticItem(serializers.Serializer):
@@ -79,3 +79,18 @@ class SyncStatistic(serializers.Serializer):
 
 class SimpleResponse(serializers.Serializer):
     success = serializers.BooleanField()
+
+
+class UserDetailSerializer(serializers.Serializer):
+    username = serializers.CharField(required=False, allow_blank=True)
+    id = serializers.CharField()
+    roles = serializers.SerializerMethodField()
+    kitchen = KitchenSerializer(required=False)
+    first_name = serializers.CharField()
+    last_name = serializers.CharField()
+
+    def get_roles(self, user):
+        if getattr(user, 'is_kitchen', None):
+            return ["KITCHEN", ]
+        if user.is_staff or user.is_superuser:
+            return ["ADMIN", ]

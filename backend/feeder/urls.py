@@ -16,6 +16,7 @@ urlpatterns = [
     path('', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
     path('schema/', SpectacularAPIView.as_view(), name='schema'),
     path('redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
+    path('auth/', include('dj_rest_auth.urls')),
 
     path('', include(router.urls)),
     # path('update-balance', views.UpdateBalance.as_view()),

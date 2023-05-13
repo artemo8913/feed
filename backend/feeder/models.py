@@ -23,6 +23,7 @@ class Volunteer(TimeMixin):
     arrival_date = models.DateTimeField(null=True, blank=True, verbose_name="Дата прибытия")
     departure_date = models.DateTimeField(null=True, blank=True, verbose_name="Дата отъезда")
     daily_eats = models.IntegerField(default=0, verbose_name="Количество приёмов пищи в день")
+    balance = models.IntegerField(default=0, verbose_name="Баланс")
     is_active = models.BooleanField(default=False, verbose_name="Активен?")
     is_blocked = models.BooleanField(default=False, verbose_name="Заблокирован?")
     is_vegan = models.BooleanField(default=False, verbose_name="Вегетарианец?")
