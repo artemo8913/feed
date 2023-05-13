@@ -18,11 +18,13 @@ import { MainScreen } from '~/screens/main';
 import { StatsScreen } from '~/screens/stats-screen';
 import { useCheckAuth } from '~/request';
 import { MockTrans } from '~/components/mock-trans/mock-trans';
+import type { MealTime } from '~/db';
+import { MealTimeSelect } from '~/components/meal-time-select';
 
-import { ViewContext } from './view-context';
 import type { IViewContext } from './view-context';
+import { ViewContext } from './view-context';
+import { clearCache } from './lib/utils';
 
-// import { clearCache } from './lib/utils';
 // eslint-disable-next-line import/no-unresolved
 import ver from '!!raw-loader!pwa-ver.txt';
 
@@ -42,6 +44,7 @@ const storedPin = localStorage.getItem('pin');
 const App: FC = () => {
     const [appColor, setAppColor] = useState<AppColor | null>(null);
     const [appError, setAppError] = useState<string | null>(null);
+    const [mealTime, setMealTime] = useState<MealTime | null>(null);
     const [pin, setPin] = useState<string | null>(storedPin);
     const [auth, setAuth] = useState<boolean>(true);
     const pinInputRef = useRef<HTMLInputElement | null>(null);
@@ -82,7 +85,9 @@ const App: FC = () => {
                 localStorage.setItem('lastUpdated', String(ts));
                 setLastUpdated(ts);
             },
-            setVolCount
+            setVolCount,
+            mealTime,
+            setMealTime
         }),
         [pin, lastUpdate, volCount]
     );
@@ -100,11 +105,11 @@ const App: FC = () => {
             console.log('online, check ver..');
             void axios.get('public/pwa-ver.txt').then(({ data }: any): void => {
                 console.log(`remote app ver: ${data}`);
-                // if (data !== Number(ver)) {
-                //     console.log('new version, reloading...');
-                //     alert('Доступно обновление, приложение перезагрузиться');
-                //     clearCache();
-                // }
+                if (data !== Number(ver)) {
+                    console.log('new version, reloading...');
+                    alert('Доступно обновление, приложение перезагрузиться');
+                    clearCache();
+                }
             });
         };
 
@@ -124,12 +129,14 @@ const App: FC = () => {
         <ErrorBoundary fallback={ErrorFallback as ReactElement}>
             <AppContext.Provider value={contextValue}>
                 <div className={css.app} style={appStyle}>
-                    {!auth ? (
+                    {!auth && (
                         <div className={css.auth}>
                             <input placeholder='PIN' ref={pinInputRef} type='number' />
                             <button onClick={tryAuth}>ВОЙТИ</button>
                         </div>
-                    ) : (
+                    )}
+                    {auth && !mealTime && <MealTimeSelect />}
+                    {auth && mealTime && (
                         <ViewContext.Provider value={viewContextValue}>
                             <SwipeableViews
                                 enableMouseEvents

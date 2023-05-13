@@ -58,7 +58,13 @@
         "clone": "Копия"
     },
     "dashboard": {
-        "title": "Dashboard"
+        "title": "Регистрация"
+    },
+    "sync": {
+        "sync": "Синхронизация",
+        "titles": {
+            "list": "Синхронизация"
+        }
     },
     "departments": {
         "departments": "Направления",

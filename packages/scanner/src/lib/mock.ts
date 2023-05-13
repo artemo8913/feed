@@ -1,6 +1,8 @@
 import dayjs from 'dayjs';
 import { ulid } from 'ulid';
 
+import type { MealTime } from '~/db';
+
 import { rndInt } from './utils';
 
 export interface VolResponse {
@@ -8,9 +10,10 @@ export interface VolResponse {
     amount: 1;
     ts: number;
     ulid: string;
+    mealTime: MealTime;
 }
 
-const createTestTrans = (type: 'now' | 'rnd'): VolResponse => {
+const createTestTrans = (type: 'now' | 'rnd', mealTime: MealTime): VolResponse => {
     let ts: any;
     if (type === 'now') {
         ts = dayjs();
@@ -24,11 +27,12 @@ const createTestTrans = (type: 'now' | 'rnd'): VolResponse => {
         vol_id: rndInt(0, 600),
         amount: 1,
         ts,
-        ulid: ulid(ts)
+        ulid: ulid(ts),
+        mealTime: mealTime
     };
 };
 
-export const createMockData = (cnt: number, type: 'now' | 'rnd'): Array<VolResponse> =>
+export const createMockData = (cnt: number, type: 'now' | 'rnd', mealTime: MealTime): Array<VolResponse> =>
     Array(cnt)
         .fill(0)
-        .map(() => createTestTrans(type));
+        .map(() => createTestTrans(type, mealTime));

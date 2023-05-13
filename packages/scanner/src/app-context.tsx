@@ -1,5 +1,7 @@
 import React from 'react';
 
+import type { MealTime } from '~/db';
+
 export enum AppColor {
     RED,
     GREEN
@@ -22,6 +24,8 @@ export interface IAppContext {
     setAuth: (auth: boolean) => void;
     lastUpdate: number | null;
     volCount: number;
+    mealTime: MealTime | null;
+    setMealTime: (mealTime: MealTime) => void;
 }
 
 // @ts-ignore

@@ -6,7 +6,7 @@ export const ac = new AccessControl();
 ac
     // editor
     .grant(AppRoles.EDITOR)
-    .read(['departments', 'volunteers', 'dashboard', 'locations'])
+    .read(['departments', 'volunteers', 'dashboard', 'locations', 'sync'])
     .create('departments')
     .update('departments')
     // admin
