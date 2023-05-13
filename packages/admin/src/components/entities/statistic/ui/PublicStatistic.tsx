@@ -2,11 +2,11 @@ import { useState, useCallback } from 'react';
 import { Col, Row, Form, Radio, DatePicker, Divider, Button, Space } from 'antd';
 import { RadioChangeEvent } from '@pankod/refine-antd';
 import { default as dayjsExt } from '../lib/dateHelper';
-import TableStats from './TableStats';
+import TableStats from './tableStats';
 import locale from 'antd/lib/date-picker/locale/ru_RU';
 import { apiMock } from '../lib/mock';
-import LinearChart from './LinearChart';
-import ColumnChart from './ColumnChart';
+import LinearChart from './linearChart';
+import ColumnChart from './columnChart';
 import { TypeOfEaters } from '../types';
 import { handleDataForColumnChart, handleDataForLinearChart, handleDataForTable } from '../lib/handleData';
 
