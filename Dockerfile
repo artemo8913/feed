@@ -65,7 +65,7 @@ EXPOSE 3000
 EXPOSE 4301
 EXPOSE 80
 
-RUN apk add --no-cache nginx python3 py3-pip tzdata
+RUN apk add --no-cache nginx python3 py3-pip tzdata curl
 COPY nginx.conf /etc/nginx/nginx.conf
 
 ARG API_URL
