@@ -15,6 +15,6 @@ cd /app/backend
 ./manage.py runserver localhost:8000 &
 
 sleep 2
-curl -X 'POST' 'https://localhost:8000/api/v1/notion-sync' -H 'Authorization: K-PIN-CODE 111'
+curl -X 'POST' 'http://localhost:8000/api/v1/notion-sync' -H 'Authorization: K-PIN-CODE 111'
 
 nginx
