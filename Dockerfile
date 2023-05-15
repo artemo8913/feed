@@ -114,8 +114,10 @@ RUN cd backend && pip install -r requirements.txt --no-cache-dir
 
 COPY ./backend/config /app/backend/config
 COPY ./backend/feeder /app/backend/feeder
+COPY ./backend/initial /app/backend/initial
 COPY ./backend/.gitignore /app/backend/
 COPY ./backend/manage.py /app/backend/
+COPY ./backend/create_user.py /app/backend/
 COPY ./backend/.env.sample /app/backend/.env
 
 ENTRYPOINT ["/app/entry.sh"]
