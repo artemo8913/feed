@@ -3,15 +3,7 @@ import type { DataProvider } from '@pankod/refine-core';
 
 import { NEW_API_URL } from '~/const';
 import { axios } from '~/authProvider';
-import { getUserData } from '~/auth';
 
-const token = getUserData({}, false);
-
-if (token) {
-    axios.defaults.headers.common = {
-        Authorization: `Token ${token}`
-    };
-}
 
 import type { AxiosInstance } from 'axios';
 import { stringify } from 'query-string';
