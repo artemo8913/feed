@@ -17,13 +17,9 @@ export const VolList: FC<IResourceComponentsProps> = () => {
         resource: 'volunteers'
     });
 
-    const { data: departments } = useList<DepartmentEntity>({
-        resource: 'departments'
-    });
-
-    const departmentNameById = departments
-        ? departments.data.reduce((result, { id, name }) => ({ ...result, [id]: name }), {})
-        : {};
+    // const { data: departments } = useList<DepartmentEntity>({
+    //     resource: 'departments'
+    // });
 
     const filteredData = useMemo(() => {
         return searchText
@@ -32,9 +28,9 @@ export const VolList: FC<IResourceComponentsProps> = () => {
                   return [
                       item.nickname,
                       item.name,
+                      item.lastname,
                       item.departments
-                          ?.map((id) => departmentNameById[id])
-                          .filter((name) => name)
+                          ?.map(({ name }) => name)
                           .join(', ')
                   ].some((text) => {
                       return text?.toLowerCase().includes(searchTextInLowerCase);
@@ -80,14 +76,20 @@ export const VolList: FC<IResourceComponentsProps> = () => {
                     sorter={getSorter('name')}
                 />
                 <Table.Column
+                    dataIndex='lastname'
+                    key='lastname'
+                    title='Фамилия'
+                    render={(value) => <TextField value={value} />}
+                    sorter={getSorter('lastname')}
+                />
+                <Table.Column
                     dataIndex='departments'
                     key='departments    '
                     title='Службы'
                     render={(value) => (
                         <TextField
                             value={value
-                                .map((id) => departmentNameById[id])
-                                .filter((name) => name)
+                                .map(({ name }) => name)
                                 .join(', ')}
                         />
                     )}
