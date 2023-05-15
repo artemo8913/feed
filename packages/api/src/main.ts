@@ -47,6 +47,7 @@ async function bootstrap() {
                     'GET, OPTIONS, POST, PUT, PATCH, DELETE';
                 proxyRes.headers['Access-Control-Allow-Headers'] =
                     'Authorization, Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers';
+                proxyRes.headers['Cache-Control'] = 'no-cache';
             },
         }),
     );

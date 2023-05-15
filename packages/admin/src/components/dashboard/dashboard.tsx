@@ -52,7 +52,7 @@ export const Dashboard: FC = () => {
 
     const selectProps = useSelect<VolEntity>({
         resource: 'volunteers',
-        optionLabel: 'name',
+        optionLabel: 'nickname',
         optionValue: 'id'
         // defaultValue: getDefaultFilter('category.id', filters, 'in')
     });

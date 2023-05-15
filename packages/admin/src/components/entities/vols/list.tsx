@@ -100,14 +100,14 @@ export const VolList: FC<IResourceComponentsProps> = () => {
                     dataIndex='active_from'
                     key='active_from'
                     title='От'
-                    render={(value) => <DateField value={value} />}
+                    render={(value) => value && <DateField value={value} />}
                     sorter={getSorter('active_from')}
                 />
                 <Table.Column
                     dataIndex='active_to'
                     key='active_to'
                     title='До'
-                    render={(value) => <DateField value={value} />}
+                    render={(value) => value && <DateField value={value} />}
                     sorter={getSorter('active_to')}
                 />
                 <Table.Column
