@@ -42,7 +42,6 @@ export const authProvider: AuthProvider = {
         try {
             const { data } = await axios.get(`${NEW_API_URL}/auth/user/`, {
                 headers: {
-                    'Cache-Control': 'no-cache',
                     Authorization: `Token ${token}`
                 }
             });
