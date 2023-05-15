@@ -25,5 +25,21 @@ export interface VolEntity {
     feed_type?: number; //FeedTypeEntity;
 }
 
+export interface KitchenEntity {
+    id: number;
+    name: string;
+}
+
+export interface FeedTypeEntity {
+    id: number;
+    name: string;
+}
+
+export interface ColorTypeEntity {
+    id: number;
+    name: string;
+    description: string;
+}
+
 export { DepartmentEntity } from '@feed/api/src/entities/department.entity';
 export { LocationEntity } from '@feed/api/src/entities/location.entity';
