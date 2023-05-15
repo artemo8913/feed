@@ -15,6 +15,7 @@ export interface UserData {
 }
 
 export const AUTH_COOKIE_NAME = 'auth';
+export const AUTH_DATA_COOKIE_NAME = 'authData';
 
 type UserDataReturn<T extends boolean> = (T extends true ? UserData : string) | null;
 export const getUserData = <T extends true | false>(ctx, decode: T): UserDataReturn<T> => {
@@ -25,7 +26,9 @@ export const getUserData = <T extends true | false>(ctx, decode: T): UserDataRet
         return null;
     }
 
-    return decode ? <UserDataReturn<T>>jwt_decode<UserData>(token) : <UserDataReturn<T>>token;
+    return decode
+        ? <UserDataReturn<T>>getUserInfo() /* <UserDataReturn<T>>jwt_decode<UserData>(token)*/
+        : <UserDataReturn<T>>token;
 };
 
 export const setUserData = (token: string): void => {
@@ -33,6 +36,20 @@ export const setUserData = (token: string): void => {
         maxAge: 30 * 24 * 60 * 60,
         path: '/'
     });
+};
+
+export const setUserInfo = (user: UserData): void => {
+    nookies.set(null, AUTH_DATA_COOKIE_NAME, JSON.stringify(user), {
+        maxAge: 30 * 24 * 60 * 60,
+        path: '/'
+    });
+};
+
+export const getUserInfo = (): UserData | undefined => {
+    const authData = nookies.get({})[AUTH_DATA_COOKIE_NAME];
+    if (authData) {
+        return JSON.parse(authData) as UserData;
+    }
 };
 
 export const clearUserData = (): void => {

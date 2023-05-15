@@ -16,7 +16,7 @@ export const LastUpdated: FC<{
 
 export const VolInfo: FC<{
     vol: Volunteer;
-}> = ({ vol: { active_from, active_to, department, location, name, nickname, paid } }) => (
+}> = ({ vol: { active_from, active_to, departments, name, nickname, paid } }) => (
     <div className={css.volInfo}>
         <div className={css.feedType}>{paid ? 'платно' : 'фри'}</div>
         <div>
@@ -29,8 +29,9 @@ export const VolInfo: FC<{
             {active_to && <span>{`по ${dayjs(active_to).format(dateTimeFormat)}`}</span>}
         </div>
         <div className={css.misc}>
-            {department && department.length > 0 && <div>Службы: {department.map(({ name }) => name).join(', ')}</div>}
-            {location && location.length > 0 && <div>Локации: {location.map(({ name }) => name).join(', ')}</div>}
+            {departments && departments.length > 0 && (
+                <div>Службы: {departments.map(({ name }) => name).join(', ')}</div>
+            )}
         </div>
     </div>
 );

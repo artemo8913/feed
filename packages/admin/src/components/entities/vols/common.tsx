@@ -1,10 +1,12 @@
-import { Checkbox, Form, Input, Select, useSelect } from '@pankod/refine-antd';
+import { Checkbox, DatePicker, Form, Input, Select, useSelect } from '@pankod/refine-antd';
 import dynamic from 'next/dynamic';
 import type { VolEntity } from '@feed/api/src/entities/vol.entity';
 
 // import { Rules } from '~/components/form';
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 import 'react-quill/dist/quill.snow.css';
+import dayjs from 'dayjs';
+
 import type { DepartmentEntity } from '~/interfaces';
 
 export const CreateEdit: FC = () => {
@@ -24,6 +26,10 @@ export const CreateEdit: FC = () => {
         };
     };
 
+    const getDateValue = (value) => ({
+        value: value ? dayjs(value) : ''
+    });
+
     return (
         <>
             <Form.Item name='is_active' valuePropName='checked'>
@@ -38,11 +44,11 @@ export const CreateEdit: FC = () => {
             <Form.Item label='Позывной' name='nickname'>
                 <Input />
             </Form.Item>
-            <Form.Item label='От' name='active_from'>
-                <Input type='datetime-local' />
+            <Form.Item label='От' name='active_from' getValueProps={getDateValue}>
+                <DatePicker showTime />
             </Form.Item>
-            <Form.Item label='До' name='active_to'>
-                <Input type='datetime-local' />
+            <Form.Item label='До' name='active_to' getValueProps={getDateValue}>
+                <DatePicker showTime />
             </Form.Item>
             <Form.Item label='Шеф' name={['lead', 'id']}>
                 <Select {...leadSelectProps} />
@@ -51,6 +57,9 @@ export const CreateEdit: FC = () => {
                 <Select mode='multiple' {...departmentSelectProps} />
             </Form.Item>
             <Form.Item label='Должность' name='position'>
+                <Input />
+            </Form.Item>
+            <Form.Item label='QR' name='qr'>
                 <Input />
             </Form.Item>
             <Form.Item label='Телефон' name='phone'>

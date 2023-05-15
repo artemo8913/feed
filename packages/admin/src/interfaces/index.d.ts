@@ -3,6 +3,7 @@ export interface VolEntity {
     uuid?: string;
     qr?: string;
     name?: string;
+    lastname?: string;
     nickname?: string;
     phone?: string;
     email?: string;
@@ -18,7 +19,7 @@ export interface VolEntity {
     arrival_date?: Date;
     departure_date?: Date;
     // chef?: VolEntity[];
-    departments?: Array<number>; //DepartmentEntity[];
+    departments?: Array<{ id: number; name: string }>; //DepartmentEntity[];
     // location?: LocationEntity[];
     // badgeType?: BadgeEntity;
     feed_type?: number; //FeedTypeEntity;

@@ -15,6 +15,7 @@ class KitchenPinAuthentication(BaseTokenAuthentication):
             kitchen = models.Kitchen.objects.get(pin_code=key)
 
             user = KitchenUser()
+            user.id = kitchen.id
             user.first_name = kitchen.name
 
         except models.Kitchen.DoesNotExist:

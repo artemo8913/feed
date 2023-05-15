@@ -19,12 +19,12 @@ export const useGetVols = (baseUrl: string, pin: string | null, setAuth: (auth: 
 
         return new Promise((res, rej) => {
             axios
-                .post(`${baseUrl}/vol_list`, null, {
+                .get(`${baseUrl}/volunteers/?limit=10000`, {
                     headers: {
-                        Authorization: `Bearer ${pin}`
+                        Authorization: `K-PIN-CODE ${pin}`
                     }
                 })
-                .then(async ({ data }) => {
+                .then(async ({ data: { results } }) => {
                     setFetching(false);
 
                     try {
@@ -36,7 +36,7 @@ export const useGetVols = (baseUrl: string, pin: string | null, setAuth: (auth: 
 
                     const qrs = {};
                     const ids = {};
-                    for (const v of data as Array<Volunteer>) {
+                    for (const v of results as Array<Volunteer>) {
                         if (ids[v.id]) {
                             console.log(ids[v.id], v);
                         } else {
@@ -50,7 +50,7 @@ export const useGetVols = (baseUrl: string, pin: string | null, setAuth: (auth: 
                     }
 
                     try {
-                        await db.volunteers.bulkAdd(data as Array<Volunteer>);
+                        await db.volunteers.bulkAdd(results as Array<Volunteer>);
                     } catch (e) {
                         console.error(e);
                         rej(e);

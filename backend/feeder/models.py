@@ -1,6 +1,8 @@
 from uuid import uuid4
 from datetime import datetime
 from django.db import models
+from django.core.exceptions import ValidationError
+from django.utils.translation import gettext_lazy as _
 
 from feeder.mixins import TimeMixin
 
@@ -12,6 +14,7 @@ def gen_uuid():
 class Volunteer(TimeMixin):
     uuid = models.UUIDField(default=gen_uuid, unique=True, db_index=True)
     name = models.CharField(max_length=255, null=True, blank=True, verbose_name="Имя")
+    lastname = models.CharField(max_length=255, null=True, blank=True, verbose_name="Фамилия")
     nickname = models.CharField(max_length=255, null=True, blank=True, verbose_name="Ник")
     phone = models.CharField(max_length=255, null=True, blank=True, verbose_name="Телефон")
     email = models.CharField(max_length=255, null=True, blank=True, verbose_name="E-mail")
@@ -58,6 +61,10 @@ class Volunteer(TimeMixin):
         if self.active_from and now < self.active_from:
             expired = -1
         return expired
+    
+    @property
+    def paid(self):
+        return self.feed_type != 1
 
 
 class Department(TimeMixin):
@@ -131,6 +138,15 @@ class FeedType(TimeMixin):
         verbose_name_plural = "Типы питания"
 
 
+meal_times = [ "breakfast", "lunch", "dinner", "night" ]
+
+def validate_meal_time(value):
+    if not value in meal_times:
+        raise ValidationError(
+            _("%(value)s is not one of the possible values: %(meal_times)s"),
+            params={"value": value, "meal_times": ", ".join(meal_times)},
+        )
+
 class FeedTransaction(TimeMixin):
     ulid = models.CharField(max_length=255, primary_key=True)
     volunteer = models.ForeignKey(Volunteer, null=True, blank=True, on_delete=models.SET_NULL, verbose_name="Волонтёр")
@@ -139,6 +155,7 @@ class FeedTransaction(TimeMixin):
     reason = models.CharField(max_length=255, null=True, blank=True, verbose_name="Причина")
     dtime = models.DateTimeField()
     comment = models.TextField(null=True, blank=True, verbose_name="Комментарий")
+    meal_time = models.TextField(max_length=10, verbose_name="Время питания", validators=[validate_meal_time])
 
     class Meta:
         verbose_name = "Приём пищи"

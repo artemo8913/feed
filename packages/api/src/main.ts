@@ -39,9 +39,9 @@ async function bootstrap() {
             pathRewrite: {
                 // [`^/api/v1`]: '/api/v1',
             },
-            onProxyRes: (proxyRes, _req, _res) => {
+            onProxyRes: (proxyRes, req, _res) => {
                 proxyRes.headers['Access-Control-Allow-Origin'] =
-                    'http://localhost:3002';
+                    req.headers['origin'];
                 proxyRes.headers['Access-Control-Allow-Credentials'] = '*';
                 proxyRes.headers['Access-Control-Allow-Methods'] =
                     'GET, OPTIONS, POST, PUT, PATCH, DELETE';
