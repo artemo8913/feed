@@ -1,12 +1,11 @@
 // import crudDataProvider from '@pankod/refine-nestjsx-crud';
 import type { DataProvider } from '@pankod/refine-core';
+import type { AxiosInstance } from 'axios';
+import { stringify } from 'query-string';
 
 import { NEW_API_URL } from '~/const';
 import { axios } from '~/authProvider';
 
-
-import type { AxiosInstance } from 'axios';
-import { stringify } from 'query-string';
 // import { DataProvider } from "@refinedev/core";
 // import { axiosInstance, generateSort, generateFilter } from "./utils";
 
