@@ -29,9 +29,7 @@ export const VolList: FC<IResourceComponentsProps> = () => {
                       item.nickname,
                       item.name,
                       item.lastname,
-                      item.departments
-                          ?.map(({ name }) => name)
-                          .join(', ')
+                      item.departments?.map(({ name }) => name).join(', ')
                   ].some((text) => {
                       return text?.toLowerCase().includes(searchTextInLowerCase);
                   });
@@ -86,13 +84,7 @@ export const VolList: FC<IResourceComponentsProps> = () => {
                     dataIndex='departments'
                     key='departments    '
                     title='Службы'
-                    render={(value) => (
-                        <TextField
-                            value={value
-                                .map(({ name }) => name)
-                                .join(', ')}
-                        />
-                    )}
+                    render={(value) => <TextField value={value.map(({ name }) => name).join(', ')} />}
                     // filterDropdown={(props) => (
                     //     <FilterDropdown {...props}>
                     //         <Select

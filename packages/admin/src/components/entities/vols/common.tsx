@@ -1,13 +1,13 @@
-import { Checkbox, Form, Input, Select, useSelect, DatePicker } from '@pankod/refine-antd';
+import { Checkbox, DatePicker, Form, Input, Select, useSelect } from '@pankod/refine-antd';
 import dynamic from 'next/dynamic';
 import type { VolEntity } from '@feed/api/src/entities/vol.entity';
 
 // import { Rules } from '~/components/form';
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 import 'react-quill/dist/quill.snow.css';
-import type { DepartmentEntity } from '~/interfaces';
-import dayjs from "dayjs";
+import dayjs from 'dayjs';
 
+import type { DepartmentEntity } from '~/interfaces';
 
 export const CreateEdit: FC = () => {
     const { selectProps: leadSelectProps } = useSelect<VolEntity>({
@@ -27,7 +27,7 @@ export const CreateEdit: FC = () => {
     };
 
     const getDateValue = (value) => ({
-        value: value ? dayjs(value) : "",
+        value: value ? dayjs(value) : ''
     });
 
     return (

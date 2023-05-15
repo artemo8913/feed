@@ -19,7 +19,7 @@ export interface VolEntity {
     arrival_date?: Date;
     departure_date?: Date;
     // chef?: VolEntity[];
-    departments?: Array<{ id: number, name: string }>; //DepartmentEntity[];
+    departments?: Array<{ id: number; name: string }>; //DepartmentEntity[];
     // location?: LocationEntity[];
     // badgeType?: BadgeEntity;
     feed_type?: number; //FeedTypeEntity;
