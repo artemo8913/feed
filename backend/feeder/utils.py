@@ -80,7 +80,7 @@ def sync_with_notion() -> dict:
             volunteer.qr = item.get('qr')
             volunteer.is_vegan = item.get('is_vegan')
             volunteer.position = item.get('position')
-            # volunteer.feed_type = food_type_free if item.get('food_type') == 'Бесплатно' else food_type_paid,
+            volunteer.feed_type = food_type_free if item.get('food_type') == 'Бесплатно' else food_type_paid
             volunteer.balance = food_type_free.daily_amount if item.get('food_type') == 'Бесплатно' else food_type_paid.daily_amount
             volunteer.kitchen = models.Kitchen.objects.get(pk=1)
 
