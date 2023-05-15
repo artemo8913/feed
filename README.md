@@ -30,6 +30,7 @@ python3 -m venv venv
 . ./venv/bin/activate
 ./manage.py migrate
 ./manage.py loaddata colors feed_types kitchens
+./manage.py shell < create_user.py
 ./manage.py runserver localhost:8000
 ```
 
