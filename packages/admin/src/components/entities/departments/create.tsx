@@ -1,4 +1,4 @@
-import { Create, Form, Input, useForm, Select, useSelect } from '@pankod/refine-antd';
+import { Create, Form, Input, Select, useForm, useSelect } from '@pankod/refine-antd';
 import type { IResourceComponentsProps } from '@pankod/refine-core';
 
 import type { DepartmentEntity, VolEntity } from '~/interfaces';
