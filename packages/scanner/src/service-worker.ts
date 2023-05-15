@@ -63,7 +63,11 @@ registerRoute(
         debugger;
         // url.origin === self.location.origin && url.pathname.endsWith('.png')
         console.log(url.pathname);
-        return url.pathname !== '/service-worker.js' && !url.pathname.endsWith('pwa-ver.txt') && !url.pathname.startsWith('/api/');
+        return (
+            url.pathname !== '/service-worker.js' &&
+            !url.pathname.endsWith('pwa-ver.txt') &&
+            !url.pathname.startsWith('/api/')
+        );
     },
     new CacheFirst({
         cacheName: 'max-cache',
