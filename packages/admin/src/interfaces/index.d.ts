@@ -9,7 +9,7 @@ export interface VolEntity {
     email?: string;
     photo?: string;
     position?: string;
-    // nutritionType?: string;
+    is_vegan?: boolean; // nutritionType
     is_active?: boolean;
     is_blocked?: boolean;
     daily_eats?: number;
@@ -18,10 +18,10 @@ export interface VolEntity {
     active_to?: Date;
     arrival_date?: Date;
     departure_date?: Date;
-    // chef?: VolEntity[];
+    ref_to?: number; // chef
     departments?: Array<{ id: number; name: string }>; //DepartmentEntity[];
     // location?: LocationEntity[];
-    // badgeType?: BadgeEntity;
+    badge_type?: number; //BadgeType
     feed_type?: number; //FeedTypeEntity;
 }
 
