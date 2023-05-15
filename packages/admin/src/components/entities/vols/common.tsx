@@ -11,7 +11,7 @@ import type { VolEntity, DepartmentEntity, KitchenEntity, FeedTypeEntity, ColorT
 export const CreateEdit: FC = () => {
     const { selectProps: leadSelectProps } = useSelect<VolEntity>({
         resource: 'volunteers',
-        optionLabel: 'name'
+        optionLabel: 'nickname'
     });
 
     const { selectProps: departmentSelectProps } = useSelect<DepartmentEntity>({
@@ -68,14 +68,14 @@ export const CreateEdit: FC = () => {
             <Form.Item label='До' name='active_to' getValueProps={getDateValue}>
                 <DatePicker showTime />
             </Form.Item>
-            <Form.Item label='Шеф' name={['lead', 'id']}>
-                <Select {...leadSelectProps} />
-            </Form.Item>
             <Form.Item label='Служба / Локация' getValueProps={getDepartmentIds} name='departments'>
                 <Select mode='multiple' {...departmentSelectProps} />
             </Form.Item>
             <Form.Item label='Должность' name='position'>
                 <Input />
+            </Form.Item>
+            <Form.Item label='Шеф' name={['lead', 'id']}>
+                <Select {...leadSelectProps} />
             </Form.Item>
             <Form.Item label='Цвет бейджика' name='color_type'>
                 <Select {...colorTypeSelectProps} />
