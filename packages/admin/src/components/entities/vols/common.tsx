@@ -1,6 +1,5 @@
 import { Checkbox, DatePicker, Form, Input, Select, useSelect } from '@pankod/refine-antd';
 import dynamic from 'next/dynamic';
-
 import { Col, Row } from 'antd';
 
 // import { Rules } from '~/components/form';
@@ -52,9 +51,9 @@ export const CreateEdit: FC = () => {
                 <Col span={8}>
                     <Row gutter={[16, 16]}>
                         <Col span={12}>
-                        <Form.Item name='is_active' valuePropName='checked'>
-                            <Checkbox>Активирован</Checkbox>
-                        </Form.Item>
+                            <Form.Item name='is_active' valuePropName='checked'>
+                                <Checkbox>Активирован</Checkbox>
+                            </Form.Item>
                         </Col>
                         <Col span={12}>
                             <Form.Item name='is_blocked' valuePropName='checked'>
@@ -76,7 +75,7 @@ export const CreateEdit: FC = () => {
                     </Form.Item>
                 </Col>
                 <Col span={8}>
-                <Form.Item name='is_vegan' valuePropName='checked'>
+                    <Form.Item name='is_vegan' valuePropName='checked'>
                         <Checkbox>Веган</Checkbox>
                     </Form.Item>
                     <Row gutter={[16, 16]}>
