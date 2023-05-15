@@ -6,7 +6,7 @@ const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 import 'react-quill/dist/quill.snow.css';
 import dayjs from 'dayjs';
 
-import type { VolEntity, DepartmentEntity, KitchenEntity, FeedTypeEntity, ColorTypeEntity } from '~/interfaces';
+import type { ColorTypeEntity, DepartmentEntity, FeedTypeEntity, KitchenEntity, VolEntity } from '~/interfaces';
 
 export const CreateEdit: FC = () => {
     const { selectProps: leadSelectProps } = useSelect<VolEntity>({
@@ -18,7 +18,6 @@ export const CreateEdit: FC = () => {
         resource: 'departments',
         optionLabel: 'name'
     });
-
 
     const { selectProps: kitchenSelectProps } = useSelect<KitchenEntity>({
         resource: 'kitchens',
