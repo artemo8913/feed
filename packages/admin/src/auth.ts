@@ -26,7 +26,9 @@ export const getUserData = <T extends true | false>(ctx, decode: T): UserDataRet
         return null;
     }
 
-    return decode ? <UserDataReturn<T>>getUserInfo() /* <UserDataReturn<T>>jwt_decode<UserData>(token)*/ : <UserDataReturn<T>>token;
+    return decode
+        ? <UserDataReturn<T>>getUserInfo() /* <UserDataReturn<T>>jwt_decode<UserData>(token)*/
+        : <UserDataReturn<T>>token;
 };
 
 export const setUserData = (token: string): void => {
@@ -45,7 +47,7 @@ export const setUserInfo = (user: UserData): void => {
 
 export const getUserInfo = (): UserData | undefined => {
     const authData = nookies.get({})[AUTH_DATA_COOKIE_NAME];
-    if(authData) {
+    if (authData) {
         return JSON.parse(authData) as UserData;
     }
 };
