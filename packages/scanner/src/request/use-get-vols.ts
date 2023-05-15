@@ -21,6 +21,7 @@ export const useGetVols = (baseUrl: string, pin: string | null, setAuth: (auth: 
             axios
                 .get(`${baseUrl}/volunteers/?limit=10000`, {
                     headers: {
+                        'Cache-Control': 'no-cache',
                         Authorization: `K-PIN-CODE ${pin}`
                     }
                 })
