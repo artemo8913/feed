@@ -46,7 +46,9 @@ const App: FC = () => {
     const [appError, setAppError] = useState<string | null>(null);
     const [mealTime, setMealTime] = useState<MealTime | null>(null);
     const [pin, setPin] = useState<string | null>(storedPin);
-    const [auth, setAuth] = useState<boolean>(true);
+    const lastAuth = localStorage.getItem('lastAuth');
+    const isAuth = !!lastAuth && new Date().valueOf() < Number(lastAuth) + 60 * 60 * 1000;
+    const [auth, setAuth] = useState<boolean>(isAuth);
     const pinInputRef = useRef<HTMLInputElement | null>(null);
     const checkAuth = useCheckAuth(API_DOMAIN, setAuth);
     const appStyle = useMemo(() => ({ backgroundColor: Colors[appColor as AppColor] }), [appColor]);
@@ -57,13 +59,17 @@ const App: FC = () => {
     const tryAuth = useCallback(() => {
         const enteredPin = pinInputRef.current?.value || '';
         checkAuth(enteredPin)
-            .then((_) => {
+            .then((user) => {
                 localStorage.setItem('pin', enteredPin);
+                localStorage.setItem('kitchenId', user.data.id);
+                localStorage.setItem('lastAuth', new Date().valueOf().toString());
                 setAuth(true);
                 setPin(enteredPin);
             })
             .catch((_) => {
                 localStorage.removeItem('pin');
+                localStorage.removeItem('kitchenId');
+                localStorage.removeItem('lastAuth');
                 setAuth(false);
                 setPin(null);
                 alert('Неверный пин!');

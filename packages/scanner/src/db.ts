@@ -16,8 +16,8 @@ export interface TransactionJoined extends Transaction {
 }
 
 export enum FeedType {
-    FT1 = 'FT1',
-    FT2 = 'FT2'
+    FT1 = 1,
+    FT2 = 2
 }
 
 export enum MealTime {
@@ -42,11 +42,10 @@ export interface Volunteer {
     expired: number;
     feed_type: FeedType;
     paid: boolean;
-    department: Array<{ name: string }>;
-    location: Array<{ name: string }>;
+    departments: Array<{ name: string }>;
 }
 
-const DB_VERSION = 4;
+const DB_VERSION = 5;
 
 export class MySubClassedDexie extends Dexie {
     transactions!: Table<Transaction>;
@@ -57,7 +56,7 @@ export class MySubClassedDexie extends Dexie {
         this.version(DB_VERSION).stores({
             transactions: '&&ulid, vol_id, amount, ts, mealTime',
             volunteers:
-                '&qr, *id, name, nickname, balance, is_blocked, is_active, feed_type, paid, active_from, active_to, department, location, expired'
+                '&qr, *id, name, nickname, balance, is_blocked, is_active, feed_type, paid, active_from, active_to, departments, location, expired'
         });
     }
 }

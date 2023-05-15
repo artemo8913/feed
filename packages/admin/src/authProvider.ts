@@ -1,25 +1,25 @@
 import type { AuthProvider } from '@pankod/refine-core';
 import axios from 'axios';
 
-import { clearUserData, getUserData, setUserData } from '~/auth';
-import { API_URL } from '~/const';
+import { clearUserData, getUserData, setUserData, setUserInfo } from '~/auth';
+import { NEW_API_URL } from '~/const';
 
 export const authProvider: AuthProvider = {
     login: async ({ password, username }) => {
         try {
-            const { data, status } = await axios.post(`${API_URL}/auth/login`, {
+            const { data, status } = await axios.post(`${NEW_API_URL}/auth/login/`, {
                 username,
                 password
             });
 
             if (status !== 200) return Promise.reject();
 
-            const { accessToken } = data;
+            const { key } = data;
 
-            setUserData(accessToken);
+            setUserData(key);
 
             axios.defaults.headers.common = {
-                Authorization: `Bearer ${accessToken}`
+                Authorization: `Token ${key}`
             };
 
             return Promise.resolve('/');
@@ -40,15 +40,18 @@ export const authProvider: AuthProvider = {
         }
 
         try {
-            const { data } = await axios.get(`${API_URL}/auth/me`, {
+            const { data } = await axios.get(`${NEW_API_URL}/auth/user/`, {
                 headers: {
-                    Authorization: `Bearer ${token}`
+                    Authorization: `Token ${token}`
                 }
             });
 
             axios.defaults.headers.common = {
-                Authorization: `Bearer ${token}`
+                Authorization: `Token ${token}`
             };
+
+            setUserInfo(data);
+
             return Promise.resolve({ user: data });
         } catch (error) {
             return Promise.reject(error);
@@ -60,7 +63,7 @@ export const authProvider: AuthProvider = {
 
         if (!user) return Promise.reject();
 
-        return Promise.resolve({ ...user });
+        return Promise.resolve(user);
     }
 };
 

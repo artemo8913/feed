@@ -17,6 +17,30 @@ from rest_framework.views import APIView
 from feeder import serializers, models, authentication
 from feeder.utils import sync_with_notion
 
+class MultiSerializerViewSetMixin(object):
+    def get_serializer_class(self):
+        """
+        Смотрим на serializer class в self.serializer_action_classes, который представляет из себя 
+        dict mapping action name (key) в serializer class (value), например::
+        class MyViewSet(MultiSerializerViewSetMixin, ViewSet):
+            serializer_class = MyDefaultSerializer
+            serializer_action_classes = {
+               'list': MyListSerializer,
+               'my_action': MyActionSerializer,
+            }
+
+            @action
+            def my_action:
+                ...
+
+        Если подходящих вхождений в action нет тогда просто fallback к обычному
+        get_serializer_class lookup: self.serializer_class, DefaultSerializer.
+        """
+        try:
+            return self.serializer_action_classes[self.action]
+        except (KeyError, AttributeError):
+            return super(MultiSerializerViewSetMixin, self).get_serializer_class()
+
 
 class DepartmentViewSet(viewsets.ModelViewSet):
     # authentication_classes = [authentication.KitchenPinAuthentication, TokenAuthentication]
@@ -27,10 +51,13 @@ class DepartmentViewSet(viewsets.ModelViewSet):
     search_fields = ['name', ]
 
 
-class VolunteerViewSet(viewsets.ModelViewSet):
+class VolunteerViewSet(MultiSerializerViewSetMixin, viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated, ]
     queryset = models.Volunteer.objects.all()
     serializer_class = serializers.VolunteerSerializer
+    serializer_action_classes = {
+        'list': serializers.VolunteerListSerializer
+    }
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     search_fields = ['name', 'nickname', 'phone', 'email', 'qr']
     filterset_fields = ['name', 'nickname', 'phone', 'email', 'qr', 'departments', 'color_type', 'feed_type', 'kitchen']

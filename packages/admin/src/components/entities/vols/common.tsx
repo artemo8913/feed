@@ -53,6 +53,9 @@ export const CreateEdit: FC = () => {
             <Form.Item label='Должность' name='position'>
                 <Input />
             </Form.Item>
+            <Form.Item label='QR' name='qr'>
+                <Input />
+            </Form.Item>
             <Form.Item label='Телефон' name='phone'>
                 <Input type='phone' />
             </Form.Item>

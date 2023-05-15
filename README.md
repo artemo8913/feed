@@ -14,6 +14,11 @@ docker-compose up
 
 # Установка
 ```bash
+cd ./backend
+pip install -r requirements.txt
+```
+
+```bash
 yarn run bootstrap
 ```
 

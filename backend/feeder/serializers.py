@@ -10,6 +10,20 @@ class DepartmentSerializer(serializers.ModelSerializer):
         model = models.Department
         fields = '__all__'
 
+class DepartmentNestedSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(read_only=True)
+
+    class Meta:
+        model = models.Department
+        fields = ['id', 'name']
+
+class VolunteerListSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(read_only=True)
+    departments = DepartmentNestedSerializer(many=True)
+
+    class Meta:
+        model = models.Volunteer
+        fields = '__all__'
 
 class VolunteerSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(read_only=True)
@@ -51,11 +65,7 @@ class FeedTransactionSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def create(self, validated_data):
-        # for i, a in validated_data.items():
-        #     #print("-->", i, "/", a)
-        #
-        #return models.FeedTransaction.objects.bulk_create(validated_data, ignore_conflicts=True)
-        pass
+        return models.FeedTransaction.objects.create(**validated_data)
 
 
 class KitchenSerializer(serializers.ModelSerializer):

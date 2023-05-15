@@ -64,16 +64,7 @@ def sync_with_notion() -> dict:
         statistic['volunteers']['total'] = len(items)
         for item in items:
             volunteer, created = models.Volunteer.objects.get_or_create(
-                uuid=item.get('uuid'),
-                defaults={
-                    'name': item.get('name'),
-                    'nickname': item.get('nickname'),
-                    'email': item.get('email'),
-                    'phone': item.get('phone'),
-                    'qr': item.get('qr'),
-                    'is_vegan': bool(item.get('is_vegan')),
-                    'position': item.get('position'),
-                }
+                uuid=item.get('uuid')
             )
             if created:
                 statistic['volunteers']['created'] += 1
@@ -81,6 +72,16 @@ def sync_with_notion() -> dict:
             if not created and (volunteer.is_active or volunteer.is_blocked):
                 print('skip, already activated {}'.format(volunteer.uuid))
                 continue
+            
+            volunteer.name = item.get('name')
+            volunteer.lastname = item.get('lastname')
+            volunteer.nickname = item.get('nickname')
+            volunteer.email = item.get('email')
+            volunteer.qr = item.get('qr')
+            volunteer.is_vegan = item.get('is_vegan')
+            volunteer.position = item.get('position')
+            volunteer.feed_type = food_type_free if item.get('food_type') == 'Бесплатно' else food_type_paid,
+            volunteer.balance = food_type_free.daily_amount if item.get('food_type') == 'Бесплатно' else food_type_paid.daily_amount
 
             if arrival_dt := item.get('arrival_date'):
                 volunteer.arrival_date = arrow.get(arrival_dt).replace(hour=ZERO_HOUR).datetime
@@ -99,11 +100,6 @@ def sync_with_notion() -> dict:
                 volunteer.departments.set(
                     models.Department.objects.filter(name__in=[capitalize(name) for name in department_names]).all()
                 )
-
-            if item.get('food_type') == 'Платно':
-                volunteer.feed_type = food_type_paid
-            else:
-                volunteer.feed_type = food_type_free
 
             volunteer.save()
 

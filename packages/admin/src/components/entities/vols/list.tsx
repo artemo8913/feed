@@ -134,7 +134,7 @@ export const VolList: FC<IResourceComponentsProps> = () => {
                     dataIndex='comment'
                     key='comment'
                     title='Комментарий'
-                    render={(value) => <TextField value={value} />}
+                    render={(value) => <div dangerouslySetInnerHTML={{ __html: value }} />}
                 />
                 <Table.Column<DepartmentEntity>
                     title='Действия'
