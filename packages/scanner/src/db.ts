@@ -43,9 +43,10 @@ export interface Volunteer {
     feed_type: FeedType;
     paid: boolean;
     departments: Array<{ name: string }>;
+    kitchen: number;
 }
 
-const DB_VERSION = 5;
+const DB_VERSION = 6;
 
 export class MySubClassedDexie extends Dexie {
     transactions!: Table<Transaction>;
@@ -56,7 +57,7 @@ export class MySubClassedDexie extends Dexie {
         this.version(DB_VERSION).stores({
             transactions: '&&ulid, vol_id, amount, ts, mealTime',
             volunteers:
-                '&qr, *id, name, nickname, balance, is_blocked, is_active, feed_type, paid, active_from, active_to, departments, location, expired'
+                '&qr, *id, name, nickname, balance, is_blocked, is_active, feed_type, paid, active_from, active_to, departments, location, expired, kitchen'
         });
     }
 }
