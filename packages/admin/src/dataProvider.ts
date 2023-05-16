@@ -1,5 +1,5 @@
 // import crudDataProvider from '@pankod/refine-nestjsx-crud';
-import type { DataProvider, LogicalFilter, CrudFilter } from '@pankod/refine-core';
+import type { CrudFilter, DataProvider, LogicalFilter } from '@pankod/refine-core';
 import type { AxiosInstance } from 'axios';
 import { stringify } from 'query-string';
 
@@ -20,7 +20,7 @@ export const crudDataProvider = (
     apiUrl: string,
     httpClient: AxiosInstance = axios
 ): Omit<Required<DataProvider>, 'createMany' | 'updateMany' | 'deleteMany' | 'custom'> => ({
-    getList: async ({ metaData, pagination, filters, /*sorters,*/ resource }) => {
+    getList: async ({ filters, metaData, pagination, /*sorters,*/ resource }) => {
         const url = `${apiUrl}/${resource}`;
 
         const {
@@ -58,10 +58,16 @@ export const crudDataProvider = (
             // `${url}?${stringify(query)}&${stringify(queryFilters)}`,
             {
                 params: {
-                    ...filters?.reduce((acc, filter) => (isLogicalFilter(filter) ? {
-                        ...acc,
-                        [filter.field]: filter.value,
-                    } : acc), {}),
+                    ...filters?.reduce(
+                        (acc, filter) =>
+                            isLogicalFilter(filter)
+                                ? {
+                                      ...acc,
+                                      [filter.field]: filter.value
+                                  }
+                                : acc,
+                        {}
+                    ),
                     limit: 10000
                 },
                 headers: headersFromMeta
