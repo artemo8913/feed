@@ -66,6 +66,7 @@ export const getUserInfo = async (token: string): Promise<UserData | undefined> 
     }
     userPromise =
         userPromise ||
+        // eslint-disable-next-line @typescript-eslint/no-misused-promises
         new Promise(async (resolve, reject) => {
             try {
                 const { data } = await axios.get(`${NEW_API_URL}/auth/user/`, {
