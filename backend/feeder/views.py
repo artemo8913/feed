@@ -13,6 +13,7 @@ from rest_framework import filters
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import routers, serializers, viewsets, permissions
 from rest_framework.views import APIView
+from django_filters import rest_framework as django_filters
 
 from feeder import serializers, models, authentication
 from feeder.utils import sync_with_notion
@@ -50,6 +51,17 @@ class DepartmentViewSet(viewsets.ModelViewSet):
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     search_fields = ['name', ]
 
+class VolunteerFilter(django_filters.FilterSet):
+    name = django_filters.CharFilter(field_name="name", lookup_expr='icontains')
+    lastname = django_filters.CharFilter(field_name="lastname", lookup_expr='icontains')
+    nickname = django_filters.CharFilter(field_name="nickname", lookup_expr='icontains')
+    phone = django_filters.CharFilter(field_name="phone", lookup_expr='icontains')
+    email = django_filters.CharFilter(field_name="email", lookup_expr='icontains')
+    qr = django_filters.CharFilter(field_name="qr", lookup_expr='icontains')
+
+    class Meta:
+        model = models.Volunteer
+        fields = ['departments', 'color_type', 'feed_type', 'kitchen']
 
 class VolunteerViewSet(MultiSerializerViewSetMixin, viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated, ]
@@ -59,8 +71,8 @@ class VolunteerViewSet(MultiSerializerViewSetMixin, viewsets.ModelViewSet):
         'list': serializers.VolunteerListSerializer
     }
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
-    search_fields = ['name', 'nickname', 'phone', 'email', 'qr']
-    filterset_fields = ['name', 'nickname', 'phone', 'email', 'qr', 'departments', 'color_type', 'feed_type', 'kitchen']
+    search_fields = ['name', 'lastname', 'nickname', 'phone', 'email', 'qr']
+    filterset_class = VolunteerFilter
 
 
 class LocationViewSet(viewsets.ModelViewSet):
