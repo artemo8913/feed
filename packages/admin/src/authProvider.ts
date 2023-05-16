@@ -7,6 +7,8 @@ import { NEW_API_URL } from '~/const';
 export const authProvider: AuthProvider = {
     login: async ({ password, username }) => {
         try {
+            axios.defaults.headers.common = {};
+
             const { data, status } = await axios.post(`${NEW_API_URL}/auth/login/`, {
                 username,
                 password
@@ -17,10 +19,6 @@ export const authProvider: AuthProvider = {
             const { key } = data;
 
             setUserData(key);
-
-            axios.defaults.headers.common = {
-                Authorization: `Token ${key}`
-            };
 
             return Promise.resolve('/');
         } catch (e) {
@@ -33,34 +31,17 @@ export const authProvider: AuthProvider = {
     },
     checkError: () => Promise.resolve(),
     checkAuth: async (ctx) => {
-        const token = getUserData(ctx, false);
+        const user = await getUserData(ctx, true);
 
-        if (!token) {
+        if (!user) {
             return Promise.reject();
         }
 
-        try {
-            const { data } = await axios.get(`${NEW_API_URL}/auth/user/`, {
-                headers: {
-                    Authorization: `Token ${token}`
-                }
-            });
-
-            axios.defaults.headers.common = {
-                Authorization: `Token ${token}`
-            };
-
-            setUserInfo(data);
-
-            return Promise.resolve({ user: data });
-        } catch (error) {
-            return Promise.reject(error);
-        }
+        return Promise.resolve({ user });
     },
     getPermissions: () => Promise.resolve(),
     getUserIdentity: async (ctx) => {
-        const user = getUserData(ctx, true);
-
+        const user = await getUserData(ctx, true);
         if (!user) return Promise.reject();
 
         return Promise.resolve(user);

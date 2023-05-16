@@ -75,24 +75,34 @@ export const CreateEdit: FC = () => {
                     </Form.Item>
                 </Col>
                 <Col span={8}>
-                    <Form.Item name='is_vegan' valuePropName='checked'>
-                        <Checkbox>Веган</Checkbox>
-                    </Form.Item>
+                    <Form.Item></Form.Item>
+
+
                     <Row gutter={[16, 16]}>
                         <Col span={12}>
                             <Form.Item label='От' name='active_from' getValueProps={getDateValue}>
-                                <DatePicker showTime />
+                                <DatePicker showTime style={{ width: '100%' }} />
                             </Form.Item>
                         </Col>
                         <Col span={12}>
                             <Form.Item label='До' name='active_to' getValueProps={getDateValue}>
-                                <DatePicker showTime />
+                                <DatePicker showTime style={{ width: '100%' }}/>
                             </Form.Item>
                         </Col>
                     </Row>
-                    <Form.Item label='Тип питания' name='feed_type'>
-                        <Select {...feedTypeSelectProps} />
-                    </Form.Item>
+                    <Row gutter={[16, 16]}>
+                        <Col span={12}>
+                            <Form.Item label=' ' name='is_vegan' valuePropName='checked'>
+                                <Checkbox>Веган</Checkbox>
+                            </Form.Item>
+                        </Col>
+                        <Col span={12}>
+                            <Form.Item label='Тип питания' name='feed_type'>
+                                <Select {...feedTypeSelectProps} />
+                            </Form.Item>
+                        </Col>
+                    </Row>
+
                     <Form.Item label='Осталось питаний' name='balance'>
                         <Input />
                     </Form.Item>

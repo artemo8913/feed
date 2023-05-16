@@ -19,7 +19,7 @@ ac
 export const ACL = {
     can: async ({ action, resource }) => {
         let can = false;
-        const user = getUserData(null, true);
+        const user = await getUserData(null, true);
         if (user) {
             const { roles } = user;
 
