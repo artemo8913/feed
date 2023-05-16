@@ -20,10 +20,6 @@ export const authProvider: AuthProvider = {
 
             setUserData(key);
 
-            axios.defaults.headers.common = {
-                Authorization: `Token ${key}`
-            };
-
             return Promise.resolve('/');
         } catch (e) {
             return Promise.reject(e);
