@@ -11,7 +11,7 @@ export const PostScan: FC<{
     closeFeed: () => void;
 }> = memo(({ closeFeed, qrcode }) => {
     const vol = useLiveQuery(async () => await db.volunteers.where('qr').equals(qrcode).first(), [qrcode]);
-    const { mealTime, setColor } = useContext(AppContext);
+    const { kitchenId, mealTime, setColor } = useContext(AppContext);
 
     console.log({ vol, qrcode });
 
@@ -33,8 +33,11 @@ export const PostScan: FC<{
         return <ErrorMsg close={closeFeed} msg={`Бейдж не найден: ${qrcode}`} />;
     }
 
-    if (!vol.is_active || vol.is_blocked || vol.expired) {
+    if (!vol.is_active || vol.is_blocked || vol.expired || vol.kitchen.toString() !== kitchenId) {
         const msg: Array<string> = [];
+        if (vol.kitchen.toString() !== kitchenId) {
+            msg.push(`Кормится на кухне ${vol.kitchen}`);
+        }
         if (!vol.is_active) {
             msg.push('Бейдж не активирован в штабе');
         }

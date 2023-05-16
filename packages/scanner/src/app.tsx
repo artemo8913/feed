@@ -40,6 +40,7 @@ const ErrorFallback: FC<FallbackProps> = ({ error, resetErrorBoundary }) => (
 );
 
 const storedPin = localStorage.getItem('pin');
+const storedKitchenId = localStorage.getItem('kitchenId');
 
 const App: FC = () => {
     const [appColor, setAppColor] = useState<AppColor | null>(null);
@@ -55,6 +56,7 @@ const App: FC = () => {
     const [lastUpdate, setLastUpdated] = useState<number | null>(null);
     const [volCount, setVolCount] = useState<number>(0);
     const [currentView, setCurrentView] = useState<number>(0);
+    const [kitchenId, setKitchenId] = useState<string | null>(storedKitchenId);
 
     const tryAuth = useCallback(() => {
         const enteredPin = pinInputRef.current?.value || '';
@@ -65,6 +67,7 @@ const App: FC = () => {
                 localStorage.setItem('lastAuth', new Date().valueOf().toString());
                 setAuth(true);
                 setPin(enteredPin);
+                setKitchenId(user.data.id);
             })
             .catch((_) => {
                 localStorage.removeItem('pin');
@@ -72,6 +75,7 @@ const App: FC = () => {
                 localStorage.removeItem('lastAuth');
                 setAuth(false);
                 setPin(null);
+                setKitchenId(null);
                 alert('Неверный пин!');
             });
     }, [checkAuth]);
@@ -93,7 +97,8 @@ const App: FC = () => {
             },
             setVolCount,
             mealTime,
-            setMealTime
+            setMealTime,
+            kitchenId
         }),
         [pin, lastUpdate, volCount]
     );
