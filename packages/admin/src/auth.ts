@@ -1,5 +1,6 @@
 import nookies from 'nookies';
 import axios from 'axios';
+
 import { NEW_API_URL } from '~/const';
 
 export enum AppRoles {
@@ -32,7 +33,9 @@ export const getUserData = async <T extends true | false>(ctx, decode: T): Promi
     };
 
     return decode
-        ? Promise.resolve(<UserDataReturn<T>>(await getUserInfo(token))) /* <UserDataReturn<T>>jwt_decode<UserData>(token)*/
+        ? Promise.resolve(
+              <UserDataReturn<T>>await getUserInfo(token)
+          ) /* <UserDataReturn<T>>jwt_decode<UserData>(token)*/
         : Promise.resolve(<UserDataReturn<T>>token);
 };
 
@@ -61,23 +64,25 @@ export const getUserInfo = async (token: string): Promise<UserData | undefined> 
     if (authData) {
         return JSON.parse(authData) as UserData;
     }
-    userPromise = userPromise || new Promise(async(resolve, reject) => {
-        try {
-            const { data } = await axios.get(`${NEW_API_URL}/auth/user/`, {
-                headers: {
-                    Authorization: `Token ${token}`
-                }
-            });
+    userPromise =
+        userPromise ||
+        new Promise(async (resolve, reject) => {
+            try {
+                const { data } = await axios.get(`${NEW_API_URL}/auth/user/`, {
+                    headers: {
+                        Authorization: `Token ${token}`
+                    }
+                });
 
-            setUserInfo(data);
+                setUserInfo(data);
 
-            resolve(data);
-        } catch(e) {
-            reject(e)
-        } finally {
-            userPromise = undefined;
-        }
-    });
+                resolve(data);
+            } catch (e) {
+                reject(e);
+            } finally {
+                userPromise = undefined;
+            }
+        });
 
     return await userPromise;
 };

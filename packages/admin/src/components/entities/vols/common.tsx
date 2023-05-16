@@ -77,7 +77,6 @@ export const CreateEdit: FC = () => {
                 <Col span={8}>
                     <Form.Item></Form.Item>
 
-
                     <Row gutter={[16, 16]}>
                         <Col span={12}>
                             <Form.Item label='От' name='active_from' getValueProps={getDateValue}>
@@ -86,7 +85,7 @@ export const CreateEdit: FC = () => {
                         </Col>
                         <Col span={12}>
                             <Form.Item label='До' name='active_to' getValueProps={getDateValue}>
-                                <DatePicker showTime style={{ width: '100%' }}/>
+                                <DatePicker showTime style={{ width: '100%' }} />
                             </Form.Item>
                         </Col>
                     </Row>
