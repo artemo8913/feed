@@ -1,6 +1,7 @@
 import { Checkbox, DatePicker, Form, Input, Select, useSelect } from '@pankod/refine-antd';
 import dynamic from 'next/dynamic';
 import { Col, Row } from 'antd';
+import { Rules } from '~/components/form';
 
 // import { Rules } from '~/components/form';
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
@@ -61,7 +62,7 @@ export const CreateEdit: FC = () => {
                             </Form.Item>
                         </Col>
                     </Row>
-                    <Form.Item label='Позывной' name='nickname'>
+                    <Form.Item label='Позывной' name='nickname' rules={Rules.required}>
                         <Input />
                     </Form.Item>
                     <Form.Item label='Имя' name='name'>
@@ -111,7 +112,7 @@ export const CreateEdit: FC = () => {
                 </Col>
                 <Col span={8}>
                     <Form.Item></Form.Item>
-                    <Form.Item label='Служба / Локация' getValueProps={getDepartmentIds} name='departments'>
+                    <Form.Item label='Служба / Локация' getValueProps={getDepartmentIds} name='departments' rules={Rules.required}>
                         <Select mode='multiple' {...departmentSelectProps} />
                     </Form.Item>
                     <Form.Item label='Должность' name='position'>
@@ -132,7 +133,7 @@ export const CreateEdit: FC = () => {
                     </Form.Item>
                 </Col>
                 <Col span={8}>
-                    <Form.Item label='QR' name='qr'>
+                    <Form.Item label='QR' name='qr' rules={Rules.required}>
                         <Input />
                     </Form.Item>
                 </Col>

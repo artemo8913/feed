@@ -33,7 +33,6 @@ class Volunteer(TimeMixin):
     comment = models.TextField(null=True, blank=True, verbose_name="Комментарий")
 
     departments = models.ManyToManyField('Department', verbose_name="Департамент")
-    locations = models.ManyToManyField('Location', verbose_name="Локация")
     color_type = models.ForeignKey(
         'Color',
         null=True, blank=True, on_delete=models.PROTECT,
