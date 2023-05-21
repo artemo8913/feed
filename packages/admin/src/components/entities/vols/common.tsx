@@ -1,6 +1,7 @@
 import { Checkbox, DatePicker, Form, Input, Select, useSelect } from '@pankod/refine-antd';
 import dynamic from 'next/dynamic';
 import { Col, Row } from 'antd';
+
 import { Rules } from '~/components/form';
 
 // import { Rules } from '~/components/form';
@@ -112,7 +113,12 @@ export const CreateEdit: FC = () => {
                 </Col>
                 <Col span={8}>
                     <Form.Item></Form.Item>
-                    <Form.Item label='Служба / Локация' getValueProps={getDepartmentIds} name='departments' rules={Rules.required}>
+                    <Form.Item
+                        label='Служба / Локация'
+                        getValueProps={getDepartmentIds}
+                        name='departments'
+                        rules={Rules.required}
+                    >
                         <Select mode='multiple' {...departmentSelectProps} />
                     </Form.Item>
                     <Form.Item label='Должность' name='position'>

@@ -1,14 +1,12 @@
-import { Divider, Select, Spin } from '@pankod/refine-antd';
-import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
-import { /*getDefaultFilter,*/ useList, useSelect, useUpdate } from '@pankod/refine-core';
+import { Divider } from '@pankod/refine-antd';
+import React, { memo, useCallback, useEffect, useRef } from 'react';
+// import { /*getDefaultFilter,*/ useList, useSelect, useUpdate } from '@pankod/refine-core';
 import { isBrowser } from '@feed/core/src/const';
 import QrScanner from 'qr-scanner';
 
 import { axios } from '~/authProvider';
 import { NEW_API_URL } from '~/const';
-
-
-import type { VolEntity } from 'interfaces';
+// import type { VolEntity } from 'interfaces';
 
 import css from './qr-scan.module.css';
 
@@ -31,7 +29,7 @@ if (isBrowser) {
 const Video1: FC<{
     setRef: (ref: HTMLVideoElement) => void;
 }> = memo(
-    ({ setRef }) => <video className={css.qrScanVideo} ref={setRef}  style={{ width: '50%' }} />,
+    ({ setRef }) => <video className={css.qrScanVideo} ref={setRef} style={{ width: '50%' }} />,
     () => true
 );
 Video1.displayName = 'Video1';
@@ -69,7 +67,7 @@ export const Dashboard: FC = () => {
     const loadingRef = useRef(false);
 
     const onScan = useCallback(async (qr: string) => {
-        if(loadingRef.current) {
+        if (loadingRef.current) {
             return;
         }
         console.log('qr', qr);
@@ -84,21 +82,18 @@ export const Dashboard: FC = () => {
 
             console.log('volunteers by qr', data);
 
-            if(!data.results.length) {
+            if (!data.results.length) {
                 alert(`Волонтер не найден`);
             } else {
                 window.location.href = `${window.location.href}volunteers/edit/${data.results[0].id}`;
             }
-
-        } catch(e) {
+        } catch (e) {
             console.log(e);
             alert(`Ошибка поиска волонтера: ${e}`);
         } finally {
             loadingRef.current = true;
         }
-
     }, []);
-
 
     const onVideoReady = useCallback(
         (ref: HTMLVideoElement) => {
@@ -113,12 +108,14 @@ export const Dashboard: FC = () => {
                     // setError(null);
                     // console.log(`read: ${data}`);
                     data = data.substring(0, 8);
-                    onScan(data);
+                    void onScan(data);
                     // console.log(`qr: ${data}`);
                     // onScan(data);
                 },
                 {
-                    onDecodeError: () => {},
+                    onDecodeError: () => {
+                        // no handle
+                    },
                     // maxScansPerSecond: 1,
                     highlightScanRegion: true,
                     highlightCodeOutline: true
@@ -136,7 +133,7 @@ export const Dashboard: FC = () => {
         // @ts-ignore
         function onHardwareScan({ detail: { scanCode } }): void {
             scanCode = scanCode.replace(/[^A-Za-z0-9]/g, '').substring(0, 8);
-            onScan(scanCode);
+            void onScan(scanCode);
         }
 
         // @ts-ignore
