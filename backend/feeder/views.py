@@ -100,13 +100,21 @@ class FeedTypeViewSet(viewsets.ModelViewSet):
     search_fields = ['name', ]
 
 
+class FeedTransactionFilter(django_filters.FilterSet):
+    dtime_from = django_filters.IsoDateTimeFilter(field_name="dtime", lookup_expr='gte')
+
+    class Meta:
+        model = models.FeedTransaction
+        fields = ['kitchen']
+
 @extend_schema(tags=['feed', ])
 class FeedTransactionViewSet(viewsets.ReadOnlyModelViewSet):
     permission_classes = [permissions.IsAuthenticated, ]
     queryset = models.FeedTransaction.objects.all()
     serializer_class = serializers.FeedTransactionSerializer
-    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     search_fields = ['volunteer', ]
+    filterset_class = FeedTransactionFilter
 
 
 class KitchenViewSet(viewsets.ModelViewSet):

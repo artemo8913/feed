@@ -47,9 +47,7 @@ const App: FC = () => {
     const [appError, setAppError] = useState<string | null>(null);
     const [mealTime, setMealTime] = useState<MealTime | null>(null);
     const [pin, setPin] = useState<string | null>(storedPin);
-    const lastAuth = localStorage.getItem('lastAuth');
-    const isAuth = !!lastAuth && new Date().valueOf() < Number(lastAuth) + 60 * 60 * 1000;
-    const [auth, setAuth] = useState<boolean>(isAuth);
+    const [auth, setAuth] = useState<boolean>(false);
     const pinInputRef = useRef<HTMLInputElement | null>(null);
     const checkAuth = useCheckAuth(API_DOMAIN, setAuth);
     const appStyle = useMemo(() => ({ backgroundColor: Colors[appColor as AppColor] }), [appColor]);
@@ -64,7 +62,6 @@ const App: FC = () => {
             .then((user) => {
                 localStorage.setItem('pin', enteredPin);
                 localStorage.setItem('kitchenId', user.data.id);
-                localStorage.setItem('lastAuth', new Date().valueOf().toString());
                 setAuth(true);
                 setPin(enteredPin);
                 setKitchenId(user.data.id);
@@ -72,7 +69,6 @@ const App: FC = () => {
             .catch((_) => {
                 localStorage.removeItem('pin');
                 localStorage.removeItem('kitchenId');
-                localStorage.removeItem('lastAuth');
                 setAuth(false);
                 setPin(null);
                 setKitchenId(null);

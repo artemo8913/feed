@@ -1,19 +1,11 @@
 import dayjs from 'dayjs';
 import { ulid } from 'ulid';
 
-import type { MealTime } from '~/db';
+import type { MealTime, Transaction } from '~/db';
 
 import { rndInt } from './utils';
 
-export interface VolResponse {
-    vol_id: number;
-    amount: 1;
-    ts: number;
-    ulid: string;
-    mealTime: MealTime;
-}
-
-const createTestTrans = (type: 'now' | 'rnd', mealTime: MealTime): VolResponse => {
+const createTestTrans = (type: 'now' | 'rnd', mealTime: MealTime): Transaction => {
     let ts: any;
     if (type === 'now') {
         ts = dayjs();
@@ -28,11 +20,12 @@ const createTestTrans = (type: 'now' | 'rnd', mealTime: MealTime): VolResponse =
         amount: 1,
         ts,
         ulid: ulid(ts),
-        mealTime: mealTime
+        mealTime: mealTime,
+        is_new: true
     };
 };
 
-export const createMockData = (cnt: number, type: 'now' | 'rnd', mealTime: MealTime): Array<VolResponse> =>
+export const createMockData = (cnt: number, type: 'now' | 'rnd', mealTime: MealTime): Array<Transaction> =>
     Array(cnt)
         .fill(0)
         .map(() => createTestTrans(type, mealTime));

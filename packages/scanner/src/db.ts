@@ -9,6 +9,15 @@ export interface Transaction {
     amount: number;
     ts: number;
     mealTime: MealTime;
+    is_new: boolean;
+}
+
+export interface ServerTransaction {
+    ulid: string;
+    volunteer: number;
+    amount: number;
+    dtime: string;
+    meal_time: MealTime;
 }
 
 export interface TransactionJoined extends Transaction {
@@ -46,7 +55,7 @@ export interface Volunteer {
     kitchen: number;
 }
 
-const DB_VERSION = 6;
+const DB_VERSION = 7;
 
 export class MySubClassedDexie extends Dexie {
     transactions!: Table<Transaction>;
@@ -55,7 +64,7 @@ export class MySubClassedDexie extends Dexie {
     constructor() {
         super('yclins');
         this.version(DB_VERSION).stores({
-            transactions: '&&ulid, vol_id, amount, ts, mealTime',
+            transactions: '&&ulid, vol_id, amount, ts, mealTime, is_new',
             volunteers:
                 '&qr, *id, name, nickname, balance, is_blocked, is_active, feed_type, paid, active_from, active_to, departments, location, expired, kitchen'
         });
@@ -66,12 +75,14 @@ export const db = new MySubClassedDexie();
 
 export const addTransaction = async (vol: Volunteer, mealTime: MealTime): Promise<any> => {
     const ts = dayjs().unix();
+    debugger;
     await db.transactions.add({
         vol_id: vol.id,
         ts,
         amount: 1,
         ulid: ulid(ts),
-        mealTime: MealTime[mealTime]
+        mealTime: MealTime[mealTime],
+        is_new: true
     });
 };
 

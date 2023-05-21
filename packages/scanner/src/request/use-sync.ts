@@ -2,6 +2,7 @@ import { useCallback, useMemo, useState } from 'react';
 
 import { useGetVols } from '~/request/use-get-vols';
 import { useSendTrans } from '~/request/use-send-trans';
+import { useGetTrans } from '~/request/use-get-trans';
 
 import type { ApiHook } from './lib';
 
@@ -12,10 +13,11 @@ export const useSync = (baseUrl: string, pin: string | null, setAuth: (auth: boo
 
     const {
         // error: transError,
-        fetching: transFetching,
-        send: transSend
+        fetching: sendTransFetching,
+        send: sendTransSend
         // updated: transUpdated
     } = useSendTrans(baseUrl, pin, setAuth);
+
     const {
         // error: volsError,
         fetching: volsFetching,
@@ -23,15 +25,22 @@ export const useSync = (baseUrl: string, pin: string | null, setAuth: (auth: boo
         // updated: volsUpdated
     } = useGetVols(baseUrl, pin, setAuth);
 
+    const {
+        // error: transError,
+        fetching: getTransFetching,
+        send: getTransSend
+        // updated: transUpdated
+    } = useGetTrans(baseUrl, pin, setAuth);
+
     const send = useCallback(() => {
-        if (transFetching || volsFetching) {
+        if (sendTransFetching || volsFetching || getTransFetching) {
             return;
         }
 
         setFetching(true);
 
         // eslint-disable-next-line @typescript-eslint/no-misused-promises
-        return new Promise((res, rej) => {
+        return new Promise(async (res, rej) => {
             const success = (): void => {
                 setFetching(false);
                 setError(null);
@@ -46,16 +55,15 @@ export const useSync = (baseUrl: string, pin: string | null, setAuth: (auth: boo
             };
 
             try {
-                transSend()
-                    .then(() => {
-                        volsSend().then(success).catch(error);
-                    })
-                    .catch(error);
+                await sendTransSend();
+                await volsSend();
+                await getTransSend();
+                success();
             } catch (e) {
-                rej(e);
+                error(e);
             }
         });
-    }, [transFetching, transSend, volsFetching, volsSend]);
+    }, [sendTransFetching, sendTransSend, volsFetching, volsSend, getTransFetching, getTransSend]);
 
     return <ApiHook>useMemo(
         () => ({
