@@ -57,7 +57,7 @@ class VolunteerFilter(django_filters.FilterSet):
     nickname = django_filters.CharFilter(field_name="nickname", lookup_expr='icontains')
     phone = django_filters.CharFilter(field_name="phone", lookup_expr='icontains')
     email = django_filters.CharFilter(field_name="email", lookup_expr='icontains')
-    qr = django_filters.CharFilter(field_name="qr", lookup_expr='icontains')
+    qr = django_filters.CharFilter(field_name="qr", lookup_expr='iexact')
 
     class Meta:
         model = models.Volunteer
