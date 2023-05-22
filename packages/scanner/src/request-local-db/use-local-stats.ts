@@ -1,15 +1,25 @@
 import { useState } from 'react';
+import dayjs from 'dayjs';
 
 import { FeedType, getFeedStats, getVolsOnField, MealTime } from '~/db';
 import type { IStats, LocalStatsHook } from '~/request-local-db/lib';
+import type { ValueOf } from '~/components/misc';
+
+export const NUTRITION_TYPE = {
+    NT1: 'NT1',
+    NT2: 'NT2',
+    total: 'total'
+} as const;
+
+export type NutritionType = ValueOf<typeof NUTRITION_TYPE>;
 
 export const useLocalStats = (statsDate): LocalStatsHook => {
-    const onFieldTemp: Record<string, IStats> = {};
-    const fedTemp: Record<string, IStats> = {};
+    const onFieldTemp: Record<NutritionType, IStats> | object = {};
+    const fedTemp: Record<NutritionType, IStats> | object = {};
 
     const [error, setError] = useState<any>(null);
-    const [onField, setOnField] = useState<Record<string, IStats>>(onFieldTemp);
-    const [fed, setFed] = useState<Record<string, IStats>>(fedTemp);
+    const [onField, setOnField] = useState<typeof onFieldTemp | null>(null);
+    const [fed, setFed] = useState<typeof fedTemp | null>(null);
     const [progress, setProgress] = useState<boolean>(false);
     const [updated, setUpdated] = useState<boolean>(false);
 
@@ -17,14 +27,30 @@ export const useLocalStats = (statsDate): LocalStatsHook => {
         setUpdated(false);
         setProgress(true);
 
-        const onFieldPromises = Object.keys(FeedType).map(async (key) => {
-            await getVolsOnField(statsDate, FeedType[key]).then((vols) => {
-                const breakfast = vols.filter((vol) => vol.active_from < statsDate).length;
-                const lunch = vols.length;
-                const dinner = vols.length;
-                const night = vols.filter((vol) => !vol.paid).length;
+        const onFieldPromises = Object.keys(NUTRITION_TYPE).map(async (key) => {
+            await getVolsOnField(statsDate).then((vols) => {
+                if (NUTRITION_TYPE[key] === NUTRITION_TYPE.NT1) {
+                    vols = vols.filter((vol) => !vol.is_vegan);
+                }
+                if (NUTRITION_TYPE[key] === NUTRITION_TYPE.NT2) {
+                    vols = vols.filter((vol) => vol.is_vegan);
+                }
 
-                onFieldTemp[FeedType[key]] = {
+                const breakfast = vols.filter(
+                    (vol) => !!vol.active_from && dayjs(vol.active_from).unix() < dayjs(statsDate).unix()
+                ).length;
+                const lunch = vols.length;
+                const dinner = vols.filter(
+                    (vol) => !!vol.active_to && dayjs(vol.active_to).unix() > dayjs(statsDate).unix()
+                ).length;
+                const night = vols.filter(
+                    (vol) =>
+                        !!vol.active_to &&
+                        dayjs(vol.active_to).unix() > dayjs(statsDate).unix() &&
+                        vol.feed_type !== FeedType.FT2
+                ).length;
+
+                onFieldTemp[NUTRITION_TYPE[key]] = {
                     breakfast,
                     lunch,
                     dinner,
@@ -33,29 +59,21 @@ export const useLocalStats = (statsDate): LocalStatsHook => {
             });
         });
 
-        const onFieldTotalPromise = Promise.all(onFieldPromises).then(() => {
-            const total = {
-                breakfast: 0,
-                lunch: 0,
-                dinner: 0,
-                night: 0
-            };
+        const fedPromises = Object.keys(NUTRITION_TYPE).map(async (key) => {
+            await getFeedStats(statsDate).then((txs) => {
+                if (NUTRITION_TYPE[key] === NUTRITION_TYPE.NT1) {
+                    txs = txs.filter((tx) => !tx.vol?.is_vegan);
+                }
+                if (NUTRITION_TYPE[key] === NUTRITION_TYPE.NT2) {
+                    txs = txs.filter((tx) => tx.vol?.is_vegan);
+                }
 
-            Object.values(onFieldTemp).forEach((stats) => {
-                Object.keys(total).forEach((key) => {
-                    total[key] += stats[key];
-                });
-            });
-            onFieldTemp['total'] = total;
-        });
-
-        const fedPromises = Object.keys(FeedType).map(async (key) => {
-            await getFeedStats(statsDate, FeedType[key]).then((txs) => {
                 const breakfast = txs.filter((tx) => tx.vol && tx.mealTime === MealTime.breakfast).length;
                 const lunch = txs.filter((tx) => tx.vol && tx.mealTime === MealTime.lunch).length;
                 const dinner = txs.filter((tx) => tx.vol && tx.mealTime === MealTime.dinner).length;
                 const night = txs.filter((tx) => tx.vol && tx.mealTime === MealTime.night).length;
-                fedTemp[FeedType[key]] = {
+
+                fedTemp[NUTRITION_TYPE[key]] = {
                     breakfast,
                     lunch,
                     dinner,
@@ -64,31 +82,16 @@ export const useLocalStats = (statsDate): LocalStatsHook => {
             });
         });
 
-        const onFedTotalPromise = Promise.all(fedPromises).then(() => {
-            const total = {
-                breakfast: 0,
-                lunch: 0,
-                dinner: 0,
-                night: 0
-            };
-
-            Object.values(fedTemp).forEach((stats) => {
-                Object.keys(total).forEach((key) => {
-                    total[key] += stats[key];
-                });
-            });
-            fedTemp['total'] = total;
-        });
-
-        return Promise.all([onFieldTotalPromise, onFedTotalPromise])
+        return Promise.all([...onFieldPromises, ...fedPromises])
             .then(() => {
-                setOnField(onFieldTemp);
                 setFed(fedTemp);
+                setOnField(onFieldTemp);
                 setProgress(false);
                 setUpdated(true);
             })
             .catch((e) => {
                 setError(e);
+                setProgress(false);
                 console.error(e);
             });
     };

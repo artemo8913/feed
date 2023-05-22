@@ -1,24 +1,25 @@
 import React from 'react';
 
-import type { FeedTypeState } from '~/components/stats';
+import type { NutritionType } from '~/request-local-db';
+import { NUTRITION_TYPE } from '~/request-local-db';
 
 import style from './stats-filter.module.css';
 
 interface StatsFilterProps {
-    feedTypeState: FeedTypeState;
+    feedTypeState: NutritionType;
     setFeedTypeState: (any) => void;
 }
 
 type ButtonsData = {
-    name: FeedTypeState;
+    name: NutritionType;
     label: string;
 };
 
 export const StatsFilter = ({ feedTypeState, setFeedTypeState }: StatsFilterProps) => {
     const buttonsData: Array<ButtonsData> = [
-        { name: 'total', label: 'Всего' },
-        { name: 'FT1', label: '🍖' },
-        { name: 'FT2', label: '🍃' }
+        { name: NUTRITION_TYPE.total, label: 'Всего' },
+        { name: NUTRITION_TYPE.NT1, label: '🍖' },
+        { name: NUTRITION_TYPE.NT2, label: '🍃' }
     ];
 
     const buttons = buttonsData.map(({ label, name }) => {
