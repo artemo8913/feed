@@ -5,7 +5,7 @@ export const useCheckAuth = (baseUrl: string, setAuth: (auth: boolean) => void):
     useCallback(
         (pin: string) =>
             axios
-                .get(`${baseUrl}/auth/user`, {
+                .get(`${baseUrl}/auth/user/`, {
                     headers: {
                         Authorization: `K-PIN-CODE ${pin}`
                     }
