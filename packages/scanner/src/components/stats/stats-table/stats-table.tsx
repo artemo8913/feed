@@ -1,12 +1,12 @@
 import React from 'react';
 
-import type { IStats } from '~/request-local-db';
+import type { StatsByMealTime } from '~/request-local-db';
 
 import style from './stats-table.module.css';
 
 interface StatsTableProps {
-    onField: IStats;
-    fed: IStats;
+    onField: StatsByMealTime;
+    fed: StatsByMealTime;
 }
 
 export const StatsTable = ({ fed, onField }: StatsTableProps) => {

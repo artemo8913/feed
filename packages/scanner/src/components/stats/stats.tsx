@@ -10,7 +10,7 @@ import { StatsFilter } from '~/components/stats/stats-filter';
 import style from './stats.module.css';
 
 export const Stats = React.memo(function Stats() {
-    const { error, fed, onField, progress, update } = useLocalStats(dayjs(getToday()).toDate());
+    const { error, progress, stats, update } = useLocalStats(dayjs(getToday()).toDate());
     const [feedTypeState, setFeedTypeState] = useState<NutritionType>(NUTRITION_TYPE.total);
 
     const updateStats = (): void => {
@@ -29,7 +29,7 @@ export const Stats = React.memo(function Stats() {
                     Обновить
                 </button>
             </div>
-            {!progress && onField && fed && <StatsTable onField={onField[feedTypeState]} fed={fed[feedTypeState]} />}
+            {!progress && stats && <StatsTable onField={stats.onField[feedTypeState]} fed={stats.fed[feedTypeState]} />}
             {progress && !error && <div>Загрузка...</div>}
             {error && <div>Что-то пошло не так</div>}
         </>

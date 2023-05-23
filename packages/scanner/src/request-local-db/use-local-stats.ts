@@ -2,7 +2,7 @@ import { useState } from 'react';
 import dayjs from 'dayjs';
 
 import { FeedType, getFeedStats, getVolsOnField, MealTime } from '~/db';
-import type { IStats, LocalStatsHook } from '~/request-local-db/lib';
+import type { LocalStatsHook } from '~/request-local-db/lib';
 import type { ValueOf } from '~/components/misc';
 
 export const NUTRITION_TYPE = {
@@ -10,16 +10,23 @@ export const NUTRITION_TYPE = {
     NT2: 'NT2',
     total: 'total'
 } as const;
-
 export type NutritionType = ValueOf<typeof NUTRITION_TYPE>;
 
+export type StatsByMealTime = {
+    breakfast: number;
+    lunch: number;
+    dinner: number;
+    night: number;
+};
+export type FeedStatsRecord = Record<NutritionType, StatsByMealTime>;
+export type FeedStats = { onField: FeedStatsRecord; fed: FeedStatsRecord };
+
 export const useLocalStats = (statsDate): LocalStatsHook => {
-    const onFieldTemp: Record<NutritionType, IStats> | object = {};
-    const fedTemp: Record<NutritionType, IStats> | object = {};
+    const onFieldTemp: FeedStatsRecord = <FeedStatsRecord>{};
+    const fedTemp: FeedStatsRecord = <FeedStatsRecord>{};
 
     const [error, setError] = useState<any>(null);
-    const [onField, setOnField] = useState<typeof onFieldTemp | null>(null);
-    const [fed, setFed] = useState<typeof fedTemp | null>(null);
+    const [stats, setStats] = useState<FeedStats | null>(null);
     const [progress, setProgress] = useState<boolean>(false);
     const [updated, setUpdated] = useState<boolean>(false);
 
@@ -84,8 +91,10 @@ export const useLocalStats = (statsDate): LocalStatsHook => {
 
         return Promise.all([...onFieldPromises, ...fedPromises])
             .then(() => {
-                setFed(fedTemp);
-                setOnField(onFieldTemp);
+                setStats({
+                    onField: onFieldTemp,
+                    fed: fedTemp
+                });
                 setProgress(false);
                 setUpdated(true);
             })
@@ -95,5 +104,5 @@ export const useLocalStats = (statsDate): LocalStatsHook => {
                 console.error(e);
             });
     };
-    return { progress, update, error, updated, onField, fed };
+    return { progress, update, error, updated, stats };
 };

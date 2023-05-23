@@ -1,19 +1,11 @@
 import type { TransactionJoined } from '~/db';
-import type { NutritionType } from '~/request-local-db/use-local-stats';
-
-export interface IStats {
-    breakfast: number;
-    lunch: number;
-    dinner: number;
-    night: number;
-}
+import type { FeedStats } from '~/request-local-db/use-local-stats';
 
 export interface LocalStatsHook {
     error: any;
     progress: boolean;
     updated: boolean;
-    onField: Record<NutritionType, IStats> | object | null;
-    fed: Record<NutritionType, IStats> | object | null;
+    stats: FeedStats | null;
     update: () => Promise<any>;
 }
 
