@@ -30,7 +30,9 @@ export const VolInfo: FC<{
     vol: Volunteer;
 }> = ({ vol: { active_from, active_to, departments, feed_type, name, nickname } }) => (
     <div className={css.volInfo}>
-        <div className={css.feedType}>{feed_type === FeedType.FT2 ? 'платно' : (feed_type === FeedType.Child ? 'ребенок' : 'фри')}</div>
+        <div className={css.feedType}>
+            {feed_type === FeedType.FT2 ? 'платно' : feed_type === FeedType.Child ? 'ребенок' : 'фри'}
+        </div>
         <div>
             <span>
                 {name} ({nickname})
