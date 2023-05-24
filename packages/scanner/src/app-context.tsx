@@ -4,12 +4,14 @@ import type { MealTime } from '~/db';
 
 export enum AppColor {
     RED,
-    GREEN
+    GREEN,
+    YELLOW
 }
 
 export const Colors = {
     [AppColor.RED]: '#f00',
-    [AppColor.GREEN]: '#0f0'
+    [AppColor.GREEN]: '#0f0',
+    [AppColor.YELLOW]: '#ff0'
 };
 
 export interface IAppContext {

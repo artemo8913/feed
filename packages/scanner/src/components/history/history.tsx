@@ -8,7 +8,7 @@ import style from './history.module.css';
 
 export const History: React.FC = () => {
     const { currentView } = useContext(ViewContext);
-    const [limit, setLimit] = useState<number>(0);
+    const [limit, setLimit] = useState<number>(20);
     const [end, setEnd] = useState<boolean>(false);
 
     const { error, progress, transactions, update } = useLocalLastTrans();

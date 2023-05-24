@@ -6,6 +6,12 @@ button {
     font-size: var(--fs);
 }
 
+.anon {
+    padding: 10px;
+    position: absolute;
+    bottom: 20vh;
+}
+
 .app {
     width: 100vw;
     min-height: 100vh;

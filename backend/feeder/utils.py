@@ -9,7 +9,6 @@ from feeder import models
 
 ZERO_HOUR = 4
 
-
 @transaction.atomic
 def sync_with_notion() -> dict:
     headers = {"Authorization": settings.NOTION_AUTH_HEADER}
@@ -19,6 +18,8 @@ def sync_with_notion() -> dict:
     default_badge = models.Color.objects.filter(name='green').first()
     food_type_free = models.FeedType.objects.filter(code='FT1').first()
     food_type_paid = models.FeedType.objects.filter(code='FT2').first()
+    food_type_child = models.FeedType.objects.filter(code='FT3').first()
+    food_type_no = models.FeedType.objects.filter(code='FT4').first()
     statistic = {
         'volunteers': {'created': 0, 'total': 0},
         'departments': {'created': 0, 'total': 0},
@@ -80,8 +81,8 @@ def sync_with_notion() -> dict:
             volunteer.qr = item.get('qr')
             volunteer.is_vegan = item.get('is_vegan')
             volunteer.position = item.get('position')
-            volunteer.feed_type = food_type_free if item.get('food_type') == 'Бесплатно' else food_type_paid
-            volunteer.balance = food_type_free.daily_amount if item.get('food_type') == 'Бесплатно' else food_type_paid.daily_amount
+            volunteer.feed_type = food_type_paid if item.get('food_type') == 'Платно' else food_type_child if item.get('food_type') == 'Ребенок' else food_type_no if item.get('food_type') == 'Без питания' else food_type_free
+            volunteer.balance = volunteer.feed_type.daily_amount
             volunteer.kitchen = models.Kitchen.objects.get(pk=1)
 
             if arrival_dt := item.get('arrival_date'):
