@@ -5,7 +5,7 @@ import { ulid } from 'ulid';
 
 export interface Transaction {
     ulid: string;
-    vol_id: number;
+    vol_id: number | null;
     amount: number;
     ts: number;
     mealTime: MealTime;
@@ -25,8 +25,9 @@ export interface TransactionJoined extends Transaction {
 }
 
 export enum FeedType {
-    FT1 = 1,
-    FT2 = 2
+    FT1 = 1, // бесплатно
+    FT2 = 2, // платно
+    Child = 3 // ребенок
 }
 
 export enum MealTime {
@@ -36,7 +37,7 @@ export enum MealTime {
     night = 'night'
 }
 
-export const FeedWithBalance = new Set([FeedType.FT1, FeedType.FT2]);
+export const FeedWithBalance = new Set([FeedType.FT1, FeedType.FT2, FeedType.Child]);
 
 export interface Volunteer {
     qr: string;
@@ -46,6 +47,7 @@ export interface Volunteer {
     balance: number;
     is_active: boolean;
     is_blocked: boolean;
+    is_vegan: boolean;
     active_from: Date;
     active_to: Date;
     expired: number;
@@ -73,11 +75,10 @@ export class MySubClassedDexie extends Dexie {
 
 export const db = new MySubClassedDexie();
 
-export const addTransaction = async (vol: Volunteer, mealTime: MealTime): Promise<any> => {
+export const addTransaction = async (vol: Volunteer | undefined, mealTime: MealTime): Promise<any> => {
     const ts = dayjs().unix();
-    debugger;
     await db.transactions.add({
-        vol_id: vol.id,
+        vol_id: vol ? vol.id : null,
         ts,
         amount: 1,
         ulid: ulid(ts),
@@ -86,20 +87,23 @@ export const addTransaction = async (vol: Volunteer, mealTime: MealTime): Promis
     });
 };
 
-export const dbIncFeed = async (vol: Volunteer, mealTime: MealTime): Promise<any> => {
-    await db.volunteers
-        .where('id')
-        .equals(vol.id)
-        .modify({
-            balance: vol.balance - 1
-        });
+export const dbIncFeed = async (vol: Volunteer | undefined, mealTime: MealTime): Promise<any> => {
+    if (vol) {
+        await db.volunteers
+            .where('id')
+            .equals(vol.id)
+            .modify({
+                balance: vol.balance - 1
+            });
+    }
+
     return await addTransaction(vol, mealTime);
 };
 
 export function joinTxs(txsCollection: Collection<TransactionJoined>): Promise<Array<TransactionJoined>> {
     return txsCollection.toArray((transactions: Array<TransactionJoined>) => {
         const volsPromises = transactions.map((transaction) => {
-            return db.volunteers.get({ id: transaction.vol_id });
+            return transaction.vol_id ? db.volunteers.get({ id: transaction.vol_id }) : undefined;
         });
 
         return Dexie.Promise.all(volsPromises).then((vols) => {
@@ -161,11 +165,6 @@ export function getFeedStats(statsDate: Date, feedType?: FeedType): Promise<Arra
 }
 
 export function getLastTrans(offset: number, limit: number): Promise<Array<TransactionJoined>> {
-    const txs = db.transactions
-        .where('ts')
-        .above(dayjs().subtract(20, 'm').unix())
-        .reverse()
-        .offset(offset)
-        .limit(limit);
+    const txs = db.transactions.reverse().offset(offset).limit(limit);
     return joinTxs(txs);
 }

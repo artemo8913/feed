@@ -2,6 +2,7 @@ import dayjs from 'dayjs';
 import type { FC } from 'react';
 
 import type { Volunteer } from '~/db';
+import { FeedType } from '~/db';
 
 import css from './misc.module.css';
 
@@ -16,9 +17,9 @@ export const LastUpdated: FC<{
 
 export const VolInfo: FC<{
     vol: Volunteer;
-}> = ({ vol: { active_from, active_to, departments, name, nickname, paid } }) => (
+}> = ({ vol: { active_from, active_to, departments, feed_type, name, nickname, paid } }) => (
     <div className={css.volInfo}>
-        <div className={css.feedType}>{paid ? 'платно' : 'фри'}</div>
+        <div className={css.feedType}>{paid ? 'платно' : feed_type === FeedType.Child ? 'ребенок' : 'фри'}</div>
         <div>
             <span>
                 {name} ({nickname})
@@ -66,13 +67,13 @@ export const FeedLeft: FC<{
 }> = ({ msg }) => <div>{msg}</div>;
 
 export const GreenCard: FC<{
-    vol: Volunteer;
+    vol?: Volunteer;
     doFeed: () => void;
     close: () => void;
 }> = ({ close, doFeed, vol }) => (
     <>
-        <VolInfo vol={vol} />
-        <FeedLeft msg={`Осталось ${vol.balance} кормежек`} />
+        {vol ? <VolInfo vol={vol} /> : 'Вы уверены, что хотите покормить анонима?'}
+        {/* <FeedLeft msg={`Осталось: ${vol.balance}`} /> */}
         <div className={css.card}>
             <button type='button' onClick={doFeed}>
                 Кормить
@@ -84,16 +85,23 @@ export const GreenCard: FC<{
     </>
 );
 
-export const RedCard: FC<{
+export const YellowCard: FC<{
     vol: Volunteer;
     doFeed: () => void;
     close: () => void;
-    notice?: string;
-}> = ({ close, doFeed, notice, vol }) => (
+    msg: Array<string>;
+}> = ({ close, doFeed, msg, vol }) => (
     <>
-        {notice && <h4>{notice}</h4>}
+        <h4>
+            {msg.map((m) => (
+                <>
+                    {m}
+                    <br />
+                </>
+            ))}
+        </h4>
         <VolInfo vol={vol} />
-        <FeedLeft msg={`Осталось: ${vol.balance}`} />
+        {/* <FeedLeft msg={`Осталось: ${vol.balance}`} /> */}
         <div className={css.card}>
             <button type='button' onClick={doFeed}>
                 Все равно кормить

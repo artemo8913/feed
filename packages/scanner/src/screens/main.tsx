@@ -20,6 +20,10 @@ export const MainScreen = React.memo(function MainScreen() {
         setScanResult('');
     }, []);
 
+    const feedAnon = useCallback(() => {
+        setScanResult('anon');
+    }, []);
+
     useEffect(() => {
         void db.volunteers.count().then((c) => setVolCount(c));
         setLastUpdated(Number(localStorage.getItem('lastUpdated')));
@@ -28,8 +32,16 @@ export const MainScreen = React.memo(function MainScreen() {
     return (
         <div className={cn(css.screen, css.main)}>
             <BtnSync />
-            {!scanResult && <QrScan onScan={setScanResult} />}
+            {!scanResult && (
+                <>
+                    <QrScan onScan={setScanResult} />
+                    <button className={css.anon} onClick={feedAnon}>
+                        Кормить Анонима
+                    </button>
+                </>
+            )}
             {scanResult && <PostScan closeFeed={closeFeedDialog} qrcode={scanResult} />}
+
             {appError && <ErrorMsg close={closeFeedDialog} msg={appError} />}
             <LastUpdated count={volCount} ts={lastUpdate || 0} />
             <MainScreenStats />

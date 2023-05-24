@@ -24,5 +24,31 @@
       "daily_amount": 3,
       "comment": null
     }
+  },
+  {
+    "model": "feeder.feedtype",
+    "pk": 3,
+    "fields": {
+      "created_at": "2023-05-03T18:52:56.931Z",
+      "updated_at": "2023-05-03T18:52:56.931Z",
+      "name": "ребенок",
+      "code": "FT3",
+      "paid": true,
+      "daily_amount": 3,
+      "comment": null
+    }
+  },
+  {
+    "model": "feeder.feedtype",
+    "pk": 4,
+    "fields": {
+      "created_at": "2023-05-03T18:52:56.931Z",
+      "updated_at": "2023-05-03T18:52:56.931Z",
+      "name": "без питания",
+      "code": "FT4",
+      "paid": true,
+      "daily_amount": 0,
+      "comment": null
+    }
   }
 ]
