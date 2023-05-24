@@ -4,7 +4,7 @@ import { useLiveQuery } from 'dexie-react-hooks';
 
 import { AppColor, AppContext } from '~/app-context';
 import { db, dbIncFeed, FeedWithBalance } from '~/db';
-import { ErrorMsg, GreenCard, RedCard } from '~/components/misc/misc';
+import { ErrorMsg, GreenCard, isVolExpired, RedCard } from '~/components/misc/misc';
 
 export const PostScan: FC<{
     qrcode: string;
@@ -33,7 +33,7 @@ export const PostScan: FC<{
         return <ErrorMsg close={closeFeed} msg={`Бейдж не найден: ${qrcode}`} />;
     }
 
-    if (!vol.is_active || vol.is_blocked || vol.expired || vol.kitchen.toString() !== kitchenId) {
+    if (!vol.is_active || vol.is_blocked || isVolExpired(vol) || vol.kitchen.toString() !== kitchenId) {
         const msg: Array<string> = [];
         if (vol.kitchen.toString() !== kitchenId) {
             msg.push(`Кормится на кухне ${vol.kitchen}`);
@@ -44,7 +44,7 @@ export const PostScan: FC<{
         if (vol.is_blocked) {
             msg.push('Волонтер заблокирован');
         }
-        if (vol.expired) {
+        if (isVolExpired(vol)) {
             msg.push('Даты активности не совпадают');
         }
 

@@ -2,10 +2,22 @@ import dayjs from 'dayjs';
 import type { FC } from 'react';
 
 import type { Volunteer } from '~/db';
+import { FeedType } from '~/db';
 
 import css from './misc.module.css';
 
 const dateTimeFormat = 'DD MMM HH:mm';
+
+export type ValueOf<T> = T[keyof T];
+
+export const isVolExpired = (vol: Volunteer): boolean => {
+    return (
+        !!vol.active_to &&
+        !!vol.active_from &&
+        Date.parse(vol.active_from) <= dayjs().unix() &&
+        Date.parse(vol.active_to) >= dayjs().unix()
+    );
+};
 
 export const LastUpdated: FC<{
     ts: number;
@@ -16,9 +28,9 @@ export const LastUpdated: FC<{
 
 export const VolInfo: FC<{
     vol: Volunteer;
-}> = ({ vol: { active_from, active_to, departments, name, nickname, paid } }) => (
+}> = ({ vol: { active_from, active_to, departments, feed_type, name, nickname } }) => (
     <div className={css.volInfo}>
-        <div className={css.feedType}>{paid ? 'платно' : 'фри'}</div>
+        <div className={css.feedType}>{feed_type === FeedType.FT2 ? 'платно' : 'фри'}</div>
         <div>
             <span>
                 {name} ({nickname})
