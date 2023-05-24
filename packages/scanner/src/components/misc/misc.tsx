@@ -8,6 +8,17 @@ import css from './misc.module.css';
 
 const dateTimeFormat = 'DD MMM HH:mm';
 
+export type ValueOf<T> = T[keyof T];
+
+export const isVolExpired = (vol: Volunteer): boolean => {
+    return (
+        !!vol.active_to &&
+        !!vol.active_from &&
+        Date.parse(vol.active_from) <= dayjs().unix() &&
+        Date.parse(vol.active_to) >= dayjs().unix()
+    );
+};
+
 export const LastUpdated: FC<{
     ts: number;
     count: number;
@@ -17,9 +28,9 @@ export const LastUpdated: FC<{
 
 export const VolInfo: FC<{
     vol: Volunteer;
-}> = ({ vol: { active_from, active_to, departments, feed_type, name, nickname, paid } }) => (
+}> = ({ vol: { active_from, active_to, departments, feed_type, name, nickname } }) => (
     <div className={css.volInfo}>
-        <div className={css.feedType}>{paid ? 'платно' : feed_type === FeedType.Child ? 'ребенок' : 'фри'}</div>
+        <div className={css.feedType}>{feed_type === FeedType.FT2 ? 'платно' : (feed_type === FeedType.Child ? 'ребенок' : 'фри')}</div>
         <div>
             <span>
                 {name} ({nickname})

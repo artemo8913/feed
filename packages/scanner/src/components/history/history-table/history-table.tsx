@@ -2,7 +2,6 @@ import React from 'react';
 import dayjs from 'dayjs';
 
 import type { TransactionJoined } from '~/db';
-import { FeedType } from '~/db';
 
 import style from './history-table.module.css';
 
@@ -15,7 +14,7 @@ export const HistoryTable = React.memo(function HistoryTable({ transactions }: H
         return (
             <tr key={index}>
                 <td>{transaction.vol ? transaction.vol.name : 'Аноним'}</td>
-                <td>{transaction.vol && (transaction.vol.feed_type === FeedType.FT1 ? 'Мясоед' : 'Веган')}</td>
+                <td>{transaction.vol && (transaction.vol.is_vegan ? 'Мясоед' : 'Веган')}</td>
                 <td>{dayjs.unix(transaction.ts).format('YYYY.MM.DD HH:mm:ss').toString()}</td>
             </tr>
         );

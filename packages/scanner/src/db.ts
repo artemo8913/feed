@@ -48,16 +48,14 @@ export interface Volunteer {
     is_active: boolean;
     is_blocked: boolean;
     is_vegan: boolean;
-    active_from: Date;
-    active_to: Date;
-    expired: number;
+    active_from: string | null;
+    active_to: string | null;
     feed_type: FeedType;
-    paid: boolean;
     departments: Array<{ name: string }>;
     kitchen: number;
 }
 
-const DB_VERSION = 7;
+const DB_VERSION = 8;
 
 export class MySubClassedDexie extends Dexie {
     transactions!: Table<Transaction>;
@@ -68,7 +66,7 @@ export class MySubClassedDexie extends Dexie {
         this.version(DB_VERSION).stores({
             transactions: '&&ulid, vol_id, amount, ts, mealTime, is_new',
             volunteers:
-                '&qr, *id, name, nickname, balance, is_blocked, is_active, feed_type, paid, active_from, active_to, departments, location, expired, kitchen'
+                '&qr, *id, name, nickname, balance, is_blocked, is_active, is_vegan, feed_type, active_from, active_to, departments, location, kitchen'
         });
     }
 }
@@ -115,53 +113,29 @@ export function joinTxs(txsCollection: Collection<TransactionJoined>): Promise<A
     });
 }
 
-export function getVolsOnField(statsDate: Date, feedType?: FeedType): Promise<Array<Volunteer>> {
-    if (feedType) {
-        return db.volunteers
-            .where('feed_type')
-            .equals(feedType)
-            .filter((vol) => {
-                return (
-                    vol.active_to &&
-                    vol.active_from &&
-                    vol.active_from <= dayjs(statsDate).add(1, 'd').toDate() &&
-                    vol.active_to >= statsDate
-                );
-            })
-            .filter((vol) => {
-                return vol.active_from < statsDate ? vol.is_active : vol.paid ? vol.is_active : true;
-            })
-            .toArray();
-    } else {
-        return db.volunteers
-            .toCollection()
-            .filter((vol) => {
-                return (
-                    vol.active_to &&
-                    vol.active_from &&
-                    vol.active_from <= dayjs(statsDate).add(1, 'd').toDate() &&
-                    vol.active_to >= statsDate
-                );
-            })
-            .filter((vol) => {
-                return vol.active_from < statsDate ? vol.is_active : vol.paid ? vol.is_active : true;
-            })
-            .toArray();
-    }
+export function getVolsOnField(statsDate: Date): Promise<Array<Volunteer>> {
+    const kitchenId = localStorage.getItem('kitchenId');
+    return db.volunteers
+        .filter((vol) => {
+            return (
+                vol.kitchen.toString() === kitchenId &&
+                !!vol.active_to &&
+                !!vol.active_from &&
+                dayjs(vol.active_from).unix() <= dayjs(statsDate).add(1, 'd').unix() &&
+                dayjs(vol.active_to).unix() >= dayjs(statsDate).unix() &&
+                (dayjs(vol.active_from).unix() < dayjs(statsDate).unix()
+                    ? vol.is_active
+                    : vol.feed_type === FeedType.FT2
+                    ? vol.is_active
+                    : true)
+            );
+        })
+        .toArray();
 }
 
-export function getFeedStats(statsDate: Date, feedType?: FeedType): Promise<Array<TransactionJoined>> {
+export function getFeedStats(statsDate: Date): Promise<Array<TransactionJoined>> {
     const txs = db.transactions.where('ts').between(dayjs(statsDate).unix(), dayjs(statsDate).add(31, 'h').unix());
-
-    if (feedType) {
-        return joinTxs(txs).then((txs) =>
-            txs.filter((tx) => {
-                return tx.vol && tx.vol.feed_type === feedType;
-            })
-        );
-    } else {
-        return joinTxs(txs);
-    }
+    return joinTxs(txs);
 }
 
 export function getLastTrans(offset: number, limit: number): Promise<Array<TransactionJoined>> {

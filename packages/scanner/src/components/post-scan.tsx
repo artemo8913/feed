@@ -5,7 +5,7 @@ import dayjs from 'dayjs';
 
 import { AppColor, AppContext } from '~/app-context';
 import { db, dbIncFeed, FeedType, FeedWithBalance, MealTime } from '~/db';
-import { ErrorMsg, GreenCard, YellowCard } from '~/components/misc/misc';
+import { ErrorMsg, GreenCard, YellowCard, isVolExpired } from '~/components/misc/misc';
 import { getMealTimeText } from '~/lib/utils';
 
 export const PostScan: FC<{
@@ -65,7 +65,7 @@ export const PostScan: FC<{
         isRed = true;
         msg.push('Волонтер заблокирован');
     }
-    if (vol.expired) {
+    if (isVolExpired(vol)) {
         msg.push('Даты активности не совпадают');
     }
     if (!FeedWithBalance.has(vol.feed_type)) {
@@ -74,7 +74,6 @@ export const PostScan: FC<{
     }
     if (mealTime && volTransactions.some((t) => t.mealTime === mealTime)) {
         msg.push(`Волонтер уже получил ${getMealTimeText(mealTime)}`);
-        debugger;
         const hasDebt = Object.values(
             volTransactions.reduce(
                 (acc, { mealTime }) => ({

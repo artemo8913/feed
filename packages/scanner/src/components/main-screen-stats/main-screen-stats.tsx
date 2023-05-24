@@ -3,7 +3,7 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import dayjs from 'dayjs';
 
 import { AppContext } from '~/app-context';
-import { db } from '~/db';
+import { db, getVolsOnField } from '~/db';
 import { getToday } from '~/lib/date';
 
 import style from './main-screen-stats.module.css';
@@ -12,19 +12,7 @@ export const MainScreenStats = () => {
     const { mealTime } = useContext(AppContext);
 
     const volsOnField = useLiveQuery(
-        async () =>
-            db.volunteers
-                .toCollection()
-                .filter((vol) => {
-                    return (
-                        vol.active_to &&
-                        vol.active_from &&
-                        vol.active_from <= dayjs().toDate() &&
-                        vol.active_to >= dayjs().toDate() &&
-                        vol.is_active
-                    );
-                })
-                .count(),
+        async () => (await getVolsOnField(dayjs(getToday()).toDate())).length,
         [mealTime],
         0
     );
