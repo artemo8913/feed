@@ -21,7 +21,7 @@ export type StatsByMealTime = {
 export type FeedStatsRecord = Record<NutritionType, StatsByMealTime>;
 export type FeedStats = { onField: FeedStatsRecord; fed: FeedStatsRecord };
 
-export const useLocalStats = (statsDate): LocalStatsHook => {
+export const useLocalStats = (): LocalStatsHook => {
     const onFieldTemp: FeedStatsRecord = <FeedStatsRecord>{};
     const fedTemp: FeedStatsRecord = <FeedStatsRecord>{};
 
@@ -30,7 +30,7 @@ export const useLocalStats = (statsDate): LocalStatsHook => {
     const [progress, setProgress] = useState<boolean>(false);
     const [updated, setUpdated] = useState<boolean>(false);
 
-    const update = () => {
+    const update = (statsDate) => {
         setUpdated(false);
         setProgress(true);
 
