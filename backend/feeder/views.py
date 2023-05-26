@@ -1,3 +1,5 @@
+import arrow
+
 from django.shortcuts import render, get_object_or_404
 from rest_framework import generics
 from rest_framework.decorators import api_view
@@ -8,7 +10,7 @@ from rest_framework.reverse import reverse
 from rest_framework.views import APIView
 from rest_framework import status
 from django.db import transaction
-from drf_spectacular.utils import extend_schema
+from drf_spectacular.utils import extend_schema, OpenApiTypes, OpenApiParameter, OpenApiExample
 from rest_framework import filters
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import routers, serializers, viewsets, permissions
@@ -16,7 +18,7 @@ from rest_framework.views import APIView
 from django_filters import rest_framework as django_filters
 
 from feeder import serializers, models, authentication
-from feeder.utils import sync_with_notion
+from feeder.utils import sync_with_notion, calculate_statistics, STAT_DATE_FORMAT
 
 class MultiSerializerViewSetMixin(object):
     def get_serializer_class(self):
@@ -192,5 +194,44 @@ class UpdateBalance(APIView):
 class Statistics(APIView):
     permission_classes = [permissions.IsAuthenticated, ]
 
+    @extend_schema(
+        parameters=[
+            OpenApiParameter(
+                name="date_from", 
+                type=OpenApiTypes.DATE, 
+                location=OpenApiParameter.QUERY,
+                description="Begining of period. Optional. Default is today. Value must be in '{}' format.".format(STAT_DATE_FORMAT),
+                examples=[
+                    OpenApiExample('Yesterday', value=arrow.now().shift(days=-1).format(STAT_DATE_FORMAT)),
+                    OpenApiExample('Today', value=arrow.now().format(STAT_DATE_FORMAT))
+                ]
+            ),
+            OpenApiParameter(
+                name="date_to", 
+                type=OpenApiTypes.DATE, 
+                location=OpenApiParameter.QUERY,
+                description="End of period. Optional. Default is today. Value must be in '{}' format.".format(STAT_DATE_FORMAT),
+                examples=[
+                    OpenApiExample('Today', value=arrow.now().format(STAT_DATE_FORMAT)),
+                    OpenApiExample('Tomorrow', value=arrow.now().shift(days=+1).format(STAT_DATE_FORMAT))
+                ]
+            )
+        ],
+        responses={
+            200: serializers.StatisticsResponseSerializer(many=True)
+        },
+    )
     def get(self, request):
-        return Response('tell me what you want as a result, please')
+        today = arrow.now().format(STAT_DATE_FORMAT)
+
+        date_from = request.GET.get('date_from', today)
+        date_to = request.GET.get('date_to', today)
+
+        serializer = serializers.StatisticsRequestSerializer(data={ 'date_from': date_from, 'date_to': date_to })
+        serializer.is_valid(raise_exception=True)
+
+        result = calculate_statistics(serializer.data)
+
+        return Response(
+            serializers.StatisticsResponseSerializer(result, many=True).data
+        )

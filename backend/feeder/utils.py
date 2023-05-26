@@ -1,13 +1,28 @@
 import arrow
 import requests
 
+from enum import Enum
+
 from django.conf import settings
 from django.db import transaction
+from django.db.models import Q
 
 from feeder import models
+from feeder.models import meal_times 
 
 
 ZERO_HOUR = 4
+
+STAT_DATE_FORMAT = 'YYYY-MM-DD'
+
+class StatisticType(Enum):
+    PLAN = 'plan'
+    FACT = 'fact'
+
+
+def get_meal_times(is_paid) -> list:
+    # skip 'night' (last value) if is_paid is True
+    return meal_times[:-1] if is_paid else meal_times
 
 @transaction.atomic
 def sync_with_notion() -> dict:
@@ -112,3 +127,102 @@ def capitalize(s: str) -> str:
     if s:
         return s[0].title()+s[1:]
 
+
+def calculate_statistics(data):
+    # convert from str to a datetime type (Arrow)
+    stat_date_from = arrow.get(data.get('date_from'))
+    stat_date_to = arrow.get(data.get('date_to'))
+
+    # get transactions by criteria of fact statistic
+    transactions = (
+        models.FeedTransaction.objects
+            # shift date_to to include end of period
+            .filter(dtime__range=(stat_date_from.datetime, stat_date_to.shift(days=+1).datetime))
+            .exclude(volunteer__exact=None)
+            .values_list('dtime', 'meal_time', 'kitchen', 'amount', 'volunteer__is_vegan')
+    )
+
+    # set FACT statistics
+    fact_stat = [
+        {
+            'date': arrow.get(dtime).format(STAT_DATE_FORMAT),
+            'type': StatisticType.FACT.value,
+            'meal_time': meal_time,
+            'is_vegan': is_vegan,
+            'amount': amount,
+            'kitchen_id': kitchen_id 
+        } for dtime, meal_time, kitchen_id, amount, is_vegan in transactions
+    ]
+    
+    # plan statistic
+    plan_stat = []
+
+    # iterate over date range (day by day) between from and to
+    for current_stat_date in arrow.Arrow.range('day', stat_date_from, stat_date_to):
+        # Get volunteers by criterias of plan statistic.
+        # 
+        # The criterias:
+        #     Тех, у кого нет проставленных полей active_from и active_to мы игнорим.
+        #     Также мы игнорим тех, у кого active_from меньше начала текущего дня статистики и у которых не проставлен флаг is_active.
+        #     Также игнорим волонтеров, у которых стоит флаг paid и нет флага is_active.
+        #     Ну и остальных проверяем по тому, что текущий день входит в интервал от active_from до active_to.
+        volunteers = (
+            models.Volunteer.objects
+                .exclude(
+                    (Q(active_from__exact=None) | Q(active_to__exact=None)) 
+                    | (
+                        Q(is_active=False) 
+                        & (
+                            Q(active_from__lt=current_stat_date.datetime) | (~Q(feed_type__exact=None) & Q(feed_type__paid=True))
+                        )
+                    )
+                )
+                .filter(
+                    active_from__lt=current_stat_date.shift(days=+1).datetime, 
+                    active_to__gte=current_stat_date.datetime
+                )
+                .values_list('active_from', 'active_to', 'kitchen__id', 'is_vegan', 'feed_type__paid')
+        )
+
+        # set PLAN statistics for current date
+        for active_from, active_to, kitchen_id, is_vegan, is_paid in volunteers:
+            # convert dates to Arrow and floor them to 'day'
+            active_from_as_arrow = arrow.get(active_from).floor('day')
+            active_to_as_arrow = arrow.get(active_to).floor('day')
+
+            # skip breakfast
+            if active_from_as_arrow == current_stat_date and active_to_as_arrow != current_stat_date:
+                for meal_time in get_meal_times(is_paid)[1:]:
+                    plan_stat.append({
+                        'date': current_stat_date.format(STAT_DATE_FORMAT),
+                        'type': StatisticType.PLAN.value,
+                        'meal_time': meal_time, # in [ "lunch", "dinner" (, is_paid ? "night") ]
+                        'is_vegan': is_vegan,
+                        'amount': 1,
+                        'kitchen_id': kitchen_id
+                    })
+            # skip dinner and night
+            elif active_from_as_arrow != current_stat_date and active_to_as_arrow == current_stat_date:
+                for meal_time in get_meal_times(is_paid)[:2]:
+                    plan_stat.append({
+                        'date': current_stat_date.format(STAT_DATE_FORMAT),
+                        'type': StatisticType.PLAN.value,
+                        'meal_time': meal_time, # in [ "breakfast", "lunch" ]
+                        'is_vegan': is_vegan,
+                        'amount': 1,
+                        'kitchen_id': kitchen_id
+                    })
+            # handle each value of meal_times
+            else:
+                for meal_time in get_meal_times(is_paid):
+                    plan_stat.append({
+                        'date': current_stat_date.format(STAT_DATE_FORMAT),
+                        'type': StatisticType.PLAN.value,
+                        'meal_time': meal_time, # in [ "breakfast", "lunch", "dinner" (, is_paid ? "night") ]
+                        'is_vegan': is_vegan,
+                        'amount': 1,
+                        'kitchen_id': kitchen_id
+                    })
+
+    # combine fact and plan stats into result
+    return fact_stat + plan_stat
