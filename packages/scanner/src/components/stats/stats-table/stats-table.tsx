@@ -1,21 +1,23 @@
 import React from 'react';
 
 import type { StatsByMealTime } from '~/request-local-db';
+import { TableType } from '~/components/stats';
 
 import style from './stats-table.module.css';
 
 interface StatsTableProps {
     onField: StatsByMealTime;
     fed: StatsByMealTime;
+    tableType: TableType;
 }
 
-export const StatsTable = ({ fed, onField }: StatsTableProps) => {
+export const StatsTable = ({ fed, onField, tableType }: StatsTableProps) => {
     return (
         <table className={style.table}>
             <thead>
                 <tr>
                     <th></th>
-                    <th scope='col'>Факт</th>
+                    <th scope='col'>{tableType === TableType.default ? 'Факт' : 'Прогноз'}</th>
                     <th scope='col'>На поле</th>
                 </tr>
             </thead>

@@ -6,7 +6,7 @@ export interface LocalStatsHook {
     progress: boolean;
     updated: boolean;
     stats: FeedStats | null;
-    update: () => Promise<any>;
+    update: (string) => Promise<any>;
 }
 
 export interface LocalLastTransHook {
