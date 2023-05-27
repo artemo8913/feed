@@ -41,5 +41,15 @@ export interface ColorTypeEntity {
     description: string;
 }
 
+export interface FeedTransactionEntity {
+    id: number;
+    ulid: string;
+    amount: number;
+    dtime: string;
+    meal_time: string;
+    volunteer: number;
+    reason: string;
+}
+
 export { DepartmentEntity } from '@feed/api/src/entities/department.entity';
 export { LocationEntity } from '@feed/api/src/entities/location.entity';

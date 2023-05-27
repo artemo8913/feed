@@ -110,13 +110,14 @@ class FeedTransactionFilter(django_filters.FilterSet):
         fields = ['kitchen']
 
 @extend_schema(tags=['feed', ])
-class FeedTransactionViewSet(viewsets.ReadOnlyModelViewSet):
+class FeedTransactionViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated, ]
     queryset = models.FeedTransaction.objects.all()
     serializer_class = serializers.FeedTransactionSerializer
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     search_fields = ['volunteer', ]
     filterset_class = FeedTransactionFilter
+    ordering = ('-dtime')
 
 
 class KitchenViewSet(viewsets.ModelViewSet):
