@@ -88,7 +88,7 @@ export const GreenCard: FC<{
         <VolInfo vol={vol} />
         {/* <FeedLeft msg={`Осталось: ${vol.balance}`} /> */}
         <div className={css.card}>
-            <button type='button' onClick={() => doFeed()}>
+            <button type='button' onClick={doFeed}>
                 Кормить
             </button>
             <button type='button' onClick={close}>
