@@ -69,16 +69,16 @@ export const useLocalStats = (): LocalStatsHook => {
         const fedPromises = Object.keys(NUTRITION_TYPE).map(async (key) => {
             await getFeedStats(statsDate).then((txs) => {
                 if (NUTRITION_TYPE[key] === NUTRITION_TYPE.NT1) {
-                    txs = txs.filter((tx) => !tx.vol?.is_vegan);
+                    txs = txs.filter((tx) => !tx.is_vegan);
                 }
                 if (NUTRITION_TYPE[key] === NUTRITION_TYPE.NT2) {
-                    txs = txs.filter((tx) => tx.vol?.is_vegan);
+                    txs = txs.filter((tx) => tx.is_vegan);
                 }
 
-                const breakfast = txs.filter((tx) => tx.vol && tx.mealTime === MealTime.breakfast).length;
-                const lunch = txs.filter((tx) => tx.vol && tx.mealTime === MealTime.lunch).length;
-                const dinner = txs.filter((tx) => tx.vol && tx.mealTime === MealTime.dinner).length;
-                const night = txs.filter((tx) => tx.vol && tx.mealTime === MealTime.night).length;
+                const breakfast = txs.filter((tx) => tx.mealTime === MealTime.breakfast).length;
+                const lunch = txs.filter((tx) => tx.mealTime === MealTime.lunch).length;
+                const dinner = txs.filter((tx) => tx.mealTime === MealTime.dinner).length;
+                const night = txs.filter((tx) => tx.mealTime === MealTime.night).length;
 
                 fedTemp[NUTRITION_TYPE[key]] = {
                     breakfast,

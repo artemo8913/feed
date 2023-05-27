@@ -25,8 +25,9 @@ export const useSendTrans = (baseUrl: string, pin: string | null, setAuth: (auth
         const kitchen = Number(localStorage.getItem('kitchenId'));
         const data = (trans || [])
             .filter(({ is_new }) => is_new)
-            .map(({ amount, mealTime, ts, ulid, vol_id }) => ({
+            .map(({ amount, is_vegan, mealTime, ts, ulid, vol_id }) => ({
                 volunteer: vol_id,
+                is_vegan,
                 amount,
                 dtime: typeof ts === 'number' ? new Date(ts * 1000).toISOString() : ts,
                 ulid,

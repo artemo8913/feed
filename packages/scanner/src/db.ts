@@ -10,6 +10,7 @@ export interface Transaction {
     ts: number;
     mealTime: MealTime;
     is_new: boolean;
+    is_vegan: boolean;
 }
 
 export interface ServerTransaction {
@@ -18,6 +19,7 @@ export interface ServerTransaction {
     amount: number;
     dtime: string;
     meal_time: MealTime;
+    is_vegan: boolean;
 }
 
 export interface TransactionJoined extends Transaction {
@@ -55,7 +57,7 @@ export interface Volunteer {
     kitchen: number;
 }
 
-const DB_VERSION = 8;
+const DB_VERSION = 9;
 
 export class MySubClassedDexie extends Dexie {
     transactions!: Table<Transaction>;
@@ -64,7 +66,7 @@ export class MySubClassedDexie extends Dexie {
     constructor() {
         super('yclins');
         this.version(DB_VERSION).stores({
-            transactions: '&&ulid, vol_id, amount, ts, mealTime, is_new',
+            transactions: '&&ulid, vol_id, amount, ts, mealTime, is_new, is_vegan',
             volunteers:
                 '&qr, *id, name, nickname, balance, is_blocked, is_active, is_vegan, feed_type, active_from, active_to, departments, location, kitchen'
         });
@@ -73,10 +75,11 @@ export class MySubClassedDexie extends Dexie {
 
 export const db = new MySubClassedDexie();
 
-export const addTransaction = async (vol: Volunteer | undefined, mealTime: MealTime): Promise<any> => {
+export const addTransaction = async (vol: Volunteer | undefined, mealTime: MealTime, isVegan = false): Promise<any> => {
     const ts = dayjs().unix();
     await db.transactions.add({
         vol_id: vol ? vol.id : null,
+        is_vegan: vol ? vol.is_vegan : isVegan,
         ts,
         amount: 1,
         ulid: ulid(ts),
@@ -85,7 +88,11 @@ export const addTransaction = async (vol: Volunteer | undefined, mealTime: MealT
     });
 };
 
-export const dbIncFeed = async (vol: Volunteer | undefined, mealTime: MealTime): Promise<any> => {
+export const dbIncFeed = async (
+    vol: Volunteer | undefined,
+    mealTime: MealTime,
+    isVegan: boolean | undefined
+): Promise<any> => {
     if (vol) {
         await db.volunteers
             .where('id')
@@ -95,7 +102,7 @@ export const dbIncFeed = async (vol: Volunteer | undefined, mealTime: MealTime):
             });
     }
 
-    return await addTransaction(vol, mealTime);
+    return await addTransaction(vol, mealTime, isVegan);
 };
 
 export function joinTxs(txsCollection: Collection<TransactionJoined>): Promise<Array<TransactionJoined>> {

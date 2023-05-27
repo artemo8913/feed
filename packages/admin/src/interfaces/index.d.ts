@@ -48,6 +48,7 @@ export interface FeedTransactionEntity {
     dtime: string;
     meal_time: string;
     volunteer: number;
+    is_vegan: boolean;
     reason: string;
 }
 

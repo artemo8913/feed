@@ -48,8 +48,9 @@ export const useGetTrans = (baseUrl: string, pin: string | null, setAuth: (auth:
                     try {
                         const serverTransactions = results as Array<ServerTransaction>;
                         const transactions = serverTransactions.map(
-                            ({ amount, dtime, meal_time, ulid, volunteer }) => ({
+                            ({ amount, dtime, is_vegan, meal_time, ulid, volunteer }) => ({
                                 vol_id: volunteer,
+                                is_vegan,
                                 mealTime: meal_time,
                                 ulid,
                                 amount,
