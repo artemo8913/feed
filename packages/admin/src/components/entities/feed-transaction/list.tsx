@@ -1,4 +1,4 @@
-import { DateField, DeleteButton, EditButton, List, Space, Table, TextField, useTable } from '@pankod/refine-antd';
+import { DateField, DeleteButton, List, Space, Table, TextField, useTable } from '@pankod/refine-antd';
 import type { IResourceComponentsProps } from '@pankod/refine-core';
 import { useList } from '@pankod/refine-core';
 import { renderText } from '@feed/ui/src/table';
@@ -25,16 +25,6 @@ export const FeedTransactionList: FC<IResourceComponentsProps> = () => {
             (acc, vol) => ({
                 ...acc,
                 [vol.id]: vol.nickname
-            }),
-            {}
-        );
-    }, [vols]);
-
-    const isVeganNameById = useMemo(() => {
-        return (vols ? vols.data : []).reduce(
-            (acc, vol) => ({
-                ...acc,
-                [vol.id]: vol.is_vegan
             }),
             {}
         );
@@ -74,9 +64,9 @@ export const FeedTransactionList: FC<IResourceComponentsProps> = () => {
                     // )}
                 />
                 <Table.Column
-                    dataIndex='volunteer'
+                    dataIndex='is_vegan'
                     title='Веган'
-                    render={(value) => <TextField value={isVeganNameById[value] ? 'Дв' : 'Нет'} />}
+                    render={(value) => <TextField value={value ? 'Дв' : 'Нет'} />}
                     // filterDropdown={(props) => (
                     //     <FilterDropdown {...props}>
                     //         <Select style={selectStyle} placeholder='Волонтер' {...volSelectProps} />
