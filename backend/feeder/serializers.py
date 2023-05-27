@@ -1,6 +1,7 @@
 from rest_framework import routers, serializers, viewsets
 
 from feeder import models
+from feeder.utils import StatisticType
 
 
 class DepartmentSerializer(serializers.ModelSerializer):
@@ -85,6 +86,20 @@ class SyncStatistic(serializers.Serializer):
     volunteers = SyncStatisticItem()
     departments = SyncStatisticItem()
     locations = SyncStatisticItem()
+
+
+class StatisticsRequestSerializer(serializers.Serializer):
+    date_from = serializers.DateField()
+    date_to = serializers.DateField()
+
+
+class StatisticsResponseSerializer(serializers.Serializer):
+    date = serializers.DateField()
+    type = serializers.ChoiceField(choices=[type.value for type in StatisticType])
+    is_vegan = serializers.BooleanField(allow_null=True)
+    meal_time = serializers.CharField(max_length=10, validators=[models.validate_meal_time])
+    amount = serializers.IntegerField(min_value=0)
+    kitchen_id = serializers.IntegerField(allow_null=True)
 
 
 class SimpleResponse(serializers.Serializer):
