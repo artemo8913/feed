@@ -14,6 +14,7 @@ import { DepartmentCreate, DepartmentEdit, DepartmentList, DepartmentShow } from
 import { Sync } from '~/components/sync';
 // import { LocationCreate, LocationEdit, LocationList, LocationShow } from '~/components/entities/locations';
 import { VolCreate, VolEdit, VolList, VolShow } from '~/components/entities/vols';
+import { FeedTransactionCreate, FeedTransactionList } from '~/components/entities/feed-transaction';
 import { ACL } from '~/acl';
 import { authProvider } from '~/authProvider';
 import { CustomSider } from '~/components';
@@ -93,18 +94,16 @@ const Feed = ({ Component, pageProps }: AppProps): JSX.Element | null => {
                     icon: <Icons.ProfileOutlined />
                 },
                 {
+                    name: 'feed-transaction',
+                    list: FeedTransactionList,
+                    create: FeedTransactionCreate,
+                    icon: <Icons.ProfileOutlined />
+                },
+                {
                     name: 'sync',
                     list: Sync,
                     icon: <Icons.ProfileOutlined />
                 }
-                // {
-                //     name: 'locations',
-                //     list: LocationList,
-                //     create: LocationCreate,
-                //     edit: LocationEdit,
-                //     show: LocationShow,
-                //     icon: <Icons.ProfileOutlined />
-                // }
             ]}
         >
             <Component {...pageProps} />

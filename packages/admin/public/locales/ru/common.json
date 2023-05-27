@@ -110,6 +110,19 @@
             "show": "Показать"
         }
     },
+    "feed-transaction": {
+        "feed-transaction": "История питания",
+        "fields": {
+            "id": "Id",
+            "dtime": "Время"
+        },
+        "titles": {
+            "create": "Создать",
+            "edit": "Редактировать",
+            "list": "История питания",
+            "show": "Показать"
+        }
+    },
     "table": {
         "actions": "Действия"
     }
