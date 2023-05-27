@@ -13,8 +13,8 @@ export const HistoryTable = React.memo(function HistoryTable({ transactions }: H
     const txItems = transactions.map((transaction, index) => {
         return (
             <tr key={index}>
-                <td>{transaction.vol ? transaction.vol.name || transaction.vol.nickname : 'Аноним'}</td>
-                <td>{transaction.vol && (transaction.vol.is_vegan ? 'Веган' : 'Мясоед')}</td>
+                <td>{transaction.vol ? transaction.vol.nickname : 'Аноним'}</td>
+                <td>{transaction.is_vegan ? 'Веган' : 'Мясоед'}</td>
                 <td>{dayjs.unix(transaction.ts).format('YYYY.MM.DD HH:mm:ss').toString()}</td>
             </tr>
         );

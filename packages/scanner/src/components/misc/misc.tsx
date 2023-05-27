@@ -80,17 +80,39 @@ export const FeedLeft: FC<{
 }> = ({ msg }) => <div>{msg}</div>;
 
 export const GreenCard: FC<{
-    vol?: Volunteer;
+    vol: Volunteer;
     doFeed: () => void;
     close: () => void;
 }> = ({ close, doFeed, vol }) => (
     <>
-        {vol ? <VolInfo vol={vol} /> : 'Вы уверены, что хотите покормить анонима?'}
+        <VolInfo vol={vol} />
         {/* <FeedLeft msg={`Осталось: ${vol.balance}`} /> */}
         <div className={css.card}>
-            <button type='button' onClick={doFeed}>
+            <button type='button' onClick={() => doFeed()}>
                 Кормить
             </button>
+            <button type='button' onClick={close}>
+                Отмена
+            </button>
+        </div>
+    </>
+);
+
+export const GreenAnonCard: FC<{
+    doFeed: (isVegan?: boolean) => void;
+    close: () => void;
+}> = ({ close, doFeed }) => (
+    <>
+        {'Вы уверены, что хотите покормить анонима?'}
+        <div className={css.anoncard}>
+            <button type='button' onClick={() => doFeed(false)}>
+                Покормить Мясоеда
+            </button>
+            <button type='button' onClick={() => doFeed(true)}>
+                Покормить Вегана
+            </button>
+            <br />
+            <br />
             <button type='button' onClick={close}>
                 Отмена
             </button>

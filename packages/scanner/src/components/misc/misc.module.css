@@ -12,6 +12,13 @@
     }
 }
 
+.anoncard {
+    button {
+        padding: 1em;
+        width: 50vw;
+    }
+}
+
 .errorMsg {
     display: flex;
     flex-direction: column;

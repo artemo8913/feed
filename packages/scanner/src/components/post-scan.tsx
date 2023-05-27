@@ -5,7 +5,7 @@ import dayjs from 'dayjs';
 
 import { AppColor, AppContext } from '~/app-context';
 import { db, dbIncFeed, FeedType, FeedWithBalance } from '~/db';
-import { ErrorMsg, GreenCard, isVolExpired, YellowCard } from '~/components/misc/misc';
+import { ErrorMsg, GreenAnonCard, GreenCard, isVolExpired, YellowCard } from '~/components/misc/misc';
 import { getMealTimeText } from '~/lib/utils';
 
 export const PostScan: FC<{
@@ -30,22 +30,25 @@ export const PostScan: FC<{
 
     console.log({ vol, qrcode });
 
-    const feed = useCallback(async () => {
-        if (mealTime) {
-            try {
-                await dbIncFeed(vol, mealTime);
-                closeFeed();
-            } catch (e) {
-                console.error(e);
+    const feed = useCallback(
+        async (isVegan: boolean | undefined) => {
+            if (mealTime) {
+                try {
+                    await dbIncFeed(vol, mealTime, isVegan);
+                    closeFeed();
+                } catch (e) {
+                    console.error(e);
+                }
             }
-        }
-    }, [closeFeed, vol]);
+        },
+        [closeFeed, vol]
+    );
 
-    const doFeed = useCallback(() => void feed(), [feed]);
+    const doFeed = useCallback((isVegan?: boolean) => void feed(isVegan), [feed]);
 
     if (qrcode === 'anon') {
         setColor(AppColor.GREEN);
-        return <GreenCard close={closeFeed} doFeed={doFeed} />;
+        return <GreenAnonCard close={closeFeed} doFeed={doFeed} />;
     }
 
     if (!vol || !volTransactions) {
