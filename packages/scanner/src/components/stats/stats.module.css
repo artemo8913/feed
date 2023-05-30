@@ -1,17 +1,29 @@
-.btnWrapper {
+.wrapper {
+    padding: 5px 5px 0 5px;
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: start;
 }
 
-.reloadBtn {
-    font-size: 0.8em;
-    padding: 5px 10px;
-    border: 1px solid #aaa;
-    border-radius: 5px;
-    margin-right: 10px;
+.loading {
+    opacity: 0.5;
+}
 
-    &:disabled, &:active {
-         opacity: 0.5;
-    };
+.info {
+    display: flex;
+    align-items: start;
+    font-size: 0.6em;
+
+    .meat {
+        color: red;
+    }
+
+    .vegan {
+        color: green;
+    }
+}
+
+.msg {
+    display: flex;
+    justify-content: center;
 }
