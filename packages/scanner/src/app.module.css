@@ -53,6 +53,7 @@ button {
     justify-content: center;
     align-items: center;
     font-size: 2em;
+    padding-top: 28vh;
 
     input {
         width: 90vw;
