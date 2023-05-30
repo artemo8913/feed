@@ -1,4 +1,4 @@
-name: Docker Image CI
+name: Deploy to rumsrv
 
 on:
   workflow_dispatch:
@@ -32,7 +32,6 @@ jobs:
       run: |
         docker run -d \
           -p 4262:4262 -p 4301:4301 -p 8080:8080 \
-          --network=apps \
           -v ${DB_DIR}:/app/db \
           --restart=always \
           --name $IMAGE_NAME_BASENAME \
