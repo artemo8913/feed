@@ -3,6 +3,7 @@
     border-collapse: collapse;
     font-size: 0.95em;
     color: var(--c-dark);
+    transition: opacity 0.1s;
 
     thead {
         background-color: var(--c-light);
@@ -10,8 +11,8 @@
         th {
             padding: 10px;
             font-weight: 500;
-            text-align: right;
-            border-bottom: 1px solid #d0d0d0;
+            text-align: center;
+            border: 1px solid #d0d0d0;
         }
     }
 
@@ -20,13 +21,29 @@
             font-weight: 500;
             padding: 10px;
             text-align: left;
-            border-top: 1px solid #d0d0d0;
+            border: 1px solid #d0d0d0;
+            min-width: 28vw;
         }
 
         td {
             padding: 10px;
-            text-align: right;
-            border-top: 1px solid #d0d0d0;
+            text-align: center;
+            border: 1px solid #d0d0d0;
+            min-width: 28vw;
         }
     }
+}
+
+.vegan {
+    color: green;
+    font-size: 0.8em;
+}
+
+.meat {
+    color: red;
+    font-size: 0.8em;
+}
+
+.loading {
+    opacity: 0.3;
 }
