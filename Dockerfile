@@ -48,13 +48,13 @@ COPY ./packages/core/package.json /app/packages/core/package.json
 COPY ./packages/ui/package.json /app/packages/ui/package.json
 COPY ./packages/scanner/package.json /app/packages/scanner/package.json
 
-RUN --mount=type=cache,target=/root/.yarn YARN_CACHE_FOLDER=/root/.yarn yarn --frozen-lockfile
+RUN yarn --frozen-lockfile
 
 COPY . /app
 
 RUN yarn build
 
-RUN --mount=type=cache,target=/root/.yarn YARN_CACHE_FOLDER=/root/.yarn yarn --prod --frozen-lockfile
+RUN yarn --prod --frozen-lockfile
 
 RUN /usr/local/bin/node-clean
 
