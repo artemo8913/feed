@@ -11,7 +11,7 @@ assert(process.env.API_URL_ENV, 'env variables must be set');
 // TODO check https://github.com/vercel/next.js/issues/39161
 
 const nextConfig = {
-    basePath: process.env.ADMIN_BASE_PATH || '/',
+    basePath: process.env.ADMIN_BASE_PATH || '',
     experimental: {
         newNextLinkBehavior: true
     },
