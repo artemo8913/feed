@@ -30,7 +30,7 @@ export const useLocalStats = (): LocalStatsHook => {
     const [progress, setProgress] = useState<boolean>(false);
     const [updated, setUpdated] = useState<boolean>(false);
 
-    const update = (statsDate) => {
+    const update = (statsDate: string) => {
         setUpdated(false);
         setProgress(true);
 

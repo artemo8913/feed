@@ -120,7 +120,7 @@ export function joinTxs(txsCollection: Collection<TransactionJoined>): Promise<A
     });
 }
 
-export function getVolsOnField(statsDate: Date): Promise<Array<Volunteer>> {
+export function getVolsOnField(statsDate: string): Promise<Array<Volunteer>> {
     const kitchenId = localStorage.getItem('kitchenId');
     return db.volunteers
         .filter((vol) => {
@@ -140,9 +140,8 @@ export function getVolsOnField(statsDate: Date): Promise<Array<Volunteer>> {
         .toArray();
 }
 
-export function getFeedStats(statsDate: Date): Promise<Array<TransactionJoined>> {
-    const txs = db.transactions.where('ts').between(dayjs(statsDate).unix(), dayjs(statsDate).add(31, 'h').unix());
-    return joinTxs(txs);
+export function getFeedStats(statsDate: string): Promise<Array<Transaction>> {
+    return db.transactions.where('ts').between(dayjs(statsDate).unix(), dayjs(statsDate).add(31, 'h').unix()).toArray();
 }
 
 export function getLastTrans(offset: number, limit: number): Promise<Array<TransactionJoined>> {
