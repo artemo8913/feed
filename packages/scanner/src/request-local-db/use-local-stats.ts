@@ -3,88 +3,91 @@ import dayjs from 'dayjs';
 
 import { FeedType, getFeedStats, getVolsOnField, MealTime } from '~/db';
 import type { LocalStatsHook } from '~/request-local-db/lib';
-import type { ValueOf } from '~/components/misc';
 
-export const NUTRITION_TYPE = {
-    NT1: 'NT1',
-    NT2: 'NT2',
-    total: 'total'
+export const MEAL_TIME = {
+    [MealTime.breakfast]: MealTime.breakfast,
+    [MealTime.lunch]: MealTime.lunch,
+    [MealTime.dinner]: MealTime.dinner,
+    [MealTime.night]: MealTime.night
 } as const;
-export type NutritionType = ValueOf<typeof NUTRITION_TYPE>;
 
-export type StatsByMealTime = {
-    breakfast: number;
-    lunch: number;
-    dinner: number;
-    night: number;
+type StatsByNutritionType = {
+    NT1: number;
+    NT2: number;
+    total: number;
 };
-export type FeedStatsRecord = Record<NutritionType, StatsByMealTime>;
+
+type FeedStatsRecord = Record<MealTime, StatsByNutritionType>;
 export type FeedStats = { onField: FeedStatsRecord; fed: FeedStatsRecord };
 
 export const useLocalStats = (): LocalStatsHook => {
-    const onFieldTemp: FeedStatsRecord = <FeedStatsRecord>{};
-    const fedTemp: FeedStatsRecord = <FeedStatsRecord>{};
-
     const [error, setError] = useState<any>(null);
     const [stats, setStats] = useState<FeedStats | null>(null);
     const [progress, setProgress] = useState<boolean>(false);
     const [updated, setUpdated] = useState<boolean>(false);
 
     const update = (statsDate: string) => {
+        const onFieldTemp: FeedStatsRecord = <FeedStatsRecord>{};
+        const fedTemp: FeedStatsRecord = <FeedStatsRecord>{};
+
         setUpdated(false);
         setProgress(true);
 
-        const onFieldPromises = Object.keys(NUTRITION_TYPE).map(async (key) => {
+        const onFieldPromises = Object.keys(MEAL_TIME).map(async (key) => {
             await getVolsOnField(statsDate).then((vols) => {
-                if (NUTRITION_TYPE[key] === NUTRITION_TYPE.NT1) {
-                    vols = vols.filter((vol) => !vol.is_vegan);
+                if (MEAL_TIME[key] === MEAL_TIME.breakfast) {
+                    vols = vols.filter(
+                        (vol) => !!vol.active_from && dayjs(vol.active_from).unix() < dayjs(statsDate).unix()
+                    );
                 }
-                if (NUTRITION_TYPE[key] === NUTRITION_TYPE.NT2) {
-                    vols = vols.filter((vol) => vol.is_vegan);
+                if (MEAL_TIME[key] === MEAL_TIME.dinner) {
+                    vols = vols.filter(
+                        (vol) => !!vol.active_to && dayjs(vol.active_to).unix() > dayjs(statsDate).unix()
+                    );
                 }
+                if (MEAL_TIME[key] === MEAL_TIME.night) {
+                    vols = vols.filter(
+                        (vol) =>
+                            !!vol.active_to &&
+                            dayjs(vol.active_to).unix() > dayjs(statsDate).unix() &&
+                            vol.feed_type !== FeedType.FT2
+                    );
+                }
+                const nt1 = vols.filter((vol) => !vol.is_vegan).length;
+                const nt2 = vols.filter((vol) => vol.is_vegan).length;
+                const total = vols.length;
 
-                const breakfast = vols.filter(
-                    (vol) => !!vol.active_from && dayjs(vol.active_from).unix() < dayjs(statsDate).unix()
-                ).length;
-                const lunch = vols.length;
-                const dinner = vols.filter(
-                    (vol) => !!vol.active_to && dayjs(vol.active_to).unix() > dayjs(statsDate).unix()
-                ).length;
-                const night = vols.filter(
-                    (vol) =>
-                        !!vol.active_to &&
-                        dayjs(vol.active_to).unix() > dayjs(statsDate).unix() &&
-                        vol.feed_type !== FeedType.FT2
-                ).length;
-
-                onFieldTemp[NUTRITION_TYPE[key]] = {
-                    breakfast,
-                    lunch,
-                    dinner,
-                    night
+                onFieldTemp[MEAL_TIME[key]] = {
+                    NT1: nt1,
+                    NT2: nt2,
+                    total: total
                 };
             });
         });
 
-        const fedPromises = Object.keys(NUTRITION_TYPE).map(async (key) => {
+        const fedPromises = Object.keys(MEAL_TIME).map(async (key) => {
             await getFeedStats(statsDate).then((txs) => {
-                if (NUTRITION_TYPE[key] === NUTRITION_TYPE.NT1) {
-                    txs = txs.filter((tx) => !tx.is_vegan);
+                if (MEAL_TIME[key] === MEAL_TIME.breakfast) {
+                    txs = txs.filter((tx) => tx.mealTime === MealTime.breakfast);
                 }
-                if (NUTRITION_TYPE[key] === NUTRITION_TYPE.NT2) {
-                    txs = txs.filter((tx) => tx.is_vegan);
+                if (MEAL_TIME[key] === MEAL_TIME.lunch) {
+                    txs = txs.filter((tx) => tx.mealTime === MealTime.lunch);
+                }
+                if (MEAL_TIME[key] === MEAL_TIME.dinner) {
+                    txs = txs.filter((tx) => tx.mealTime === MealTime.dinner);
+                }
+                if (MEAL_TIME[key] === MEAL_TIME.night) {
+                    txs = txs.filter((tx) => tx.mealTime === MealTime.night);
                 }
 
-                const breakfast = txs.filter((tx) => tx.mealTime === MealTime.breakfast).length;
-                const lunch = txs.filter((tx) => tx.mealTime === MealTime.lunch).length;
-                const dinner = txs.filter((tx) => tx.mealTime === MealTime.dinner).length;
-                const night = txs.filter((tx) => tx.mealTime === MealTime.night).length;
+                const nt1 = txs.filter((tx) => !tx.is_vegan).length;
+                const nt2 = txs.filter((tx) => tx.is_vegan).length;
+                const total = txs.length;
 
-                fedTemp[NUTRITION_TYPE[key]] = {
-                    breakfast,
-                    lunch,
-                    dinner,
-                    night
+                fedTemp[MEAL_TIME[key]] = {
+                    NT1: nt1,
+                    NT2: nt2,
+                    total: total
                 };
             });
         });

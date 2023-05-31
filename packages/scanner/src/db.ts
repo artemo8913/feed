@@ -141,7 +141,10 @@ export function getVolsOnField(statsDate: string): Promise<Array<Volunteer>> {
 }
 
 export function getFeedStats(statsDate: string): Promise<Array<Transaction>> {
-    return db.transactions.where('ts').between(dayjs(statsDate).unix(), dayjs(statsDate).add(31, 'h').unix()).toArray();
+    return db.transactions
+        .where('ts')
+        .between(dayjs(statsDate).add(7, 'h').unix(), dayjs(statsDate).add(31, 'h').unix())
+        .toArray();
 }
 
 export function getLastTrans(offset: number, limit: number): Promise<Array<TransactionJoined>> {
