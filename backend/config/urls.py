@@ -18,6 +18,6 @@ from django.urls import path, include
 from config.admin import admin_site
 
 urlpatterns = [
-    path('api/v1/', include('feeder.urls')),
+    path('feedapi/v1/', include('feeder.urls')),
     path('admin/', admin_site.urls),
 ]

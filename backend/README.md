@@ -29,12 +29,12 @@ cp .env.sample .env
 
 ## Swagger UI
 
-http://127.0.0.1:8000/api/v1/
+http://127.0.0.1:8000/feedapi/v1/
 
-http://127.0.0.1:8000/api/v1/redoc/
+http://127.0.0.1:8000/feedapi/v1/redoc/
 
 Swagger schema URL
-http://127.0.0.1:8000/api/v1/schema/
+http://127.0.0.1:8000/feedapi/v1/schema/
 
 ## Admin UI
 

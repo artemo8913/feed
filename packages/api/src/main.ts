@@ -32,7 +32,7 @@ async function bootstrap() {
 
     // Proxy endpoints
     app.use(
-        '/api/v1',
+        '/feedapi/v1',
         createProxyMiddleware({
             target: API_SERVICE_URL,
             changeOrigin: true,

@@ -1,7 +1,8 @@
 name: Deploy to rumsrv
 
 on:
-  workflow_dispatch:
+  push:
+    branches: [ main ]
 
 jobs:
   build:
