@@ -36,6 +36,7 @@ ARG API_URL
 ARG NEW_API_URL
 ENV API_URL_ENV=${API_URL}
 ENV NEW_API_URL_ENV=${NEW_API_URL}
+ENV REACT_APP_NEW_API_URL_ENV=${NEW_API_URL}
 
 COPY ./package.json /app/package.json
 COPY ./yarn.lock /app/yarn.lock
