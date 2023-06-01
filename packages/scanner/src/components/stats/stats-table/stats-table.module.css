@@ -1,7 +1,8 @@
 .table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 0.95em;
+    table-layout: fixed;
+    font-size: 0.9em;
     color: var(--c-dark);
     transition: opacity 0.1s;
 
@@ -22,14 +23,12 @@
             padding: 10px;
             text-align: left;
             border: 1px solid #d0d0d0;
-            min-width: 28vw;
         }
 
         td {
             padding: 10px;
             text-align: center;
             border: 1px solid #d0d0d0;
-            min-width: 28vw;
         }
     }
 }
