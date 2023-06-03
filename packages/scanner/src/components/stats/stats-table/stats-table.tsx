@@ -13,13 +13,13 @@ interface StatsTableProps {
 }
 
 export const StatsTable = ({ progress, stats, tableType }: StatsTableProps) => {
-    const { fed, onField } = stats;
+    const { feedCount, onField } = stats;
     const styleOnLoading = progress ? style.loading : '';
 
     const StatsRecords = () => {
-        const Records = Object.keys(MEAL_TIME).map((key) => {
+        const Records = MEAL_TIME.map((MT) => {
             let formattedMealTime: string;
-            switch (key) {
+            switch (MT) {
                 case 'breakfast':
                     formattedMealTime = 'Завтрак';
                     break;
@@ -36,20 +36,20 @@ export const StatsTable = ({ progress, stats, tableType }: StatsTableProps) => {
                     formattedMealTime = '';
             }
             return (
-                <tr key={key}>
+                <tr key={MT}>
                     <th scope='row'>{formattedMealTime}</th>
                     <td>
-                        <span>{fed[MEAL_TIME[key]].total}</span>
+                        <span>{feedCount[MT].total}</span>
                         <div>
-                            <span className={style.meat}>{fed[MEAL_TIME[key]].NT1}</span>/
-                            <span className={style.vegan}>{fed[MEAL_TIME[key]].NT2}</span>
+                            <span className={style.meat}>{feedCount[MT].NT1}</span>/
+                            <span className={style.vegan}>{feedCount[MT].NT2}</span>
                         </div>
                     </td>
                     <td>
-                        <span>{onField[MEAL_TIME[key]].total}</span>
+                        <span>{onField[MT].total}</span>
                         <div>
-                            <span className={style.meat}>{onField[MEAL_TIME[key]].NT1}</span>/
-                            <span className={style.vegan}>{onField[MEAL_TIME[key]].NT2}</span>
+                            <span className={style.meat}>{onField[MT].NT1}</span>/
+                            <span className={style.vegan}>{onField[MT].NT2}</span>
                         </div>
                     </td>
                 </tr>

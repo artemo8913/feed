@@ -50,7 +50,11 @@ export const Stats = React.memo(function Stats() {
     }, [statsDate]);
 
     const updateStats = (): void => {
-        void update(formattedDate);
+        if (tableType === TableType.default) {
+            void update(formattedDate);
+        } else {
+            void update(formattedDate, true);
+        }
     };
 
     return (
