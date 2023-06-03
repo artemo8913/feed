@@ -1,4 +1,5 @@
 import {
+    Checkbox,
     DateField,
     DeleteButton,
     EditButton,
@@ -22,6 +23,11 @@ import dayjs from 'dayjs';
 import type { VolEntity } from '~/interfaces';
 
 import { dateFormat } from './common';
+
+const booleanFilters = [
+    { value: true, text: 'Да' },
+    { value: false, text: 'Нет' }
+];
 
 export const VolList: FC<IResourceComponentsProps> = () => {
     const [searchText, setSearchText] = useState('');
@@ -60,10 +66,13 @@ export const VolList: FC<IResourceComponentsProps> = () => {
 
     const getSorter = (field: string) => {
         return (a, b) => {
-            if (a[field] < b[field]) {
+            const x = a[field] ?? '';
+            const y = b[field] ?? '';
+
+            if (x < y) {
                 return -1;
             }
-            if (a[field] > b[field]) {
+            if (x > y) {
                 return 1;
             }
             return 0;
@@ -72,6 +81,14 @@ export const VolList: FC<IResourceComponentsProps> = () => {
 
     const onDepartmentFilter = (value, data) => {
         return data.departments.some((d) => d.id === value);
+    };
+
+    const onActiveFilter = (value, data) => {
+        return data.is_active === value;
+    };
+
+    const onBlockedFilter = (value, data) => {
+        return data.is_blocked === value;
     };
 
     return (
@@ -109,7 +126,7 @@ export const VolList: FC<IResourceComponentsProps> = () => {
                             <Select
                                 style={{ minWidth: 300 }}
                                 mode='multiple'
-                                placeholder='Department'
+                                placeholder='Служба / Локация'
                                 {...departmentSelectProps}
                             />
                         </FilterDropdown>
@@ -143,6 +160,8 @@ export const VolList: FC<IResourceComponentsProps> = () => {
                     title='Активирован'
                     render={(value) => <ListBooleanPositive value={value} />}
                     sorter={getSorter('is_active')}
+                    filters={booleanFilters}
+                    onFilter={onActiveFilter}
                 />
                 <Table.Column
                     dataIndex='is_blocked'
@@ -150,6 +169,8 @@ export const VolList: FC<IResourceComponentsProps> = () => {
                     title='Заблокирован'
                     render={(value) => <ListBooleanNegative value={value} />}
                     sorter={getSorter('is_blocked')}
+                    filters={booleanFilters}
+                    onFilter={onBlockedFilter}
                 />
                 <Table.Column
                     dataIndex='comment'
