@@ -42,7 +42,7 @@ export const FeedTransactionList: FC<IResourceComponentsProps> = () => {
             }),
             {}
         );
-    }, [vols]);
+    }, [kitchens]);
 
     return (
         <List>
