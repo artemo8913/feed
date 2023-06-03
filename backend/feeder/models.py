@@ -31,6 +31,7 @@ class Volunteer(TimeMixin):
     is_blocked = models.BooleanField(default=False, verbose_name="Заблокирован?")
     is_vegan = models.BooleanField(default=False, verbose_name="Вегетарианец?")
     comment = models.TextField(null=True, blank=True, verbose_name="Комментарий")
+    badge_number = models.TextField(null=True, blank=True, verbose_name="Номер бейджа")
 
     departments = models.ManyToManyField('Department', verbose_name="Департамент")
     color_type = models.ForeignKey(
