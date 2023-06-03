@@ -1,4 +1,4 @@
-import { Create, DatePicker, Form, Input, Select, useForm, useSelect } from '@pankod/refine-antd';
+import { Checkbox, Create, DatePicker, Form, Input, Select, useForm, useSelect } from '@pankod/refine-antd';
 import type { IResourceComponentsProps } from '@pankod/refine-core';
 import { useCallback, useEffect, useState } from 'react';
 import { ulid } from 'ulid';
@@ -30,6 +30,7 @@ export const FeedTransactionCreate: FC<IResourceComponentsProps> = () => {
 
     useEffect(() => {
         form.setFieldValue('amount', 1);
+        form.setFieldValue('is_vegan', false);
     }, []);
 
     const onTimeChange = useCallback(
@@ -53,6 +54,9 @@ export const FeedTransactionCreate: FC<IResourceComponentsProps> = () => {
                 </Form.Item>
                 <Form.Item label='Волонтер' name='volunteer'>
                     <Select {...volSelectProps} />
+                </Form.Item>
+                <Form.Item label='Веган' name='is_vegan' valuePropName='checked'>
+                    <Checkbox />
                 </Form.Item>
                 <Form.Item label='Кол-во' name='amount' rules={Rules.required}>
                     <Input type='number' />

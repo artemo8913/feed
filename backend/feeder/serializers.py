@@ -85,7 +85,6 @@ class SyncStatisticItem(serializers.Serializer):
 class SyncStatistic(serializers.Serializer):
     volunteers = SyncStatisticItem()
     departments = SyncStatisticItem()
-    locations = SyncStatisticItem()
 
 
 class StatisticsRequestSerializer(serializers.Serializer):

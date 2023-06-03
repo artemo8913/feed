@@ -1,41 +1,62 @@
-import { DateField, DeleteButton, EditButton, List, Space, Table, TextField } from '@pankod/refine-antd';
+import {
+    Checkbox,
+    DateField,
+    DeleteButton,
+    EditButton,
+    FilterDropdown,
+    List,
+    Select,
+    Space,
+    Table,
+    TextField,
+    useSelect
+} from '@pankod/refine-antd';
 import type { DepartmentEntity } from '@feed/api/src/entities/department.entity';
-import type { IResourceComponentsProps } from '@pankod/refine-core';
 import { useList } from '@pankod/refine-core';
+import type { IResourceComponentsProps } from '@pankod/refine-core';
 // import { Loader } from '@feed/ui/src/loader';
 import { ListBooleanNegative, ListBooleanPositive } from '@feed/ui/src/icons'; // TODO exclude src
-import Select from 'rc-select';
 import { useMemo, useState } from 'react';
 import { Input } from 'antd';
+import dayjs from 'dayjs';
 
 import type { VolEntity } from '~/interfaces';
+
+import { dateFormat } from './common';
+
+const booleanFilters = [
+    { value: true, text: 'Да' },
+    { value: false, text: 'Нет' }
+];
 
 export const VolList: FC<IResourceComponentsProps> = () => {
     const [searchText, setSearchText] = useState('');
 
-    const { data } = useList<VolEntity>({
+    const { data: volunteers } = useList<VolEntity>({
         resource: 'volunteers'
     });
 
-    // const { data: departments } = useList<DepartmentEntity>({
-    //     resource: 'departments'
-    // });
+    const { selectProps: departmentSelectProps } = useSelect<DepartmentEntity>({
+        resource: 'departments',
+        optionLabel: 'name'
+    });
 
     const filteredData = useMemo(() => {
         return searchText
-            ? data?.data.filter((item) => {
+            ? volunteers?.data.filter((item) => {
                   const searchTextInLowerCase = searchText.toLowerCase();
                   return [
                       item.nickname,
                       item.name,
                       item.lastname,
-                      item.departments?.map(({ name }) => name).join(', ')
+                      item.departments?.map(({ name }) => name).join(', '),
+                      item.active_from ? dayjs(item.active_from).format(dateFormat) : null
                   ].some((text) => {
                       return text?.toLowerCase().includes(searchTextInLowerCase);
                   });
               })
-            : data?.data;
-    }, [data, searchText]);
+            : volunteers?.data;
+    }, [volunteers, searchText]);
 
     // const { selectProps } = useSelect<VolEntity>({
     //     resource: 'volunteers'
@@ -45,14 +66,29 @@ export const VolList: FC<IResourceComponentsProps> = () => {
 
     const getSorter = (field: string) => {
         return (a, b) => {
-            if (a[field] < b[field]) {
+            const x = a[field] ?? '';
+            const y = b[field] ?? '';
+
+            if (x < y) {
                 return -1;
             }
-            if (a[field] > b[field]) {
+            if (x > y) {
                 return 1;
             }
             return 0;
         };
+    };
+
+    const onDepartmentFilter = (value, data) => {
+        return data.departments.some((d) => d.id === value);
+    };
+
+    const onActiveFilter = (value, data) => {
+        return data.is_active === value;
+    };
+
+    const onBlockedFilter = (value, data) => {
+        return data.is_blocked === value;
     };
 
     return (
@@ -82,32 +118,40 @@ export const VolList: FC<IResourceComponentsProps> = () => {
                 />
                 <Table.Column
                     dataIndex='departments'
-                    key='departments    '
+                    key='departments'
                     title='Службы'
                     render={(value) => <TextField value={value.map(({ name }) => name).join(', ')} />}
-                    // filterDropdown={(props) => (
-                    //     <FilterDropdown {...props}>
-                    //         <Select
-                    //             style={{ minWidth: 200 }}
-                    //             mode='multiple'
-                    //             placeholder='Department'
-                    //             {...selectProps}
-                    //         />
-                    //     </FilterDropdown>
-                    // )}
+                    filterDropdown={(props) => (
+                        <FilterDropdown {...props}>
+                            <Select
+                                style={{ minWidth: 300 }}
+                                mode='multiple'
+                                placeholder='Служба / Локация'
+                                {...departmentSelectProps}
+                            />
+                        </FilterDropdown>
+                    )}
+                    onFilter={onDepartmentFilter}
+                />
+                <Table.Column
+                    dataIndex='kitchen'
+                    key='kitchen'
+                    title='Кухня'
+                    render={(value) => <TextField value={value} />}
+                    sorter={getSorter('kitchen')}
                 />
                 <Table.Column
                     dataIndex='active_from'
                     key='active_from'
                     title='От'
-                    render={(value) => value && <DateField value={value} />}
+                    render={(value) => value && <DateField format={dateFormat} value={value} />}
                     sorter={getSorter('active_from')}
                 />
                 <Table.Column
                     dataIndex='active_to'
                     key='active_to'
                     title='До'
-                    render={(value) => value && <DateField value={value} />}
+                    render={(value) => value && <DateField format={dateFormat} value={value} />}
                     sorter={getSorter('active_to')}
                 />
                 <Table.Column
@@ -116,6 +160,8 @@ export const VolList: FC<IResourceComponentsProps> = () => {
                     title='Активирован'
                     render={(value) => <ListBooleanPositive value={value} />}
                     sorter={getSorter('is_active')}
+                    filters={booleanFilters}
+                    onFilter={onActiveFilter}
                 />
                 <Table.Column
                     dataIndex='is_blocked'
@@ -123,6 +169,8 @@ export const VolList: FC<IResourceComponentsProps> = () => {
                     title='Заблокирован'
                     render={(value) => <ListBooleanNegative value={value} />}
                     sorter={getSorter('is_blocked')}
+                    filters={booleanFilters}
+                    onFilter={onBlockedFilter}
                 />
                 <Table.Column
                     dataIndex='comment'

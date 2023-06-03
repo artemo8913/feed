@@ -59,7 +59,7 @@ export const PostScan: FC<{
     const msg: Array<string> = [];
     let isRed = false;
     if (vol.feed_type !== FeedType.Child && vol.kitchen.toString() !== kitchenId) {
-        msg.push(`Кормится на кухне ${vol.kitchen}`);
+        msg.push(`Кормится на кухне №${vol.kitchen}`);
     }
     if (!vol.is_active) {
         msg.push('Бейдж не активирован в штабе');
@@ -77,19 +77,23 @@ export const PostScan: FC<{
     }
     if (mealTime && volTransactions.some((t) => t.mealTime === mealTime)) {
         msg.push(`Волонтер уже получил ${getMealTimeText(mealTime)}`);
-        const hasDebt = Object.values(
-            volTransactions.reduce(
-                (acc, { mealTime }) => ({
-                    ...acc,
-                    [mealTime]: (acc[mealTime] || 0) + 1
-                }),
-                {} as { [mealTime: string]: number }
-            )
-        ).some((count) => count > 1);
-
-        if (hasDebt) {
-            msg.push('Волонтер уже питался сегодня в долг');
+        if (vol.feed_type === FeedType.FT2) {
             isRed = true;
+        } else {
+            const hasDebt = Object.values(
+                volTransactions.reduce(
+                    (acc, { mealTime }) => ({
+                        ...acc,
+                        [mealTime]: (acc[mealTime] || 0) + 1
+                    }),
+                    {} as { [mealTime: string]: number }
+                )
+            ).some((count) => count > 1);
+
+            if (hasDebt) {
+                msg.push('Волонтер уже питался сегодня в долг');
+                isRed = true;
+            }
         }
     }
 

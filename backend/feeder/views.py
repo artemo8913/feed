@@ -45,12 +45,20 @@ class MultiSerializerViewSetMixin(object):
             return super(MultiSerializerViewSetMixin, self).get_serializer_class()
 
 
+class DepartmentFilter(django_filters.FilterSet):
+    name = django_filters.CharFilter(field_name="name", lookup_expr='icontains')
+
+    class Meta:
+        model = models.Department
+        fields = []
+
 class DepartmentViewSet(viewsets.ModelViewSet):
     # authentication_classes = [authentication.KitchenPinAuthentication, TokenAuthentication]
     permission_classes = [permissions.IsAuthenticated, ]
     queryset = models.Department.objects.all()
     serializer_class = serializers.DepartmentSerializer
-    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+    filterset_class = DepartmentFilter
     search_fields = ['name', ]
 
 class VolunteerFilter(django_filters.FilterSet):

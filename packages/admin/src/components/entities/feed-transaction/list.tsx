@@ -42,7 +42,7 @@ export const FeedTransactionList: FC<IResourceComponentsProps> = () => {
             }),
             {}
         );
-    }, [vols]);
+    }, [kitchens]);
 
     return (
         <List>
@@ -66,7 +66,7 @@ export const FeedTransactionList: FC<IResourceComponentsProps> = () => {
                 <Table.Column
                     dataIndex='is_vegan'
                     title='Веган'
-                    render={(value) => <TextField value={value ? 'Дв' : 'Нет'} />}
+                    render={(value) => <TextField value={value ? 'Да' : 'Нет'} />}
                     // filterDropdown={(props) => (
                     //     <FilterDropdown {...props}>
                     //         <Select style={selectStyle} placeholder='Волонтер' {...volSelectProps} />

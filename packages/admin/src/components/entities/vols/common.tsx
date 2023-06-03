@@ -11,6 +11,8 @@ import dayjs from 'dayjs';
 
 import type { ColorTypeEntity, DepartmentEntity, FeedTypeEntity, KitchenEntity, VolEntity } from '~/interfaces';
 
+export const dateFormat = 'DD.MM.YYYY';
+
 export const CreateEdit: FC = () => {
     const { selectProps: leadSelectProps } = useSelect<VolEntity>({
         resource: 'volunteers',
@@ -43,9 +45,11 @@ export const CreateEdit: FC = () => {
         };
     };
 
-    const getDateValue = (value) => ({
-        value: value ? dayjs(value) : ''
-    });
+    const getDateValue = (value) => {
+        return {
+            value: value ? dayjs(value) : ''
+        };
+    };
 
     return (
         <>
@@ -81,13 +85,18 @@ export const CreateEdit: FC = () => {
 
                     <Row gutter={[16, 16]}>
                         <Col span={12}>
-                            <Form.Item label='От' name='active_from' getValueProps={getDateValue}>
-                                <DatePicker showTime style={{ width: '100%' }} />
+                            <Form.Item
+                                label='От'
+                                name='active_from'
+                                getValueProps={getDateValue}
+                                rules={Rules.required}
+                            >
+                                <DatePicker format={dateFormat} style={{ width: '100%' }} />
                             </Form.Item>
                         </Col>
                         <Col span={12}>
-                            <Form.Item label='До' name='active_to' getValueProps={getDateValue}>
-                                <DatePicker showTime style={{ width: '100%' }} />
+                            <Form.Item label='До' name='active_to' getValueProps={getDateValue} rules={Rules.required}>
+                                <DatePicker format={dateFormat} style={{ width: '100%' }} />
                             </Form.Item>
                         </Col>
                     </Row>
@@ -98,16 +107,15 @@ export const CreateEdit: FC = () => {
                             </Form.Item>
                         </Col>
                         <Col span={12}>
-                            <Form.Item label='Тип питания' name='feed_type'>
+                            <Form.Item label='Тип питания' name='feed_type' rules={Rules.required}>
                                 <Select {...feedTypeSelectProps} />
                             </Form.Item>
                         </Col>
                     </Row>
-
-                    <Form.Item label='Осталось питаний' name='balance'>
+                    <Form.Item label='QR' name='qr' rules={Rules.required}>
                         <Input />
                     </Form.Item>
-                    <Form.Item label='Кухня' name='kitchen'>
+                    <Form.Item label='Кухня' name='kitchen' rules={Rules.required}>
                         <Select {...kitchenSelectProps} />
                     </Form.Item>
                 </Col>
@@ -139,7 +147,7 @@ export const CreateEdit: FC = () => {
                     </Form.Item>
                 </Col>
                 <Col span={8}>
-                    <Form.Item label='QR' name='qr' rules={Rules.required}>
+                    <Form.Item label='Номер бейджа' name='badge_number'>
                         <Input />
                     </Form.Item>
                 </Col>
