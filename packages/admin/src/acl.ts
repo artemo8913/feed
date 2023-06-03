@@ -6,20 +6,20 @@ export const ac = new AccessControl();
 ac
     // editor
     .grant(AppRoles.EDITOR)
-    .read(['departments', 'vols', 'dashboard', 'locations', 'statistics'])
+    .read(['departments', 'volunteers', 'dashboard', 'locations', 'feed-transaction', 'sync', 'statistics'])
     .create('departments')
     .update('departments')
     // admin
     .grant(AppRoles.ADMIN)
     .extend(AppRoles.EDITOR)
-    .create(['departments', 'vols', 'locations'])
-    .update(['departments', 'vols', 'locations'])
-    .delete(['departments', 'vols', 'locations']);
+    .create(['departments', 'volunteers', 'locations', 'feed-transaction'])
+    .update(['departments', 'volunteers', 'locations'])
+    .delete(['departments', 'volunteers', 'locations', 'feed-transaction']);
 
 export const ACL = {
     can: async ({ action, resource }) => {
         let can = false;
-        const user = getUserData(null, true);
+        const user = await getUserData(null, true);
         if (user) {
             const { roles } = user;
 

@@ -1,0 +1,80 @@
+*.py[cod]
+
+# C extensions
+*.so
+
+# Packages
+*.egg
+*.egg-info
+
+build
+eggs
+parts
+bin
+var
+sdist
+develop-eggs
+.installed.cfg
+#lib
+lib64
+__pycache__
+
+# Installer logs
+pip-log.txt
+
+# Unit test / coverage reports
+.coverage
+.tox
+nosetests.xml
+
+# Translations
+*.mo
+
+# Mr Developer
+.mr.developer.cfg
+.project
+.pydevproject
+
+# virtualenv
+venv*
+
+# Logs
+logs/*.log
+
+# Database
+*.db
+
+# Backups
+*.bak
+
+# Vagrant locals
+.vagrant
+logs
+
+# Static files
+collected_static
+
+# IDEs
+.idea
+.devcontainer
+
+settings_local.py
+files/static
+files/media
+files/db/*.sqlite3
+conf/nginx/nginx.conf
+conf/uwsgi/uwsgi.yaml
+data/*.sqlite3
+uwsgi.sh
+
+**/static/build/
+#**/migrations/**
+#!**/migrations/__init__.py
+
+*.conf
+*.ini
+
+*/build_linux*.sh
+.env
+db_dev.sqlite3
+./data

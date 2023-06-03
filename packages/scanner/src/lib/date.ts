@@ -21,4 +21,24 @@ dayjs.extend(utc);
 
 export const DATE_FORMAT = 'YYYY-MM-DD';
 
-export const today = dayjs().format(DATE_FORMAT);
+type StatsDate = {
+    today: string;
+    yesterday: string;
+    tomorrow: string;
+};
+
+export const getToday = (): string => {
+    const now = dayjs();
+    if (now.isAfter(dayjs().startOf('day').add(7, 'h'))) {
+        return now.startOf('day').format(DATE_FORMAT);
+    } else {
+        return now.startOf('day').subtract(1, 'day').format(DATE_FORMAT);
+    }
+};
+
+export const getStatsDates = (): StatsDate => {
+    const today = getToday();
+    const yesterday = dayjs(getToday()).subtract(1, 'd').format(DATE_FORMAT);
+    const tomorrow = dayjs(getToday()).add(1, 'd').format(DATE_FORMAT);
+    return { today, yesterday, tomorrow };
+};

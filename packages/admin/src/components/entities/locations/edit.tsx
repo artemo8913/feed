@@ -14,7 +14,7 @@ export const LocationEdit: FC<IResourceComponentsProps> = () => {
     const { formProps, saveButtonProps } = useForm<VolEntity>();
 
     const { selectProps: leadSelectProps } = useSelect<VolEntity>({
-        resource: 'vols',
+        resource: 'volunteers',
         optionLabel: 'name'
     });
 

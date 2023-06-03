@@ -1,0 +1,15 @@
+Django
+django-filter
+django-cors-headers
+djangorestframework
+psycopg2-binary
+django-debug-toolbar
+gunicorn
+flower
+sentry-sdk
+requests
+arrow
+drf-spectacular
+python-dotenv
+sentry-sdk
+dj-rest-auth

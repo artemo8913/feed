@@ -28,7 +28,7 @@ export const DepartmentList: FC<IResourceComponentsProps> = () => {
     });
 
     const { selectProps: leadSelectProps } = useSelect<VolEntity>({
-        resource: 'vols'
+        resource: 'volunteers'
     });
 
     return (
@@ -37,14 +37,14 @@ export const DepartmentList: FC<IResourceComponentsProps> = () => {
                 <Table.Column
                     dataIndex='name'
                     key='name'
-                    title='Name'
+                    title='Название'
                     render={renderText}
                     defaultSortOrder={getDefaultSortOrder('name', sorter)}
                     sorter
                 />
                 <Table.Column
                     dataIndex={['lead', 'name']}
-                    title='Lead'
+                    title='Руководитель'
                     filterDropdown={(props) => (
                         <FilterDropdown {...props}>
                             <Select style={selectStyle} mode='multiple' placeholder='Lead' {...leadSelectProps} />
@@ -52,7 +52,7 @@ export const DepartmentList: FC<IResourceComponentsProps> = () => {
                     )}
                 />
                 <Table.Column<DepartmentEntity>
-                    title='Actions'
+                    title='Действия'
                     dataIndex='actions'
                     render={(_, record) => (
                         <Space>

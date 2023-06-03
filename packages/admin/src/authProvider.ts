@@ -1,26 +1,24 @@
 import type { AuthProvider } from '@pankod/refine-core';
 import axios from 'axios';
 
-import { clearUserData, getUserData, setUserData } from '~/auth';
-import { API_URL } from '~/const';
+import { clearUserData, getUserData, setUserData, setUserInfo } from '~/auth';
+import { NEW_API_URL } from '~/const';
 
 export const authProvider: AuthProvider = {
     login: async ({ password, username }) => {
         try {
-            const { data, status } = await axios.post(`${API_URL}/auth/login`, {
+            axios.defaults.headers.common = {};
+
+            const { data, status } = await axios.post(`${NEW_API_URL}/auth/login/`, {
                 username,
                 password
             });
 
             if (status !== 200) return Promise.reject();
 
-            const { accessToken } = data;
+            const { key } = data;
 
-            setUserData(accessToken);
-
-            axios.defaults.headers.common = {
-                Authorization: `Bearer ${accessToken}`
-            };
+            setUserData(key);
 
             return Promise.resolve('/');
         } catch (e) {
@@ -33,34 +31,20 @@ export const authProvider: AuthProvider = {
     },
     checkError: () => Promise.resolve(),
     checkAuth: async (ctx) => {
-        const token = getUserData(ctx, false);
+        const user = await getUserData(ctx, true);
 
-        if (!token) {
+        if (!user) {
             return Promise.reject();
         }
 
-        try {
-            const { data } = await axios.get(`${API_URL}/auth/me`, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            });
-
-            axios.defaults.headers.common = {
-                Authorization: `Bearer ${token}`
-            };
-            return Promise.resolve({ user: data });
-        } catch (error) {
-            return Promise.reject(error);
-        }
+        return Promise.resolve({ user });
     },
     getPermissions: () => Promise.resolve(),
     getUserIdentity: async (ctx) => {
-        const user = getUserData(ctx, true);
-
+        const user = await getUserData(ctx, true);
         if (!user) return Promise.reject();
 
-        return Promise.resolve({ ...user });
+        return Promise.resolve(user);
     }
 };
 

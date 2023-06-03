@@ -1,0 +1,29 @@
+.wrapper {
+    padding: 5px 5px 0 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+}
+
+.loading {
+    opacity: 0.5;
+}
+
+.info {
+    display: flex;
+    align-items: start;
+    font-size: 0.6em;
+
+    .meat {
+        color: red;
+    }
+
+    .vegan {
+        color: green;
+    }
+}
+
+.msg {
+    display: flex;
+    justify-content: center;
+}

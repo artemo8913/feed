@@ -58,7 +58,13 @@
         "clone": "Копия"
     },
     "dashboard": {
-        "title": "Dashboard"
+        "title": "Регистрация"
+    },
+    "sync": {
+        "sync": "Синхронизация",
+        "titles": {
+            "list": "Синхронизация"
+        }
     },
     "departments": {
         "departments": "Направления",
@@ -88,6 +94,8 @@
     },
     "vols": {
         "vols": "Волонтеры",
+    "volunteers": {
+        "volunteers": "Волонтеры",
         "fields": {
             "id": "Id",
             "name": "Имя",
@@ -105,6 +113,19 @@
             "create": "Создать",
             "edit": "Редактировать",
             "list": "Волонтеры",
+            "show": "Показать"
+        }
+    },
+    "feed-transaction": {
+        "feed-transaction": "История питания",
+        "fields": {
+            "id": "Id",
+            "dtime": "Время"
+        },
+        "titles": {
+            "create": "Создать",
+            "edit": "Редактировать",
+            "list": "История питания",
             "show": "Показать"
         }
     },

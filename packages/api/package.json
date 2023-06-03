@@ -54,7 +54,8 @@
         "rxjs": "^7.2.0",
         "sqlite3": "^5.0.11",
         "swagger-ui-express": "^4.1.6",
-        "typeorm": "^0.3.7"
+        "typeorm": "^0.3.7",
+        "http-proxy-middleware": "^2.0.3"
     },
     "devDependencies": {
         "@nestjs/schematics": "^9.0.1",
