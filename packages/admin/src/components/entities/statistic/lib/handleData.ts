@@ -1,95 +1,124 @@
-import { ICurrentAPI, IHumanFeedTypesNumber, IStatisticsAPI, MealTimeEN, MealTimeRU, TypeOfEaters } from '../types';
-import { IColumnChartData } from '../ui/columnChart';
+import {
+    IStatisticResponce,
+    IData,
+    datumInstance,
+    EaterType,
+    IEaterTypeAmount,
+    mealTimeArr,
+    EaterTypeExtended
+} from '../types';
 import { ILinearChartData } from '../ui/linearChart';
-import { TableStatDataType } from '../ui/tableStats';
+import { IColumnChartData, IColumnChartAnnotationData } from '../ui/columnChart';
+import { ITableStatData } from '../ui/tableStats';
 
-// Массивы с наименованием приемов пищи для перебора значений
-const mealTimesEnArr: Readonly<MealTimeEN[]> = ['morning', 'lunch', 'dinner', 'night'];
-const mealTimeRuObj: { [key in MealTimeEN]: MealTimeRU } = {
-    morning: 'завтрак',
-    lunch: 'обед',
-    dinner: 'ужин',
-    night: 'дожор',
-    total: 'всего'
-};
+export function convertResponceToData(res: IStatisticResponce): IData {
+    const result: IData = {};
+
+    res.forEach((datum) => {
+        const { date, amount, is_vegan, kitchen_id, meal_time, type } = datum;
+        const eaterType: EaterType = is_vegan ? 'vegan' : 'meatEater';
+
+        if (!(date in result)) {
+            result[date] = JSON.parse(JSON.stringify(datumInstance));
+        }
+        result[date][type][meal_time][eaterType] += amount;
+        result[date][type].total[eaterType] += amount;
+    });
+    return result;
+}
 
 //Функции для обработки данных
 /** Найти в зависимости от типа питания человека план / факт питания. Применяется при поиске для каждого приема пищи (завтра, обед т.д.)*/
 function findValuesForTypeEaters(
-    resPlan: IHumanFeedTypesNumber,
-    resFact: IHumanFeedTypesNumber,
-    typeOfEater: TypeOfEaters
-): { planValue: number; factValue: number } {
-    const shallowCopy = { planValue: 0, factValue: 0 };
-    if (typeOfEater === 'all') {
-        shallowCopy.planValue = resPlan['веган'] + resPlan['мясоед'];
-        shallowCopy.factValue = resFact['веган'] + resFact['мясоед'];
-    } else if (typeOfEater === 'meatEaters') {
-        shallowCopy.planValue = resPlan['мясоед'];
-        shallowCopy.factValue = resFact['мясоед'];
-    } else if (typeOfEater === 'vegetarian') {
-        shallowCopy.planValue = resPlan['веган'];
-        shallowCopy.factValue = resFact['веган'];
+    resPlan: IEaterTypeAmount,
+    resFact: IEaterTypeAmount,
+    typeOfEater?: EaterTypeExtended
+): { plan: number; fact: number } {
+    const shallowCopy = { plan: 0, fact: 0 };
+    if (typeOfEater === 'meatEater') {
+        shallowCopy.plan = resPlan.meatEater;
+        shallowCopy.fact = resFact.meatEater;
+    } else if (typeOfEater === 'vegan') {
+        shallowCopy.plan = resPlan.vegan;
+        shallowCopy.fact = resFact.vegan;
+    } else {
+        shallowCopy.plan = resPlan.vegan + resPlan.meatEater;
+        shallowCopy.fact = resFact.vegan + resFact.meatEater;
     }
     return shallowCopy;
 }
-/**Преобразование данных от сервера для сравнительной сводной таблицы*/
-export function handleDataForTable(res: ICurrentAPI, typeOfEater: TypeOfEaters): TableStatDataType[] {
-    if (!res) {
+
+/**Преобразование данных для сравнительной сводной таблицы*/
+export function handleDataForTable(data: IData, date: string, typeOfEater: EaterTypeExtended): ITableStatData[] {
+    if (Object.keys(data).length === 0) {
         return [];
     }
-    const statsPlan: { [key in MealTimeEN]: number } = { morning: 0, lunch: 0, dinner: 0, night: 0, total: 0 };
-    const statsFact: { [key in MealTimeEN]: number } = { morning: 0, lunch: 0, dinner: 0, night: 0, total: 0 };
-    for (let mealTime of mealTimesEnArr) {
-        const resPlan = res.nutritionTypePlanned[mealTime];
-        const resFact = res.stats[mealTime];
+
+    const datum = data[date];
+    const plan = { breakfast: 0, lunch: 0, dinner: 0, overeating: 0, total: 0 };
+    const fact = { breakfast: 0, lunch: 0, dinner: 0, overeating: 0, total: 0 };
+    for (let mealTime of mealTimeArr) {
+        const resPlan = datum.plan[mealTime];
+        const resFact = datum.fact[mealTime];
         const values = findValuesForTypeEaters(resPlan, resFact, typeOfEater);
-        statsPlan[mealTime] = values.planValue;
-        statsFact[mealTime] = values.factValue;
-        statsPlan.total += values.planValue;
-        statsFact.total += values.factValue;
+        plan[mealTime] = values.plan;
+        fact[mealTime] = values.fact;
+        plan.total += values.plan;
+        fact.total += values.fact;
     }
     return [
-        { key: '1', mealTimeType: 'завтрак', plan: statsPlan.morning, fact: statsFact.morning },
-        { key: '2', mealTimeType: 'обед', plan: statsPlan.lunch, fact: statsFact.lunch },
-        { key: '3', mealTimeType: 'ужин', plan: statsPlan.dinner, fact: statsFact.dinner },
-        { key: '4', mealTimeType: 'дожор', plan: statsPlan.night, fact: statsFact.night },
-        { key: '5', mealTimeType: 'всего', plan: statsPlan.total, fact: statsFact.total }
+        { key: '1', mealTimeType: 'breakfast', plan: plan.breakfast, fact: fact.breakfast },
+        { key: '2', mealTimeType: 'lunch', plan: plan.lunch, fact: fact.lunch },
+        { key: '3', mealTimeType: 'dinner', plan: plan.dinner, fact: fact.dinner },
+        { key: '4', mealTimeType: 'night', plan: plan.overeating, fact: fact.overeating },
+        { key: '5', mealTimeType: 'total', plan: plan.total, fact: fact.total }
     ];
 }
+
 /**Преобразование данных от сервера для столбчатого графика*/
-export function handleDataForColumnChart(res: IStatisticsAPI, typeOfEater: TypeOfEaters): IColumnChartData[] {
-    const result: IColumnChartData[] = [];
-    if (!res) {
-        return result;
+export function handleDataForColumnChart(
+    data: IData,
+    typeOfEater: EaterTypeExtended
+): { dataForColumnChart: IColumnChartData[]; dataForAnnotation: IColumnChartAnnotationData[] } {
+    const dataForColumnChart: IColumnChartData[] = [];
+    const dataForAnnotation: IColumnChartAnnotationData[] = [];
+
+    if (Object.keys(data).length === 0) {
+        return { dataForColumnChart, dataForAnnotation };
     }
-    for (let date in res) {
-        for (let mealTime of mealTimesEnArr) {
-            const resPlan = res[date].nutritionTypePlanned[mealTime];
-            const resFact = res[date].stats[mealTime];
+
+    for (let date in data) {
+        for (let mealTime of mealTimeArr) {
+            const resPlan = data[date].plan[mealTime];
+            const resFact = data[date].fact[mealTime];
             const values = findValuesForTypeEaters(resPlan, resFact, typeOfEater);
-            result.push(
-                { category: 'план', date, mealTime: mealTimeRuObj[mealTime], value: values.planValue },
-                { category: 'факт', date, mealTime: mealTimeRuObj[mealTime], value: values.factValue }
+            dataForColumnChart.push(
+                { date, type: 'plan', mealTime, value: values.plan },
+                { date, type: 'fact', mealTime, value: values.fact }
             );
         }
+        const resPlan = data[date].plan.total;
+        const resFact = data[date].fact.total;
+        const values = findValuesForTypeEaters(resPlan, resFact, typeOfEater);
+        dataForAnnotation.push({
+            date,
+            ...values
+        });
     }
-    return result;
+    return { dataForColumnChart, dataForAnnotation };
 }
 /**Преобразование данных от сервера для линейного графика*/
-export function handleDataForLinearChart(res: IStatisticsAPI, typeOfEater: TypeOfEaters): ILinearChartData[] {
+export function handleDataForLinearChart(data: IData, typeOfEater: EaterTypeExtended): ILinearChartData[] {
     const result: ILinearChartData[] = [];
-    if (!res) {
+    if (Object.keys(data).length === 0) {
         return result;
     }
-    for (let date in res) {
-        const resPlan = res[date].nutritionTypePlanned.total;
-        const resFact = res[date].stats.total;
+
+    for (let date in data) {
+        const resPlan = data[date].plan.total;
+        const resFact = data[date].fact.total;
         const values = findValuesForTypeEaters(resPlan, resFact, typeOfEater);
-        result.push(
-            { category: 'план', date, value: values.planValue },
-            { category: 'факт', date, value: values.factValue }
-        );
+        result.push({ type: 'plan', date, value: values.plan }, { type: 'fact', date, value: values.fact });
     }
     return result;
 }
