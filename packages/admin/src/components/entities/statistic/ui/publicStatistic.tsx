@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useMemo } from 'react';
 import { Form, Radio, DatePicker, Divider, Button, Space } from 'antd';
 import { RadioChangeEvent } from '@pankod/refine-antd';
 import { default as dayjsExt } from '../lib/dateHelper';
@@ -42,10 +42,16 @@ function PublicStatistic() {
 
     // Данные для дальнейшей обработки и отображения
     const [responce, setResponce] = useState<IStatisticResponce>([]);
+    const data = convertResponceToData(responce);
 
     // Для выбора даты
     const [date, setDate] = useState<dayjsExt.Dayjs | null>(dayjsExt().startOf('date'));
-    const changeDate = (value: dayjsExt.Dayjs | null, dateString: string) => setDate(value);
+    const changeDate = (value: dayjsExt.Dayjs | null, dateString: string) => {
+        if (!value) {
+            return setDate(dayjsExt());
+        }
+        setDate(value);
+    };
     const changeDateByOneDay = useCallback((date: dayjsExt.Dayjs | null, direction: 'increment' | 'decrement') => {
         if (!date) {
             const today = dayjsExt();
@@ -84,15 +90,16 @@ function PublicStatistic() {
         });
     }, [url]);
     // Преобразование данных с сервера для таблицы и графиков
-    const dataForTable: ITableStatData[] = handleDataForTable(convertResponceToData(responce), dateStr, typeOfEater);
-    const { dataForColumnChart, dataForAnnotation } = handleDataForColumnChart(
-        convertResponceToData(responce),
-        typeOfEater
+    const dataForTable: ITableStatData[] = useMemo(() => handleDataForTable(data, dateStr, typeOfEater), [responce]);
+    const { dataForColumnChart, dataForAnnotation } = useMemo(
+        () => handleDataForColumnChart(data, typeOfEater),
+        [responce]
     );
-    const dataForLinearChart: ILinearChartData[] = handleDataForLinearChart(
-        convertResponceToData(responce),
-        typeOfEater
+    const dataForLinearChart: ILinearChartData[] = useMemo(
+        () => handleDataForLinearChart(data, typeOfEater),
+        [responce]
     );
+
     return (
         <>
             <Form layout='inline'>
