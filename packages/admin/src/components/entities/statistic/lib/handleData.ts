@@ -50,13 +50,12 @@ function findValuesForTypeEaters(
 
 /**Преобразование данных для сравнительной сводной таблицы*/
 export function handleDataForTable(data: IData, date: string, typeOfEater: EaterTypeExtended): ITableStatData[] {
-    if (Object.keys(data).length === 0) {
+    if (!(date in data)) {
         return [];
     }
-
     const datum = data[date];
-    const plan = { breakfast: 0, lunch: 0, dinner: 0, overeating: 0, total: 0 };
-    const fact = { breakfast: 0, lunch: 0, dinner: 0, overeating: 0, total: 0 };
+    const plan = { breakfast: 0, lunch: 0, dinner: 0, night: 0, total: 0 };
+    const fact = { breakfast: 0, lunch: 0, dinner: 0, night: 0, total: 0 };
     for (let mealTime of mealTimeArr) {
         const resPlan = datum.plan[mealTime];
         const resFact = datum.fact[mealTime];
@@ -70,7 +69,7 @@ export function handleDataForTable(data: IData, date: string, typeOfEater: Eater
         { key: '1', mealTimeType: 'breakfast', plan: plan.breakfast, fact: fact.breakfast },
         { key: '2', mealTimeType: 'lunch', plan: plan.lunch, fact: fact.lunch },
         { key: '3', mealTimeType: 'dinner', plan: plan.dinner, fact: fact.dinner },
-        { key: '4', mealTimeType: 'night', plan: plan.overeating, fact: fact.overeating },
+        { key: '4', mealTimeType: 'night', plan: plan.night, fact: fact.night },
         { key: '5', mealTimeType: 'total', plan: plan.total, fact: fact.total }
     ];
 }
