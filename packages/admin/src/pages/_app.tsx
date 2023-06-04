@@ -81,15 +81,15 @@ const Feed = ({ Component, pageProps }: AppProps): JSX.Element | null => {
                     icon: <Icons.AccountBookOutlined />
                 },
                 {
-                    name: 'stats',
-                    list: PublicStatistic,
-                    icon: <Icons.LineChartOutlined />
-                },
-                {
                     name: 'feed-transaction',
                     list: FeedTransactionList,
                     create: FeedTransactionCreate,
                     icon: <Icons.ProfileOutlined />
+                },
+                {
+                    name: 'stats',
+                    list: PublicStatistic,
+                    icon: <Icons.LineChartOutlined />
                 },
                 {
                     name: 'sync',
