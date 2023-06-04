@@ -6,7 +6,7 @@ import TableStats, { ITableStatData } from './tableStats';
 import locale from 'antd/lib/date-picker/locale/ru_RU';
 import LinearChart, { ILinearChartData } from './linearChart';
 import { ColumnChart, IColumnChartData } from './columnChart';
-import { EaterTypeExtended, IStatisticResponce } from '../types';
+import { EaterTypeExtended, IStatisticApi, IStatisticResponce } from '../types';
 import {
     convertResponceToData,
     handleDataForColumnChart,
@@ -27,12 +27,15 @@ function convertDateToStringForApi(date: dayjsExt.Dayjs | null | undefined) {
     }
     return date.format('YYYY-MM-DD');
 }
+function sordResponceByDate(a: IStatisticApi, b: IStatisticApi): 1 | -1 | 0 {
+    if (dayjsExt(a.date).isAfter(b.date)) return 1;
+    else return -1;
+}
 
 function PublicStatistic() {
     // Выбор отображения (таблица / графики)
     const [statisticViewType, setViewType] = useState<StatisticViewType>('date');
     const changeStatisticViewType = (e: RadioChangeEvent) => setViewType(e.target?.value);
-
     // Фильтр типа питания
     const [typeOfEater, setTypeOfEater] = useState<EaterTypeExtended>('all');
     const changeTypeOfEater = (e: RadioChangeEvent) => setTypeOfEater(e.target?.value);
@@ -76,7 +79,8 @@ function PublicStatistic() {
     }
     useEffect(() => {
         axios.get(url).then((res) => {
-            setResponce(res.data);
+            const sortedResponce = res.data.sort(sordResponceByDate);
+            setResponce(sortedResponce);
         });
     }, [url]);
     // Преобразование данных с сервера для таблицы и графиков
