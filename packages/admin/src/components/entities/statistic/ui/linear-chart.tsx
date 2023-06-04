@@ -1,6 +1,7 @@
-import { LineConfig } from '@ant-design/plots';
+import type { LineConfig } from '@ant-design/plots';
 import dynamic from 'next/dynamic';
-import { StatisticType } from '../types';
+
+import type { StatisticType } from '../types';
 const Line = dynamic(() => import('@ant-design/plots').then(({ Line }) => Line), { ssr: false });
 
 /** Данные для линейного графика */
@@ -19,7 +20,7 @@ const lineConfig: Omit<LineConfig, 'data'> = {
         tickInterval: 5
     }
 };
-export default function LinearChart(props: { linearChartData: ILinearChartData[] }) {
+export default function LinearChart(props: { linearChartData: Array<ILinearChartData> }) {
     return <Line data={props.linearChartData} {...lineConfig} />;
 }
 export type { ILinearChartData };

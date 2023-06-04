@@ -1,6 +1,6 @@
 export type StatisticType = 'plan' | 'fact';
 export type MealTime = 'breakfast' | 'lunch' | 'dinner' | 'night' | 'total';
-export const mealTimeArr: MealTime[] = ['breakfast', 'lunch', 'dinner', 'night'];
+export const mealTimeArr: Array<MealTime> = ['breakfast', 'lunch', 'dinner', 'night'];
 
 export type EaterType = 'vegan' | 'meatEater';
 export type EaterTypeExtended = EaterType | 'all';

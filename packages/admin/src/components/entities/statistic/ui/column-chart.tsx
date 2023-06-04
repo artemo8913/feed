@@ -1,6 +1,7 @@
-import { ColumnConfig, Options } from '@ant-design/plots';
+import type { ColumnConfig, Options } from '@ant-design/plots';
 import dynamic from 'next/dynamic';
-import { MealTime, StatisticType } from '../types';
+
+import type { MealTime, StatisticType } from '../types';
 const Column = dynamic(() => import('@ant-design/plots').then(({ Column }) => Column), { ssr: false });
 
 /** Данные для столбчатого графика */
@@ -27,7 +28,7 @@ const annotation = {
     offsetY: -20
 };
 
-function createAnnotation(data: IColumnChartAnnotationData[]) {
+function createAnnotation(data: Array<IColumnChartAnnotationData>) {
     const annotations: Options['annotations'] = [];
     data.forEach((datum, index) => {
         annotations.push({
@@ -87,7 +88,10 @@ const columnConfig: Omit<ColumnConfig, 'data'> = {
     ]
 };
 
-function ColumnChart(props: { columnDataArr: IColumnChartData[]; dataForAnnotation: IColumnChartAnnotationData[] }) {
+function ColumnChart(props: {
+    columnDataArr: Array<IColumnChartData>;
+    dataForAnnotation: Array<IColumnChartAnnotationData>;
+}) {
     const annotations = createAnnotation(props.dataForAnnotation);
     return <Column data={props.columnDataArr} {...columnConfig} annotations={annotations} />;
 }

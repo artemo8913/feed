@@ -1,20 +1,25 @@
-import { useState, useCallback, useEffect, useMemo } from 'react';
-import { Form, Radio, DatePicker, Divider, Button, Space } from 'antd';
-import { RadioChangeEvent } from '@pankod/refine-antd';
-import { default as dayjsExt } from '../lib/dateHelper';
-import TableStats, { ITableStatData } from './tableStats';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { Button, DatePicker, Divider, Form, Radio, Space } from 'antd';
+import type { RadioChangeEvent } from '@pankod/refine-antd';
 import locale from 'antd/lib/date-picker/locale/ru_RU';
-import LinearChart, { ILinearChartData } from './linearChart';
-import { ColumnChart, IColumnChartData } from './columnChart';
-import { EaterTypeExtended, IStatisticApi, IStatisticResponce } from '../types';
+import axios from 'axios';
+
+import { NEW_API_URL } from '~/const';
+
+import { default as dayjsExt } from '../lib/dateHelper';
+import type { EaterTypeExtended, IStatisticApi, IStatisticResponce } from '../types';
 import {
     convertResponceToData,
     handleDataForColumnChart,
-    handleDataForTable,
-    handleDataForLinearChart
+    handleDataForLinearChart,
+    handleDataForTable
 } from '../lib/handleData';
-import { NEW_API_URL } from '~/const';
-import axios from 'axios';
+
+import type { ITableStatData } from './table-stats';
+import TableStats from './table-stats';
+import type { ILinearChartData } from './linear-chart';
+import LinearChart from './linear-chart';
+import { ColumnChart, IColumnChartData } from './column-chart';
 
 type StatisticViewType = 'date' | 'range';
 
@@ -71,7 +76,7 @@ function PublicStatistic() {
         dayjsExt().add(-1, 'day').startOf('date'),
         dayjsExt().add(1, 'day').startOf('date')
     ]);
-    const changeTimePeriod = useCallback((range: dayjsExt.Dayjs[] | null) => {
+    const changeTimePeriod = useCallback((range: Array<dayjsExt.Dayjs> | null) => {
         if (!range) return;
         setTimePeriod([dayjsExt(range[0]), dayjsExt(range[1])]);
     }, []);
@@ -79,23 +84,30 @@ function PublicStatistic() {
     const endDatePeriodStr = convertDateToStringForApi(timePeriod[1]);
 
     // Запрос данных с сервера
-    let url = `${NEW_API_URL}/statistics/?date_from=${prevDateStr}&date_to=${nextDateStr}`;
+    let statsUrl = `${NEW_API_URL}/statistics/?date_from=${prevDateStr}&date_to=${nextDateStr}`;
     if (statisticViewType === 'range') {
-        url = `${NEW_API_URL}/statistics/?date_from=${startDatePeriodStr}&date_to=${endDatePeriodStr}`;
+        statsUrl = `${NEW_API_URL}/statistics/?date_from=${startDatePeriodStr}&date_to=${endDatePeriodStr}`;
     }
+
+    const loadStats = async (url) => {
+        const res = await axios.get(url);
+        const sortedResponce = res.data.sort(sordResponceByDate);
+        setResponce(sortedResponce);
+    };
+
     useEffect(() => {
-        axios.get(url).then((res) => {
-            const sortedResponce = res.data.sort(sordResponceByDate);
-            setResponce(sortedResponce);
-        });
-    }, [url]);
+        void loadStats(statsUrl);
+    }, [statsUrl]);
     // Преобразование данных с сервера для таблицы и графиков
-    const dataForTable: ITableStatData[] = useMemo(() => handleDataForTable(data, dateStr, typeOfEater), [responce]);
-    const { dataForColumnChart, dataForAnnotation } = useMemo(
+    const dataForTable: Array<ITableStatData> = useMemo(
+        () => handleDataForTable(data, dateStr, typeOfEater),
+        [responce]
+    );
+    const { dataForAnnotation, dataForColumnChart } = useMemo(
         () => handleDataForColumnChart(data, typeOfEater),
         [responce]
     );
-    const dataForLinearChart: ILinearChartData[] = useMemo(
+    const dataForLinearChart: Array<ILinearChartData> = useMemo(
         () => handleDataForLinearChart(data, typeOfEater),
         [responce]
     );
@@ -129,7 +141,7 @@ function PublicStatistic() {
                         <RangePicker
                             locale={locale}
                             format={dateFormat}
-                            onChange={(range) => changeTimePeriod(range as dayjsExt.Dayjs[])}
+                            onChange={(range) => changeTimePeriod(range as Array<dayjsExt.Dayjs>)}
                         />
                     )}
                 </Form.Item>

@@ -1,4 +1,4 @@
-import { IStatisticResponce } from '../types';
+import type { IStatisticResponce } from '../types';
 
 export const mock: IStatisticResponce = [
     {
