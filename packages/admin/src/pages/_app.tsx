@@ -1,5 +1,5 @@
 import { appWithTranslation, useTranslation } from 'next-i18next';
-import { ErrorComponent, Icons, Layout, notificationProvider } from '@pankod/refine-antd';
+import { ErrorComponent, Icons, Layout, notificationProvider, ConfigProvider } from '@pankod/refine-antd';
 import type { AppProps } from 'next/app';
 import { Loader } from '@feed/ui/src/loader';
 import { Refine } from '@pankod/refine-core';
@@ -22,6 +22,10 @@ import { Dashboard } from '~/components/dashboard';
 import { dataProvider } from '~/dataProvider';
 import { LoginPage } from '~/components/login';
 import { PublicStatistic } from '~/components/entities/statistic';
+
+// import enUS from 'antd/lib/locale-provider/ru_RU';
+import antdLocale from 'antd/lib/locale/ru_RU';
+
 
 // eslint-disable-next-line no-restricted-imports
 import { i18n } from '../../next-i18next.config.mjs';
@@ -49,57 +53,59 @@ const Feed = ({ Component, pageProps }: AppProps): JSX.Element | null => {
     if (!ready) return <Loader />;
 
     return (
-        <Refine
-            routerProvider={routerProvider}
-            DashboardPage={Dashboard}
-            ReadyPage={CustomReadyPage}
-            notificationProvider={notificationProvider}
-            catchAll={<ErrorComponent />}
-            Layout={Layout}
-            dataProvider={dataProvider}
-            i18nProvider={i18nProvider}
-            authProvider={authProvider}
-            LoginPage={LoginPage}
-            Sider={CustomSider}
-            accessControlProvider={ACL}
-            options={{ syncWithLocation: true, disableTelemetry: true }}
-            resources={[
-                {
-                    name: 'volunteers',
-                    list: VolList,
-                    create: VolCreate,
-                    edit: VolEdit,
-                    show: VolShow,
-                    icon: <Icons.ProfileOutlined />
-                },
-                {
-                    name: 'departments',
-                    list: DepartmentList,
-                    create: DepartmentCreate,
-                    edit: DepartmentEdit,
-                    show: DepartmentShow,
-                    icon: <Icons.AccountBookOutlined />
-                },
-                {
-                    name: 'feed-transaction',
-                    list: FeedTransactionList,
-                    create: FeedTransactionCreate,
-                    icon: <Icons.ProfileOutlined />
-                },
-                {
-                    name: 'stats',
-                    list: PublicStatistic,
-                    icon: <Icons.LineChartOutlined />
-                },
-                {
-                    name: 'sync',
-                    list: Sync,
-                    icon: <Icons.ProfileOutlined />
-                }
-            ]}
-        >
-            <Component {...pageProps} />
-        </Refine>
+        <ConfigProvider locale={antdLocale}>
+            <Refine
+                routerProvider={routerProvider}
+                DashboardPage={Dashboard}
+                ReadyPage={CustomReadyPage}
+                notificationProvider={notificationProvider}
+                catchAll={<ErrorComponent />}
+                Layout={Layout}
+                dataProvider={dataProvider}
+                i18nProvider={i18nProvider}
+                authProvider={authProvider}
+                LoginPage={LoginPage}
+                Sider={CustomSider}
+                accessControlProvider={ACL}
+                options={{ syncWithLocation: true, disableTelemetry: true }}
+                resources={[
+                    {
+                        name: 'volunteers',
+                        list: VolList,
+                        create: VolCreate,
+                        edit: VolEdit,
+                        show: VolShow,
+                        icon: <Icons.ProfileOutlined />
+                    },
+                    {
+                        name: 'departments',
+                        list: DepartmentList,
+                        create: DepartmentCreate,
+                        edit: DepartmentEdit,
+                        show: DepartmentShow,
+                        icon: <Icons.AccountBookOutlined />
+                    },
+                    {
+                        name: 'feed-transaction',
+                        list: FeedTransactionList,
+                        create: FeedTransactionCreate,
+                        icon: <Icons.ProfileOutlined />
+                    },
+                    {
+                        name: 'stats',
+                        list: PublicStatistic,
+                        icon: <Icons.LineChartOutlined />
+                    },
+                    {
+                        name: 'sync',
+                        list: Sync,
+                        icon: <Icons.ProfileOutlined />
+                    }
+                ]}
+            >
+                <Component {...pageProps} />
+            </Refine>
+        </ConfigProvider>
     );
 };
 

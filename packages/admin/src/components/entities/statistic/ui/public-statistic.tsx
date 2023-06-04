@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Button, DatePicker, Divider, Form, Radio, Space } from 'antd';
 import type { RadioChangeEvent } from '@pankod/refine-antd';
-import locale from 'antd/lib/date-picker/locale/ru_RU';
 import axios from 'axios';
 
 import { NEW_API_URL } from '~/const';
@@ -134,12 +133,11 @@ function PublicStatistic() {
                     {statisticViewType === 'date' ? (
                         <Space size={'small'}>
                             <Button onClick={() => changeDateByOneDay(date, 'decrement')}>{'<'}</Button>
-                            <DatePicker locale={locale} value={date} onChange={changeDate} format={dateFormat} />
+                            <DatePicker value={date} onChange={changeDate} format={dateFormat} allowClear={false} />
                             <Button onClick={() => changeDateByOneDay(date, 'increment')}>{'>'}</Button>
                         </Space>
                     ) : (
                         <RangePicker
-                            locale={locale}
                             format={dateFormat}
                             onChange={(range) => changeTimePeriod(range as Array<dayjsExt.Dayjs>)}
                         />
