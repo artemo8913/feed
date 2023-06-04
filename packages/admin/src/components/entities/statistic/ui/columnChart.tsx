@@ -30,10 +30,11 @@ const annotation = {
 function createAnnotation(data: IColumnChartAnnotationData[]) {
     const annotations: Options['annotations'] = [];
     data.forEach((datum, index) => {
-        annotations.push(
-            { ...annotation, position: [index, 4], content: datum.plan, offsetX: -40 },
-            { ...annotation, position: [index, 4], content: datum.fact, offsetX: 40 }
-        );
+        annotations.push({
+            ...annotation,
+            position: [`${(index / data.length) * 100 + 17}%`, '4%'],
+            content: `${datum.plan} / ${datum.fact}`
+        });
     });
     return annotations;
 }
@@ -46,22 +47,39 @@ const columnConfig: Omit<ColumnConfig, 'data'> = {
     isStack: true,
     seriesField: 'mealTime',
     groupField: 'type',
-    yAxis: { tickInterval: 5 },
+    padding: 50,
     label: {
         position: 'middle',
+        content: (x) => {
+            const value = x.value || '';
+            return value;
+        },
         layout: [
             {
                 type: 'adjust-color'
             }
         ]
     },
-    // tooltip: false,
-    tooltip: {
-        formatter: (datum) => ({
-            name: `${datum.mealTime} ${datum.type === 'plan' ? 'plan' : 'fact'}`,
-            value: datum.value
-        })
+    legend: {
+        position: 'top-left'
     },
+    tooltip: false,
+    // tooltip: {
+    //     // customContent: (title, data) => {
+    //     //     return `<div>${title}</div>`;
+    //     // },
+    //     // customItems: (originalItems: TooltipItem[]) => {
+    //     //     // process originalItems,
+    //     //     console.log(originalItems);
+    //     //     return originalItems;
+    //     // },
+    //     formatter: (datum) => {
+    //         return {
+    //             name: `${datum.mealTime} ${datum.type === 'plan' ? 'plan' : 'fact'}`,
+    //             value: datum.value
+    //         };
+    //     }
+    // },
     interactions: [
         {
             type: 'element-highlight-by-color'
