@@ -88,12 +88,10 @@
             "show": "Показать направление"
         }
     },
-    "statistics": {
-        "statistics": "Статистика",
+    "stats": {
+        "stats": "Статистика",
         "list": "Статистика"
     },
-    "vols": {
-        "vols": "Волонтеры",
     "volunteers": {
         "volunteers": "Волонтеры",
         "fields": {

@@ -81,7 +81,7 @@ const Feed = ({ Component, pageProps }: AppProps): JSX.Element | null => {
                     icon: <Icons.AccountBookOutlined />
                 },
                 {
-                    name: 'statistics',
+                    name: 'stats',
                     list: PublicStatistic,
                     icon: <Icons.LineChartOutlined />
                 },

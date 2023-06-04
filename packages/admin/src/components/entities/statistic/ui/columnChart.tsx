@@ -88,7 +88,6 @@ const columnConfig: Omit<ColumnConfig, 'data'> = {
 };
 
 function ColumnChart(props: { columnDataArr: IColumnChartData[]; dataForAnnotation: IColumnChartAnnotationData[] }) {
-    console.log(props.dataForAnnotation);
     const annotations = createAnnotation(props.dataForAnnotation);
     return <Column data={props.columnDataArr} {...columnConfig} annotations={annotations} />;
 }
