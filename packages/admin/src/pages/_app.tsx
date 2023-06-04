@@ -75,7 +75,7 @@ const Feed = ({ Component, pageProps }: AppProps): JSX.Element | null => {
                         create: VolCreate,
                         edit: VolEdit,
                         show: VolShow,
-                        icon: <Icons.ProfileOutlined />
+                        icon: <Icons.UserOutlined />
                     },
                     {
                         name: 'departments',
@@ -83,13 +83,13 @@ const Feed = ({ Component, pageProps }: AppProps): JSX.Element | null => {
                         create: DepartmentCreate,
                         edit: DepartmentEdit,
                         show: DepartmentShow,
-                        icon: <Icons.AccountBookOutlined />
+                        icon: <Icons.FormatPainterOutlined />
                     },
                     {
                         name: 'feed-transaction',
                         list: FeedTransactionList,
                         create: FeedTransactionCreate,
-                        icon: <Icons.ProfileOutlined />
+                        icon: <Icons.HistoryOutlined />
                     },
                     {
                         name: 'stats',
@@ -99,7 +99,7 @@ const Feed = ({ Component, pageProps }: AppProps): JSX.Element | null => {
                     {
                         name: 'sync',
                         list: Sync,
-                        icon: <Icons.ProfileOutlined />
+                        icon: <Icons.SyncOutlined />
                     }
                 ]}
             >
