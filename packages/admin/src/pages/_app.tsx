@@ -89,7 +89,7 @@ const Feed = ({ Component, pageProps }: AppProps): JSX.Element | null => {
                         name: 'feed-transaction',
                         list: FeedTransactionList,
                         create: FeedTransactionCreate,
-                        icon: <Icons.ProfileOutlined />
+                        icon: <Icons.HistoryOutlined />
                     },
                     {
                         name: 'stats',
@@ -99,7 +99,7 @@ const Feed = ({ Component, pageProps }: AppProps): JSX.Element | null => {
                     {
                         name: 'sync',
                         list: Sync,
-                        icon: <Icons.ProfileOutlined />
+                        icon: <Icons.SyncOutlined />
                     }
                 ]}
             >

@@ -107,7 +107,6 @@ export const Dashboard: FC = () => {
                 ({ data }) => {
                     // setError(null);
                     // console.log(`read: ${data}`);
-                    data = data.substring(0, 8);
                     void onScan(data);
                     // console.log(`qr: ${data}`);
                     // onScan(data);
@@ -132,7 +131,7 @@ export const Dashboard: FC = () => {
     useEffect(() => {
         // @ts-ignore
         function onHardwareScan({ detail: { scanCode } }): void {
-            scanCode = scanCode.replace(/[^A-Za-z0-9]/g, '').substring(0, 8);
+            scanCode = scanCode.replace(/[^A-Za-z0-9]/g, '');
             void onScan(scanCode);
         }
 
