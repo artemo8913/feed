@@ -1,5 +1,5 @@
 import { appWithTranslation, useTranslation } from 'next-i18next';
-import { ErrorComponent, Icons, Layout, notificationProvider, ConfigProvider } from '@pankod/refine-antd';
+import { ConfigProvider, ErrorComponent, Icons, Layout, notificationProvider } from '@pankod/refine-antd';
 import type { AppProps } from 'next/app';
 import { Loader } from '@feed/ui/src/loader';
 import { Refine } from '@pankod/refine-core';
@@ -9,6 +9,8 @@ import type { UserConfig } from 'next-i18next';
 import '@pankod/refine-antd/dist/reset.css';
 
 // require('~/i18n');
+
+import antdLocale from 'antd/lib/locale/ru_RU';
 
 import { DepartmentCreate, DepartmentEdit, DepartmentList, DepartmentShow } from '~/components/entities/departments';
 import { Sync } from '~/components/sync';
@@ -24,8 +26,6 @@ import { LoginPage } from '~/components/login';
 import { PublicStatistic } from '~/components/entities/statistic';
 
 // import enUS from 'antd/lib/locale-provider/ru_RU';
-import antdLocale from 'antd/lib/locale/ru_RU';
-
 
 // eslint-disable-next-line no-restricted-imports
 import { i18n } from '../../next-i18next.config.mjs';
