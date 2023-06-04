@@ -2,6 +2,7 @@ import React from 'react';
 
 import { TableType } from '~/components/stats';
 import type { FeedStats } from '~/request-local-db';
+import { MEAL_TIME } from '~/request-local-db';
 
 import style from './stats-table.module.css';
 
@@ -12,8 +13,51 @@ interface StatsTableProps {
 }
 
 export const StatsTable = ({ progress, stats, tableType }: StatsTableProps) => {
-    const { fed, onField } = stats;
+    const { feedCount, onField } = stats;
     const styleOnLoading = progress ? style.loading : '';
+
+    const StatsRecords = () => {
+        const Records = MEAL_TIME.map((MT) => {
+            let formattedMealTime: string;
+            switch (MT) {
+                case 'breakfast':
+                    formattedMealTime = 'Завтрак';
+                    break;
+                case 'lunch':
+                    formattedMealTime = 'Обед';
+                    break;
+                case 'dinner':
+                    formattedMealTime = 'Ужин';
+                    break;
+                case 'night':
+                    formattedMealTime = 'Дожор';
+                    break;
+                default:
+                    formattedMealTime = '';
+            }
+            return (
+                <tr key={MT}>
+                    <th scope='row'>{formattedMealTime}</th>
+                    <td>
+                        <span>{feedCount[MT].total}</span>
+                        <div>
+                            <span className={style.meat}>{feedCount[MT].NT1}</span>/
+                            <span className={style.vegan}>{feedCount[MT].NT2}</span>
+                        </div>
+                    </td>
+                    <td>
+                        <span>{onField[MT].total}</span>
+                        <div>
+                            <span className={style.meat}>{onField[MT].NT1}</span>/
+                            <span className={style.vegan}>{onField[MT].NT2}</span>
+                        </div>
+                    </td>
+                </tr>
+            );
+        });
+        return <>{Records}</>;
+    };
+
     return (
         <table className={`${style.table} ${styleOnLoading}`}>
             <thead>
@@ -24,74 +68,7 @@ export const StatsTable = ({ progress, stats, tableType }: StatsTableProps) => {
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <th scope='row'>Завтрак</th>
-                    <td>
-                        <span>{fed.total.breakfast}</span>
-                        <div>
-                            <span className={style.meat}>{fed.NT1.breakfast}</span>/
-                            <span className={style.vegan}>{fed.NT2.breakfast}</span>
-                        </div>
-                    </td>
-                    <td>
-                        <span>{onField.total.breakfast}</span>
-                        <div>
-                            <span className={style.meat}>{onField.NT1.breakfast}</span>/
-                            <span className={style.vegan}>{onField.NT2.breakfast}</span>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <th scope='row'>Обед</th>
-                    <td>
-                        <span>{fed.total.lunch}</span>
-                        <div>
-                            <span className={style.meat}>{fed.NT1.lunch}</span>/
-                            <span className={style.vegan}>{fed.NT2.lunch}</span>
-                        </div>
-                    </td>
-                    <td>
-                        <span>{onField.total.lunch}</span>
-                        <div>
-                            <span className={style.meat}>{onField.NT1.lunch}</span>/
-                            <span className={style.vegan}>{onField.NT2.lunch}</span>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <th scope='row'>Ужин</th>
-                    <td>
-                        <span>{fed.total.dinner}</span>
-                        <div>
-                            <span className={style.meat}>{fed.NT1.dinner}</span>/
-                            <span className={style.vegan}>{fed.NT2.dinner}</span>
-                        </div>
-                    </td>
-                    <td>
-                        <span>{onField.total.dinner}</span>
-                        <div>
-                            <span className={style.meat}>{onField.NT1.dinner}</span>/
-                            <span className={style.vegan}>{onField.NT2.dinner}</span>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <th scope='row'>Дожор</th>
-                    <td>
-                        <span>{fed.total.night}</span>
-                        <div>
-                            <span className={style.meat}>{fed.NT1.night}</span>/
-                            <span className={style.vegan}>{fed.NT2.night}</span>
-                        </div>
-                    </td>
-                    <td>
-                        <span>{onField.total.night}</span>
-                        <div>
-                            <span className={style.meat}>{onField.NT1.night}</span>/
-                            <span className={style.vegan}>{onField.NT2.night}</span>
-                        </div>
-                    </td>
-                </tr>
+                <StatsRecords />
             </tbody>
         </table>
     );

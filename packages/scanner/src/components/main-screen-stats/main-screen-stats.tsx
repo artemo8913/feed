@@ -11,11 +11,7 @@ import style from './main-screen-stats.module.css';
 export const MainScreenStats = () => {
     const { mealTime } = useContext(AppContext);
 
-    const volsOnField = useLiveQuery(
-        async () => (await getVolsOnField(dayjs(getToday()).toDate())).length,
-        [mealTime],
-        0
-    );
+    const volsOnField = useLiveQuery(async () => (await getVolsOnField(getToday())).length, [mealTime], 0);
 
     const volsFed = useLiveQuery(
         async () => {
