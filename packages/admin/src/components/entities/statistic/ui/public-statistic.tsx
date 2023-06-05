@@ -100,15 +100,15 @@ function PublicStatistic() {
     // Преобразование данных с сервера для таблицы и графиков
     const dataForTable: Array<ITableStatData> = useMemo(
         () => handleDataForTable(data, dateStr, typeOfEater),
-        [responce]
+        [responce, typeOfEater]
     );
     const { dataForAnnotation, dataForColumnChart } = useMemo(
         () => handleDataForColumnChart(data, typeOfEater),
-        [responce]
+        [responce, typeOfEater]
     );
     const dataForLinearChart: Array<ILinearChartData> = useMemo(
         () => handleDataForLinearChart(data, typeOfEater),
-        [responce]
+        [responce, typeOfEater]
     );
 
     return (
