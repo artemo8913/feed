@@ -116,7 +116,8 @@ RUN mkdir backend/ backend/logs/ backend/data/
 ENV PYTHONUNBUFFERED 1
 
 COPY ./backend/requirements.txt /app/backend
-RUN cd backend && pip install -r requirements.txt --no-cache-dir
+RUN --mount=type=cache,target=/root/.cache/pip \
+    cd backend && pip install -r requirements.txt --no-cache-dir
 
 COPY ./backend/config /app/backend/config
 COPY ./backend/feeder /app/backend/feeder
