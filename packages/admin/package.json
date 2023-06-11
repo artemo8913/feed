@@ -66,7 +66,6 @@
     },
     "scripts": {
         "dev": "cross-env API_URL_ENV='http://localhost:4000/api' NEW_API_URL_ENV='http://localhost:4000/feedapi/v1' next dev -p 3002",
-        "proddev": "next dev -p 4301",
         "build": "next build",
         "test": "node scripts/test.js",
         "lint:js": "eslint -c .eslintrc --ext .ts --ext .tsx src",
