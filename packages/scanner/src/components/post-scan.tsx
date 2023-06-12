@@ -94,15 +94,15 @@ export const PostScan: FC<{
         //     isRed = true;
         // }
     }
-    if(msg.length && !isRed && volTransactions.some(t => t.amount)) {
+    if (msg.length && !isRed && volTransactions.some((t) => t.amount)) {
         msg.push('Волонтер уже питался сегодня в долг');
         isRed = true;
     }
     if (vol.feed_type === FeedType.FT2) {
-        if(mealTime === MealTime.night) {
+        if (mealTime === MealTime.night) {
             msg.push('Платник не может питаться в дожор');
         }
-        if(msg.length > 0) {
+        if (msg.length > 0) {
             isRed = true;
         }
     }
