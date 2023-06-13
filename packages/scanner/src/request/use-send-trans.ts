@@ -22,20 +22,26 @@ export const useSendTrans = (baseUrl: string, pin: string | null, setAuth: (auth
             return Promise.resolve(false);
         }
 
-        const data = (trans || []).map(({ amount, ts, ulid, vol_id }) => ({
-            vol_id,
-            amount,
-            ts,
-            ulid
-        }));
+        const kitchen = Number(localStorage.getItem('kitchenId'));
+        const data = (trans || [])
+            .filter(({ is_new }) => is_new)
+            .map(({ amount, is_vegan, mealTime, ts, ulid, vol_id }) => ({
+                volunteer: vol_id,
+                is_vegan,
+                amount,
+                dtime: typeof ts === 'number' ? new Date(ts * 1000).toISOString() : ts,
+                ulid,
+                meal_time: mealTime,
+                kitchen
+            }));
 
         setFetching(true);
 
         return new Promise((res, rej) => {
             axios
-                .post(`${baseUrl}/upload_transactions`, data, {
+                .post(`${baseUrl}/feed-transaction/bulk`, data, {
                     headers: {
-                        Authorization: `Bearer ${pin}`
+                        Authorization: `K-PIN-CODE ${pin}`
                     }
                 })
                 .then(async (resp) => {

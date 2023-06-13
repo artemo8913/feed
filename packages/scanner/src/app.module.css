@@ -6,17 +6,29 @@ button {
     font-size: var(--fs);
 }
 
+.anon {
+    padding: 10px;
+    position: absolute;
+    bottom: 20vh;
+}
+
 .app {
     width: 100vw;
     min-height: 100vh;
     font-size: var(--fs);
 
+    h2 {
+        margin: 15px 0 10px 0;
+        text-align: center;
+    }
+
     .screen {
         position: relative;
         width: 100vw;
-        min-height: 100vh;
+        height: 100vh;
+        overflow: auto;
 
-        &.main {
+&.main {
             display: flex;
             flex-direction: column;
             justify-content: space-evenly;
@@ -24,12 +36,12 @@ button {
             text-align: center;
         }
 
-        &.left1 {
-            background-color: var(--c-yellow);
+        &.history {
+            /*background-color: var(--c-yellow);*/
         }
 
-        &.right1 {
-            background-color: var(--c-blue);
+        &.stats {
+            /*background-color: var(--c-blue);*/
         }
     }
 }
@@ -41,6 +53,7 @@ button {
     justify-content: center;
     align-items: center;
     font-size: 2em;
+    height: 100vh;
 
     input {
         width: 90vw;

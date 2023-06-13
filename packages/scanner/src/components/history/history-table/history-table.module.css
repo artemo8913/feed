@@ -1,0 +1,33 @@
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    color: var(--c-dark);
+    font-size: 0.75em;
+
+    thead {
+        position: sticky;
+        top: 0;
+        background-color: var(--c-dark);
+        color: #fff;
+
+        th {
+            padding: 10px;
+            font-weight: 500;
+            text-align: left;
+            border: 1px solid #d0d0d0;
+            border-top: none;
+        }
+    }
+
+tbody {
+    tr:nth-child(even) {
+        background-color: var(--c-light);
+    }
+
+        td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #d0d0d0;
+        }
+    }
+}

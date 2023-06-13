@@ -1,5 +1,5 @@
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import cn from 'classnames';
-import { useCallback, useContext, useEffect, useState } from 'react';
 
 import { ErrorMsg, LastUpdated } from '~/components/misc/misc';
 import { PostScan } from '~/components/post-scan';
@@ -7,16 +7,21 @@ import { QrScan } from '~/components/qr-scan';
 import { BtnSync } from '~/components/btn-sync';
 import { db } from '~/db';
 import { AppContext } from '~/app-context';
+import { MainScreenStats } from '~/components/main-screen-stats';
 
 import css from '../app.module.css';
 
-export const MainScreen = () => {
+export const MainScreen = React.memo(function MainScreen() {
     const { appError, lastUpdate, setColor, setLastUpdated, setVolCount, volCount } = useContext(AppContext);
     const [scanResult, setScanResult] = useState('');
 
     const closeFeedDialog = useCallback(() => {
         setColor(null);
         setScanResult('');
+    }, []);
+
+    const feedAnon = useCallback(() => {
+        setScanResult('anon');
     }, []);
 
     useEffect(() => {
@@ -27,10 +32,19 @@ export const MainScreen = () => {
     return (
         <div className={cn(css.screen, css.main)}>
             <BtnSync />
-            {!scanResult && <QrScan onScan={setScanResult} />}
+            {!scanResult && (
+                <>
+                    <QrScan onScan={setScanResult} />
+                    <button className={css.anon} onClick={feedAnon}>
+                        Кормить Анонима
+                    </button>
+                </>
+            )}
             {scanResult && <PostScan closeFeed={closeFeedDialog} qrcode={scanResult} />}
+
             {appError && <ErrorMsg close={closeFeedDialog} msg={appError} />}
             <LastUpdated count={volCount} ts={lastUpdate || 0} />
+            <MainScreenStats />
         </div>
     );
-};
+});

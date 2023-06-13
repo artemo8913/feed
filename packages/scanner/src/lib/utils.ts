@@ -1,3 +1,5 @@
+import { MealTime } from '~/db';
+
 export const rndInt = (min: number, max: number): number => min + Math.round(Math.random() * (max - min));
 
 // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -22,4 +24,15 @@ export const clearCache = (): void => {
         });
     }
     window.location.reload();
+};
+
+const mealTimes = {
+    [MealTime.breakfast]: 'Завтрак',
+    [MealTime.lunch]: 'Обед',
+    [MealTime.dinner]: 'Ужин',
+    [MealTime.night]: 'Дожор'
+};
+
+export const getMealTimeText = (mealTime: string): string => {
+    return mealTimes[mealTime] || '';
 };

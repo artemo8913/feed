@@ -14,10 +14,25 @@ docker-compose up
 
 # Установка
 ```bash
+cd ./backend
+pip install -r requirements.txt
+```
+
+```bash
 yarn run bootstrap
 ```
 
 # Запуск
+
+```bash
+cd ./backend
+python3 -m venv venv
+. ./venv/bin/activate
+./manage.py migrate
+./manage.py loaddata colors feed_types kitchens
+./manage.py shell < create_user.py
+./manage.py runserver localhost:8000
+```
 
 ```bash
 cd ./packages/api

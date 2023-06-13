@@ -1,102 +1,182 @@
 import {
+    Checkbox,
     DateField,
     DeleteButton,
     EditButton,
     FilterDropdown,
-    getDefaultSortOrder,
     List,
+    Select,
     Space,
     Table,
     TextField,
-    useSelect,
-    useTable
+    useSelect
 } from '@pankod/refine-antd';
 import type { DepartmentEntity } from '@feed/api/src/entities/department.entity';
+import { useList } from '@pankod/refine-core';
 import type { IResourceComponentsProps } from '@pankod/refine-core';
 // import { Loader } from '@feed/ui/src/loader';
 import { ListBooleanNegative, ListBooleanPositive } from '@feed/ui/src/icons'; // TODO exclude src
-import Select from 'rc-select';
+import { useMemo, useState } from 'react';
+import { Input } from 'antd';
+import dayjs from 'dayjs';
 
 import type { VolEntity } from '~/interfaces';
 
+import { dateFormat } from './common';
+
+const booleanFilters = [
+    { value: true, text: 'Да' },
+    { value: false, text: 'Нет' }
+];
+
 export const VolList: FC<IResourceComponentsProps> = () => {
-    const { sorter, tableProps } = useTable<VolEntity>({
-        initialSorter: [
-            {
-                field: 'id',
-                order: 'desc'
-            }
-        ]
+    const [searchText, setSearchText] = useState('');
+
+    const { data: volunteers } = useList<VolEntity>({
+        resource: 'volunteers'
     });
 
-    const { selectProps } = useSelect<VolEntity>({
-        resource: 'vols'
+    const { selectProps: departmentSelectProps } = useSelect<DepartmentEntity>({
+        resource: 'departments',
+        optionLabel: 'name'
     });
+
+    const filteredData = useMemo(() => {
+        return searchText
+            ? volunteers?.data.filter((item) => {
+                  const searchTextInLowerCase = searchText.toLowerCase();
+                  return [
+                      item.nickname,
+                      item.name,
+                      item.lastname,
+                      item.departments?.map(({ name }) => name).join(', '),
+                      item.active_from ? dayjs(item.active_from).format(dateFormat) : null
+                  ].some((text) => {
+                      return text?.toLowerCase().includes(searchTextInLowerCase);
+                  });
+              })
+            : volunteers?.data;
+    }, [volunteers, searchText]);
+
+    // const { selectProps } = useSelect<VolEntity>({
+    //     resource: 'volunteers'
+    // });
 
     // return <Loader />;
-    console.log(tableProps);
+
+    const getSorter = (field: string) => {
+        return (a, b) => {
+            const x = a[field] ?? '';
+            const y = b[field] ?? '';
+
+            if (x < y) {
+                return -1;
+            }
+            if (x > y) {
+                return 1;
+            }
+            return 0;
+        };
+    };
+
+    const onDepartmentFilter = (value, data) => {
+        return data.departments.some((d) => d.id === value);
+    };
+
+    const onActiveFilter = (value, data) => {
+        return data.is_active === value;
+    };
+
+    const onBlockedFilter = (value, data) => {
+        return data.is_blocked === value;
+    };
+
     return (
         <List>
-            <Table {...tableProps} rowKey='id'>
+            <Input value={searchText} onChange={(e) => setSearchText(e.target.value)}></Input>
+            <Table dataSource={filteredData} rowKey='id'>
                 <Table.Column
-                    dataIndex={['department', 'name']}
-                    title='Department'
-                    filterDropdown={(props) => (
-                        <FilterDropdown {...props}>
-                            <Select
-                                style={{ minWidth: 200 }}
-                                mode='multiple'
-                                placeholder='Department'
-                                {...selectProps}
-                            />
-                        </FilterDropdown>
-                    )}
+                    dataIndex='nickname'
+                    key='nickname'
+                    title='Позывной'
+                    render={(value) => <TextField value={value} />}
+                    sorter={getSorter('nickname')}
                 />
                 <Table.Column
                     dataIndex='name'
                     key='name'
                     title='Имя'
                     render={(value) => <TextField value={value} />}
-                    defaultSortOrder={getDefaultSortOrder('name', sorter)}
-                    sorter
+                    sorter={getSorter('name')}
                 />
                 <Table.Column
-                    dataIndex='activeFrom'
-                    key='activeFrom'
+                    dataIndex='lastname'
+                    key='lastname'
+                    title='Фамилия'
+                    render={(value) => <TextField value={value} />}
+                    sorter={getSorter('lastname')}
+                />
+                <Table.Column
+                    dataIndex='departments'
+                    key='departments'
+                    title='Службы'
+                    render={(value) => <TextField value={value.map(({ name }) => name).join(', ')} />}
+                    filterDropdown={(props) => (
+                        <FilterDropdown {...props}>
+                            <Select
+                                style={{ minWidth: 300 }}
+                                mode='multiple'
+                                placeholder='Служба / Локация'
+                                {...departmentSelectProps}
+                            />
+                        </FilterDropdown>
+                    )}
+                    onFilter={onDepartmentFilter}
+                />
+                <Table.Column
+                    dataIndex='kitchen'
+                    key='kitchen'
+                    title='Кухня'
+                    render={(value) => <TextField value={value} />}
+                    sorter={getSorter('kitchen')}
+                />
+                <Table.Column
+                    dataIndex='active_from'
+                    key='active_from'
                     title='От'
-                    render={(value) => <DateField value={value} />}
-                    defaultSortOrder={getDefaultSortOrder('activeFrom', sorter)}
-                    sorter
+                    render={(value) => value && <DateField format={dateFormat} value={value} />}
+                    sorter={getSorter('active_from')}
                 />
                 <Table.Column
-                    dataIndex='activeTo'
-                    key='activeTo'
+                    dataIndex='active_to'
+                    key='active_to'
                     title='До'
-                    render={(value) => <DateField value={value} />}
-                    defaultSortOrder={getDefaultSortOrder('activeTo', sorter)}
-                    sorter
+                    render={(value) => value && <DateField format={dateFormat} value={value} />}
+                    sorter={getSorter('active_to')}
                 />
                 <Table.Column
-                    dataIndex='isActive'
-                    key='isActive'
+                    dataIndex='is_active'
+                    key='is_active'
                     title='Активирован'
                     render={(value) => <ListBooleanPositive value={value} />}
-                    defaultSortOrder={getDefaultSortOrder('isActive', sorter)}
-                    sorter
+                    sorter={getSorter('is_active')}
+                    filters={booleanFilters}
+                    onFilter={onActiveFilter}
                 />
                 <Table.Column
-                    dataIndex='isBlocked'
-                    key='isBlocked'
-                    title='Блокирован'
+                    dataIndex='is_blocked'
+                    key='is_blocked'
+                    title='Заблокирован'
                     render={(value) => <ListBooleanNegative value={value} />}
-                    defaultSortOrder={getDefaultSortOrder('isBlocked', sorter)}
-                    sorter
+                    sorter={getSorter('is_blocked')}
+                    filters={booleanFilters}
+                    onFilter={onBlockedFilter}
                 />
                 <Table.Column
                     dataIndex='comment'
                     key='comment'
                     title='Комментарий'
-                    render={(value) => <TextField value={value} />}
+                    render={(value) => <div dangerouslySetInnerHTML={{ __html: value }} />}
                 />
                 <Table.Column<DepartmentEntity>
                     title='Действия'

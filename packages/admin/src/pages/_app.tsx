@@ -1,5 +1,5 @@
 import { appWithTranslation, useTranslation } from 'next-i18next';
-import { ErrorComponent, Icons, Layout, notificationProvider } from '@pankod/refine-antd';
+import { ConfigProvider, ErrorComponent, Icons, Layout, notificationProvider } from '@pankod/refine-antd';
 import type { AppProps } from 'next/app';
 import { Loader } from '@feed/ui/src/loader';
 import { Refine } from '@pankod/refine-core';
@@ -10,16 +10,22 @@ import '@pankod/refine-antd/dist/reset.css';
 
 // require('~/i18n');
 
+import antdLocale from 'antd/lib/locale/ru_RU';
+
 import { DepartmentCreate, DepartmentEdit, DepartmentList, DepartmentShow } from '~/components/entities/departments';
-import { LocationCreate, LocationEdit, LocationList, LocationShow } from '~/components/entities/locations';
+import { Sync } from '~/components/sync';
+// import { LocationCreate, LocationEdit, LocationList, LocationShow } from '~/components/entities/locations';
 import { VolCreate, VolEdit, VolList, VolShow } from '~/components/entities/vols';
+import { FeedTransactionCreate, FeedTransactionList } from '~/components/entities/feed-transaction';
 import { ACL } from '~/acl';
 import { authProvider } from '~/authProvider';
 import { CustomSider } from '~/components';
 import { Dashboard } from '~/components/dashboard';
 import { dataProvider } from '~/dataProvider';
 import { LoginPage } from '~/components/login';
-import { PublicStats } from '~/components/public-stats';
+import { PublicStatistic } from '~/components/entities/statistic';
+
+// import enUS from 'antd/lib/locale-provider/ru_RU';
 
 // eslint-disable-next-line no-restricted-imports
 import { i18n } from '../../next-i18next.config.mjs';
@@ -47,62 +53,59 @@ const Feed = ({ Component, pageProps }: AppProps): JSX.Element | null => {
     if (!ready) return <Loader />;
 
     return (
-        <Refine
-            routerProvider={{
-                ...routerProvider,
-                routes: [
+        <ConfigProvider locale={antdLocale}>
+            <Refine
+                routerProvider={routerProvider}
+                DashboardPage={Dashboard}
+                ReadyPage={CustomReadyPage}
+                notificationProvider={notificationProvider}
+                catchAll={<ErrorComponent />}
+                Layout={Layout}
+                dataProvider={dataProvider}
+                i18nProvider={i18nProvider}
+                authProvider={authProvider}
+                LoginPage={LoginPage}
+                Sider={CustomSider}
+                accessControlProvider={ACL}
+                options={{ syncWithLocation: true, disableTelemetry: true }}
+                resources={[
                     {
-                        element: <Dashboard />,
-                        path: '/dashboard',
-                        layout: true
+                        name: 'volunteers',
+                        list: VolList,
+                        create: VolCreate,
+                        edit: VolEdit,
+                        show: VolShow,
+                        icon: <Icons.UserOutlined />
                     },
                     {
-                        element: <PublicStats />,
-                        path: '/pstat'
+                        name: 'departments',
+                        list: DepartmentList,
+                        create: DepartmentCreate,
+                        edit: DepartmentEdit,
+                        show: DepartmentShow,
+                        icon: <Icons.FormatPainterOutlined />
+                    },
+                    {
+                        name: 'feed-transaction',
+                        list: FeedTransactionList,
+                        create: FeedTransactionCreate,
+                        icon: <Icons.HistoryOutlined />
+                    },
+                    {
+                        name: 'stats',
+                        list: PublicStatistic,
+                        icon: <Icons.LineChartOutlined />
+                    },
+                    {
+                        name: 'sync',
+                        list: Sync,
+                        icon: <Icons.SyncOutlined />
                     }
-                ]
-            }}
-            DashboardPage={Dashboard}
-            ReadyPage={CustomReadyPage}
-            notificationProvider={notificationProvider}
-            catchAll={<ErrorComponent />}
-            Layout={Layout}
-            dataProvider={dataProvider}
-            i18nProvider={i18nProvider}
-            authProvider={authProvider}
-            LoginPage={LoginPage}
-            Sider={CustomSider}
-            accessControlProvider={ACL}
-            options={{ syncWithLocation: true, disableTelemetry: true }}
-            resources={[
-                {
-                    name: 'departments',
-                    list: DepartmentList,
-                    create: DepartmentCreate,
-                    edit: DepartmentEdit,
-                    show: DepartmentShow,
-                    icon: <Icons.ProfileOutlined />
-                },
-                {
-                    name: 'vols',
-                    list: VolList,
-                    create: VolCreate,
-                    edit: VolEdit,
-                    show: VolShow,
-                    icon: <Icons.ProfileOutlined />
-                },
-                {
-                    name: 'locations',
-                    list: LocationList,
-                    create: LocationCreate,
-                    edit: LocationEdit,
-                    show: LocationShow,
-                    icon: <Icons.ProfileOutlined />
-                }
-            ]}
-        >
-            <Component {...pageProps} />
-        </Refine>
+                ]}
+            >
+                <Component {...pageProps} />
+            </Refine>
+        </ConfigProvider>
     );
 };
 
